@@ -1,150 +1,274 @@
 \section{Introduction}
 
-Detecting and fixing software defects is crucial for a software
-development process. To reduce the efforts from developers in that
-process, several {\em fault localization} (FL)
-approaches~\cite{fl-survey} have been introduced to help localize the
-source of the fault that needs to be fixed. The input of an FL model
-is the execution of a test suite, in which some of the test cases are
-passing or failing ones. Specifically, the key input is the {\em code
-  coverage matrix} in which the rows and columns correspond to the
-statements and test cases, respectively.  Each cell is assigned with
-the value of 1 if the respective statement is executed in the
-respective test case, and with the value of 0, otherwise.  An FL model
-uses such information to identify the list of {\em suspicious lines of
-  code} that are ranked based on their associated {\em suspiciousness
-  scores}~\cite{fl-survey}. In recent advanced FL, several approaches
-also support fault localization at method
-level~\cite{DeepFL,icse21-fl}. 
+%Fixing software defects is one of the crucial maintenance
+%activities. Thus,
 
+Researchers have proposed several approaches to help developers in
+automatically identifying and fixing the defects in programs. Such
+approaches are referred to as {\em automated program~repair}
+(APR). The APR approaches have been leveraging various techniques in
+the areas of {\em search-based software engineering}, {\em software
+  mining}, {\em machine learning (ML)}, and {\em deep learning (DL)}.
 
+For {\em search-based
+  approaches}~\cite{LeGoues-icse12,le2011genprog,martinez2016astor,qi2014strength},
+a search strategy is performed in the space of potential solutions
+produced by mutating the buggy code via operators. Other approaches
+use software mining to {\em mine and learn fixing patterns} from prior
+bug fixes
+\cite{kim2013automatic,le2016history,liu2019avatar,tbar-issta19,nguyen2013semfix}
+or cloned code~\cite{icse10,ray-fse12}. Fixing patterns are at the
+source code level \cite{liu2019avatar,tbar-issta19} or at the change
+level~\cite{wen2018context,Simfix,koyuncu2018fixminer}.  {\em Machine
+  learning} has been used to mine fixing patterns and the candidate
+fixes are ranked according to their
+likelihoods~\cite{long2016automatic,long2017automatic,saha2017elixir}.
+While some DL-based APR approaches learn similar
+fixes~\cite{gupta2017deepfix,white2019sorting,white2016deep}, other
+ones use machine translation or neural network models with
+various~code~abstractions to generate
+patches~\cite{chakrabortycodit,chen2018sequencer,hata2018learning,tufano2018empirical,see2017get,tufano2019learning,icse20}.
 
-%In the FL problem, given the execution of test cases, an FL tool
-%identifies the set of {\em suspicious lines of code} with their
-%associated suspiciousness scores~\cite{fl-survey}.  The key input of
-%an FL tool is the {\em code coverage matrix} in which the rows and
-%columns correspond to the source code statements and test cases,
-%respectively.  Each cell is assigned with the value of 1 if the
-%respective statement is executed in the respective test case, and with
-%the value of 0, otherwise. In recent FL, several researchers also
-%advocate for fault localization at method level~\cite{DeepFL}. FL at
-%both levels are useful for developers.
-
-The FL approaches can be broadly divided into the following
-categories: {\em spectrum-based fault localization} (SBFL)
-approaches~\cite{Ochiai,jones2001visualization,keller2017critical},
-{\em mutation-based fault localization} (MBFL)
-approaches~\cite{MUSE,papadakis2012using,Metallaxis}, and {\em machine
-  learning (ML)} and {\em deep learning (DL)}~\cite{DeepFL,icse21-fl}.
-For SBFL approaches, the key idea is that a line covered more in the
-failing test cases than in the passing ones is more suspicious than a
-line executed more in the passing ones.
+%The fixing patterns/templates could be mined automatically from the
+%repositories or pre-defined via semi-automated
+%techniques~\cite{le2016history,nguyen2013semfix,liu2019avatar,tbar-issta19}.
 %
-To improve SBFL, MBFL
-approaches~\cite{MUSE,papadakis2012using,Metallaxis} enhance the code
-coverage information by modifying a statement with mutation operators,
-and then collecting code coverages when executing the mutated programs
-with the test cases. The MBFL approaches apply suspiciousness score
-formulas in the same manner as in SBFL approaches on the matrix for
-each original statement and its mutated ones.
+  
+Despite their successes, the state-of-the-art DL-based APR
+  approaches are still limited in fixing the software defects that
+involve the {\em fixing changes to multiple statements in the same or
+different parts of a file or different files} (which are referred
+to as {\em hunks}).
 %
-ML and DL-based FL approaches explore the code coverage matrix and
-apply different neural network models for fault localization.
-
-
-%{\em Spectrum-based fault localization} (SBFL)
-%approaches~\cite{Ochiai,jones2001visualization,keller2017critical}
-%take the recorded lines of code that were covered by each of the given
-%test cases, and assigned each line of code a suspiciousness score
-%based on the code coverage matrix. Despite using different
-%formulas to compute that score, the idea is that a line covered more
-%in the failing test cases than in the passing ones is more suspicious
-%than a line executed more in the passing ones. A key drawback of those
-%approaches is that the same score is given to the lines that have been
-%executed in both failing and passing test cases. An example is the
-%statements that are part of a block statement and executed at the
-%same nested level. Another example is the conditions of the
-%condition statements, e.g., \code{if}, \code{while}, \code{do},
-%and \code{switch}. 
-
-%To improve SBFL, {\em mutation-based fault localization} (MBFL)
-%approaches~\cite{MUSE,papadakis2012using,Metallaxis}
-%enhance the code coverage information by modifying a statement with
-%mutation operators, and then collecting code coverages when executing
-%the mutated programs with the test cases. They apply suspiciousness
-%score formulas in the same manner as the spectrum-based FL approaches on
-%the code coverage matrix for each original statement and its mutated
-%ones. Despite the improvement, MBFL are not effective for the bugs
-%that require the fixes that are more complex than a mutation
-%(Section~\ref{motivexample}).
-
-%{\em Machine learning (ML)} and {\em deep learning (DL)}
-%have been used in fault localization. DeepFL~\cite{DeepFL}
-%computes for each faulty method a vector with +200 scores in which
-%each score is computed via a specific feature, e.g., a spectrum-based
-%or mutation-based formula, or a code complexity metric. Despite its
-%success, the accuracy of DeepFL is still limited. A reason could be
-%that it uses various calculated scores from different formulas as a
-%proxy to learn the suspiciousness of a faulty element, instead of
-%fully exploiting the code coverage. Some formulas, such
-%as the spectrum- and mutation-based formulas, inherently suffer from
-%the issues as explained earlier with the statements covered by
-%both failing and passing test cases.
-
-Despite their successes, the state-of-the-art FL approaches still do
-not support locating all the fixing locations that need to be repaired
-at the same time in the same fix. In real-world software development,
-there are several bugs that require a fix to multiple lines of code in
-one or multiple hunks in the same or different methods. {\em The
-  fixing changes to those lines of code are dependent to one another
-  and need to be made in the same fix for the program to pass the test
-  cases}. For those bugs, applying the fixing change to one statement
-at a time will not make the program pass the test case after the
-change to one statement.
+None of existing DL-based approaches can automatically fix the bug(s)
+with {\em dependent changes to multiple statements in multiple hunks
+  at once}.
+%However, Hercules is also limited to fix {\em individual statements}
+%within each hunk.
+%This holds true for several existing APR approaches except for a few
+%pattern-based techniques~\cite{getafix19}.
+%REMOVED
+%This limitation hinders those DL-based APR approaches in dealing with
+%the bug(s) requiring a fix to multiple statements within a hunk of
+%code.
+The reason is that~if~we use an individual-statement DL-based APR tool
+on the current statement, the tool treats that statement as
+incorrect and treats the other statements as correct. This does not hold
+since during fixing the current statement, the remaining statements
+might not be fixed to correct code yet. Thus, it might be~inaccurate
+when using existing DL-based APR tools to fix individual statements
+for multi-hunk/multi-statement bugs.
 %
-This capability to detect the fixing locations of the co-changes in a
-fix for a bug (let us call it {\em Co-change Fixing Locations} ({\em
-  CC Fix Locations})) is important for both the manual process of bug
-fixing as well as the automated process of program repairing. For
-manual process, such capability will save effort and time for
-developers in locating all the buggy statements that need to be fixed
-at the same time. For automated program repair (APR), such capability
-will enable an APR model to correctly and completely make the changes
-to fix a bug.
+While DL provides benefits for fix learning, {\em this limitation
+  makes the~DL-based APR approaches less capable than the other
+  directions (search-based and pattern-based APR), which support
+  multiple-statement fixes.}
+%Importantly, despite that a few mining approaches using pattern-based
+%APR (e.g., getafix~\cite{getafix19}) can fix a bug involving multiple
+%buggy statements for a hunk, they can only apply to the buggy code
+%that matches with their explicitly learned or pre-defined fixing
+%patterns/templates. Finally, none of the existing DL-based APR
+%approaches can deal with multi-statement bugs.
+%Tien
+%In brief, the DL-based models are not sufficiently general to
+%deal with real-world bugs.
 
-From the ranked list of suspicious statements returned from an
-existing FL model, a naive approach to detect CC Fix Locations would
-be to take the top $k$ statements in that list and to consider them as
-to be fixed together. This solution might not be effective
-because the mechanisms used in the state-of-the-art FL approaches have
-never considered the co-change nature of those fixes. Our empirical
-evaluation also confirmed that (Section~\ref{eval:sec}).
+In this paper, we aim to advance deep learning-based APR
+by~introducing {\tool}, a DL-based model that supports auto-fixing for
+the bugs with {\em dependent changes at once to one or multiple buggy
+  hunks, in which a hunk contains one or multiple buggy
+statements}. To do that, we make three following key technical
+contributions.
 
-Detecting all the fixing locations at multiple statements in
-potentially multiple methods is challenging. A naive solution would be
-detecting the potential methods that need to be fixed together and
-then detecting potential statements that need to be changed together
-in each of those methods. However, doing so will create a comfounding
-effect from the inaccuracy of the detection of buggy methods to the
-one of the buggy statements.
+First, we develop a {\em fault localization (FL) technique for
+  multi-hunk, multi-statement patches that combines traditional
+  spectrum-based FL (SBFL) with DL and data-flow analysis}. {\tool}
+uses a SBFL method to identify the ranked list of suspicious buggy
+statements. Then, it uses that list of buggy statements to {\em derive
+  the buggy~hunks that need to be fixed together} by fine-tuning the
+pre-trained BERT model~\cite{devlin2018bert}, to learn the
+fixing-together relationships among statements.
+%Each hunk contains one or more consecutive buggy statements.
+We also design an expansion algorithm that takes a buggy statement $s$
+in a hunk as a seed, and expands to include other suspicious
+consecutive statements from $s$. To achieve that, we use an RNN
+model to classify the statements as buggy or not, and use data flow
+analysis for adjustment and then form the hunks.
 
-{\bf FIXME.} We propose {\tool}, a fault localization approach for
-buggy statements/methods ...
+Second, after the expansion step, we have identified all the buggy
+hunk(s) with buggy statement(s). We develop a {\em compositional
+  approach to learning and then generating multi-hunk, multi-statement
+  fixes}. In our approach, from the buggy statements, we first derive
+the corresponding subtrees of Abstract Syntax Tree (AST). We use a
+divide-and-conquer strategy to more accurately learn fine-grained code
+transformations of a fix. To do so, we use an AST-based differencing
+technique to derive the fine-grained, AST-based changes for the
+mapping between each pair of buggy and fixed code in the training
+dataset. Those fine-grained mappings help our model avoid incorrect
+alignments of buggy and fixed code.
 
-The contributions of this paper are listed as follows:
+%For each buggy subtree, we encode it as a vector representation and
+%apply a tree-based Long Short-Term Memory (LSTM) model to derive the
+%fixed code. To train that LSTM model, we use a divide-and-conquer
+%strategy to more accurately learn fine-grained code structure
+%transformations of a fix. To do so, we use an AST-based differencing
+%technique to derive the fine-grained, AST-based changes for the
+%mapping between each pair of buggy and fixed code in the training
+%dataset. Those fine-grained mappings help the LSTM model avoid
+%incorrect alignments of buggy and fixed code.
 
-{\bf 1. Novel code coverage representation.} Our representation
-enables fully exploiting test coverage matrix and taking advantage of
-the CNN model in image recognition to localize~faults.
+%Second, after the expansion step, we have identified all the buggy
+%hunk(s) with buggy statement(s). We develop a {\em compositional approach
+%to learning and then generating multi-hunk, multi-statement
+%fixes}. Toward that end, from the buggy statements, we derive the
+%corresponding subtrees of Abstract Syntax Tree (AST). For each buggy
+%subtree, we encode it as a vector representation and apply a
+%tree-based Long Short-Term Memory (LSTM) model to derive the fixed
+%code. To train that LSTM model, we use a divide-and-conquer strategy
+%to more accurately learn fine-grained code structure transformations
+%of a fix. To do so, we use an AST-based differencing technique to
+%derive the fine-grained, AST-based changes for the mapping between each pair
+%of buggy and fixed code in the training dataset. Those fine-grained
+%mappings help the LSTM model avoid incorrect alignments of buggy and
+%fixed code.
 
-{\bf 2. {\tool}: Novel DL-based fault localization approach.} Test
-case ordering and three sources of information allow treating FL as a
-pattern recognition. Without ordering and statement dependencies, the
-CNN model will not work~well.
+Third, we have enhanced the tree-based, two-layer Long Short-Term
+Memory (LSTM) model in DLFix~\cite{icse20} with {\em an attention
+  layer and a cycle training} to help {\tool} to learn the proper code
+fixing changes in the suitable context of surrounding code. For each
+buggy AST subtree identified by our fault localization, we encode it
+as a vector representation and apply that LSTM model to derive the
+fixed code.
+%
+In the first layer, it learns the fixing context,~i.e., the code
+structures surrounding a buggy AST subtree. In the second layer, it
+learns the code transformations to fix that buggy subtree using the
+context as an additional weight. Finally, in training,~to learn better
+the fixing context for a buggy subtree, we use the subtrees {\em after
+  the fix} for the other buggy subtrees to train {\tool}, instead of
+using those buggy ones (in training, the fixed subtrees for all buggy
+ones are known). That is, it is better to train the model to learn the
+context for a buggy subtree from the fixed surrounding code (i.e.,
+subtrees after the fix), rather than the un-fixed subtrees.
 
-{\bf 3. Extensive empirical evaluation.} We evaluated our model
-against the most recent FL models at the statement and method levels,
-in both within-project and cross-project settings, and for both C and
-Java. Our replication package is available
-at~\cite{FaultLocalization2021}.
+%Note that, during training, we know the fixed subtrees for all buggy
+%ones.
 
+
+%Our second idea includes the design of two-layer, tree-based LSTM
+%model, which learns at the first layer the fixing context, i.e., the
+%code structures surrounding a buggy AST subtree. In the second layer,
+%it learns the code transformations to fix that buggy subtree using the
+%fixing context as an additional weight. This enables {\tool} to learn
+%the proper code fixing changes in the suitable fixing context
+%consisting of the surrounding code.
+%
+%Finally, during training, to learn better the fixing context for a
+%buggy AST subtree, we use the subtrees after the fix for the other
+%buggy AST subtrees, instead of using those buggy ones. The idea is
+%that it is better for the model to learn the fixing context for the
+%current buggy AST subtree from the correct surrounding code (i.e.,
+%subtrees after the fix), rather than from the incorrect subtrees.
+
+
+
+%the buggy subtrees have not been fixed and it is better for {\tool} to
+%learn the fix for the current AST subtree from the correct surrounding
+%code.
+
+%We conducted several experiments to evaluate {\tool} in two standard bug datasets {\em Defects4J}, and {\em Bugs.jar}, and in a newly built bug datasets with a total of +20K real-world bugs in 8 large Java projects. 
+
+%OLD
+%We conducted several experiments to evaluate {\tool} on three
+%datasets: {\it Defects4J}~\cite{defects4j}, {\it BigFix}~\cite{icse20}
+%with +26k bugs, and {\it CPatMiner dataset}~\cite{icse19-cpatminer}
+%with +44k bugs.  We have compared against seven state-of-the-art
+%pattern-based APR tools.  Our results show that {\tool} can fix 47
+%bugs and its enhanced version $EN${\tool} can fix 51 bugs on
+%Defects4J.  They generate comparable and complementary to the top
+%pattern-based APR tool, Hercules~\cite{hercules-icse19} fixing 49
+%bugs.  However, {\tool} can fix 13 new unique bugs compared with
+%Hercules.  Importantly, {\tool} is fully automated and data-driven,
+%and does not require hard-coding of bug-fixing patterns as in those
+%tools.  We also compared {\tool} against two state-of-the-art deep
+%learning (DL)-based APR models on three big datasets.  {\tool} is able
+%to fix 26\% (i.e., +75), 30\% (i.e., +164), and 57\% (i.e., +17) more
+%bugs than the best performing baseline DLFix on BigFix, CPatMiner, and
+%Defects4J, respectively, using only Top-1 ranked patches.
+
+We conducted several experiments to evaluate {\tool} on three large
+datasets: {\it Defects4J}~\cite{defects4j} (395 bugs), {\it
+  BigFix}~\cite{icse20} (+26k bugs), and {\it CPatMiner
+  dataset}~\cite{icse19-cpatminer} (+44k bugs). The baseline DL-based
+approaches include DLFix~\cite{icse20},
+CoCoNuT~\cite{lutellier2020coconut},
+SequenceR~\cite{chen2018sequencer}, Tufano19~\cite{tufano2019learning}
+and CODIT~\cite{chakrabortycodit}.
+%
+{\tool} fixes 42\% (i.e., +14), 12\% (i.e., +71), and 16\% (i.e., +49)
+more bugs than the best performing baseline CoCoNuT on Defects4J,
+CPatMiner, and BigFix datasets, respectively, using only Top-1 ranked
+patches. On Defects4J, it outperforms those above baselines from
+42\%--683\% for the number of fixed bugs.
+%
+On CPatMiner, {\tool} fixes 71 and 164 more bugs, including 52~and 61
+more multi-hunk/multi-statement bugs, than existing DL-based APR tools
+CoCoNuT and DLFix. Among 667 fixed bugs from {\tool}, there are 169
+(25.3\%) multi-hunk/multi-statement ones.
+%
+%On Defect4J, {\tool} can fix 18 bugs involving either multiple
+%statements and/or multiple hunks, out of a total of 47 fixed bugs. The
+%best performing DL-based baseline CoCoNuT cannot fix any
+%multi-hunk/multi-statement bugs out of the total 33 fixed bugs.  On
+%CPatMiner dataset, {\tool} fixes 169 bugs with either multi-statements
+%or multi-hunks, while DLFix fix 117 of those types.
+%
+We also compared {\tool} against 8 state-of-the-art pattern-based
+APR tools. Our results show that {\tool} generates comparable and
+complementary results to the top pattern-based APR tools. For example,
+on Defects4J, {\tool} fixes 12 bugs (out of 47) including 7
+multi-hunk/multi-statement bugs that the top pattern-based APR tool
+could not fix.
+%
+In brief, our contributions include
+  
+  
+
+  %{\bf A. \underline{DL-based APR}:} With {\tool}, we show that {\em the direction of using DL in APR can achieve high accuracy as the other directions for APR. {\tool} advances the DL direction with the support for multi-hunk/multi-statement bugs}.
+
+  %{\tool} supports general fixing for any bug that requires the
+  %changes to one or multiple statements in one or multiple hunks of
+  %code.
+
+  {\bf A. Advanced DL-based APR Techniques:}
+
+  1) A novel FL technique for multi-hunk,
+  multi-statement fixes that combines traditional SBFL with DL and
+  data-flow analysis;
+
+  2) A compositional approach to learning and generating multi-hunk,
+  multi-statement fixes with divide-and-conquer strategy; and
+
+  3) Enhancements to the design and orchestration of the DLFix model
+  in terms of the attention layer and cycle training.
+
+%  3) an enhancement of DLFix with attention layer and cycle training
+%  to improve accuracy.
+
+  %A novel DL-based APR model with the new cycle training concept and
+  %divide-and-conquer strategy that dedicates two layers for learning
+  %the code transformations and the appropriate corresponding fixing
+  %contexts.
+
+{\bf B. Empirical Results:} 1) {\tool} is the first DL APR
+performing at the same level of number of fixed bugs as pattern-based tools
+and generate complementary results;  2) \tool outperforms the
+existing DL-based APR tools; 3) {\em our replication package is in~\cite{AutoFix2021}}.
+
+%{\bf C. \underline{DL-based APR}:} 
+{\bf C. DL-based APR:} 
+With {\tool}, we show that the
+  direction of using DL in APR can achieve the comparable and
+  complementary performance as the other directions for APR.  {\tool}
+  advances the DL direction with the support for
+  multi-hunk/multi-statement bugs.

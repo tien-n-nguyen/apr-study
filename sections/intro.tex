@@ -18,8 +18,8 @@ classified in the following categories according to their techniques:
 {\em search-based software engineering}, {\em software mining}, {\em
   machine learning (ML)}, and {\em deep learning (DL)}.
 
-In {\em search-based
-  approaches}~\cite{LeGoues-icse12,le2011genprog,martinez2016astor,qi2014strength},
+In search-based
+  approaches~\cite{LeGoues-icse12,le2011genprog,martinez2016astor,qi2014strength},
 the buggy code is first mutated via certain operators to produce the
 potential solution space. Then, a search strategy is designed to find
 the fix in the solution space. Instead searching for a solution, the
@@ -34,45 +34,140 @@ patterns/templates could be mined automatically from the repositories
 or pre-defined via semi-automated
 techniques~\cite{le2016history,nguyen2013semfix,liu2019avatar,tbar-issta19}.
 
-Recent advances in machine learning have enabled several models to
-implicitly learn from the bug fixes to apply to repair the current
+Recent advances in machine learning (ML) enable several models to
+implicitly learn from prior bug fixes to apply to repair the current
 buggy code.  They then derive the candidate fixes and rank them
 according to their
 likelihoods~\cite{long2016automatic,long2017automatic,saha2017elixir}.
 With the recent revolutionary advances in deep learning (DL), software
 engineering researchers have leverage them to automatically derive the
 fixing changes to a given buggy code. Some DL-based approaches learn
-the fix from prior similar bug fixes and/or
-patterns~\cite{gupta2017deepfix,white2019sorting,white2016deep}.
-Other DL-based approaches treat APR as machine translation from a
-buggy version to a correct one with some DL models including
+the fix from prior {\em similar bug fixes and/or
+  patterns}~\cite{gupta2017deepfix,white2019sorting,white2016deep}.
+Other DL-based approaches treat APR as {\em machine translation} from
+a buggy version to a correct one with some DL models including
 transformers and
-others~\cite{chakrabortycodit,chen2018sequencer,hata2018learning,tufano2018empirical,see2017get,tufano2019learning}. Instead
+others~\cite{chakrabortycodit,chen2018sequencer,hata2018learning,tufano2018empirical,see2017get}. Instead
 of treating APR as machine translation, other DL-based approaches aim
-to implicitly learn the transformation rules from a buggy code to a
-correct one accordingly to the surrounding context of the
-transformations~\cite{icse20}.
+to implicitly learn the {\em transformation rules} from a buggy code
+to a correct one accordingly to the surrounding {\em context} of the
+transformations~\cite{icse20,tufano2019learning,cure-icse21}. Those
+recent DL-based APR approaches have showed that {\em learning
+  bug-fixing changes needs to be dependent on the surrounding {\bf
+    code context}}.  For example, a null check is needed after a call
+to create a new \code{FileInputStream}.  Those context-aware APR models
+have achieved better performance in
+APR~\cite{icse20,tufano2019learning,chakrabortycodit}.
 
+Despite recognizing the importance of the surrounding context in
+learning the fixes, the existing DL-based APR approaches still have
+limitations in integrating contextual information in the process.
+First, the DL-based APR approaches that learn from {\em bug-fixing
+  patterns}~\cite{white2016deep,gupta2017deepfix} have focused on
+similar code and/or code changes with {\em little or no consideration}
+on whether those code or fixing patterns appear in certain surrounding
+contexts. Second, the DL-based APR approaches that leverage {\em
+  machine translation or
+  transformers}~\cite{chakrabortycodit,chen2018sequencer,hata2018learning,tufano2018empirical,see2017get}
+often take too little surrounding code as context to learn fixing
+changes or do not have a clear boundary of the fixing changes and the
+context. Let us elaborate this point. Some DL-based APR approaches aim
+to learn only the code changes for a fix, e.g., from one buggy subtree
+in an Abstract Syntax Tree (AST) or a buggy statement to the correct
+subtree or statement~\cite{chakrabortycodit,hata2018learning}. In this
+treatment, too little context might not help a model learn the fixes
+that depend on a larger surrounding code. In contrast, other
+approaches~\cite{chen2018sequencer,hata2018learning} take the entire
+buggy method and translate it to the correct one, while the fix might
+be only a small editing change to a single statement. Those
+translation-based approaches do not distinguish clearly the boundary
+of the fixing change (e.g., to a buggy statement) and the surrounding
+context (e.g., the preceeding or succeeding code). Due to the mixture
+of fixing changes and context, those machine translation models or
+transformers might not learn what fixing changes are proper in what
+contexts~\cite{icse20}.
 
-%While some DL-based APR approaches learn similar
-%fixes~\cite{gupta2017deepfix,white2019sorting,white2016deep}, other
-%ones
-%use machine translation or neural network models with
-%various~code~abstractions to generate
-%patches~\cite{chakrabortycodit,chen2018sequencer,hata2018learning,tufano2018emp%irical,see2017get,tufano2019learning,icse20}.
+To address that issue, DLFix~\cite{icse20} makes a clear boundary of
+fixing changes and the surrounding context, and dedicates two layers
+for those two tasks. The first layer is a tree-based RNN model that
+learns the contexts of bug fixes and its result is used as an
+additional weighting input for the second layer designed to learn the
+bug-fixing code transformations. However, the cascading architecture
+in DLFix from the two layers create a comfounding effect from the
+inaccuracy of the learning of the context to the learning of the
+bug-fixing transformations.
 
+In this work, we conjecture that the two tasks of learning the code
+context and learning of bug-fixing code transformations are related
+and dependent on each other. Correct learning of context can benefit
+for learning of code transformations and vice versa. For example, in
+C code, if the preceding code (i.e., part of the context) contains
+\code{fopen} as in \code{FILE *fd = fopen (fname, ``rb'');}, then the
+succeeding bug-fixing code is more likely to be \code{if (fd != null)}
+or \code{if (fd == null)}. However, if the preceding code contains
+\code{fread} as in \code{n = fread(buffer,1,size,fd);}, then the
+succeeding bug-fix is more likely to be \code{if (n != size)} or
+\code{if (n == size)}, rather than a null check (\code{if (n !=
+  null)}).  On the other hand, if the bug-fixing transformation is a
+change from \code{if (fd == null)} to \code{if (fd != null)}, then the
+preceding code more likely contains \code{fopen} than \code{fread}.
+Let us call such dependence between two parts as {\em duality}.
 
-%The fixing patterns/templates could be mined automatically from the
-%repositories or pre-defined via semi-automated
-%techniques~\cite{le2016history,nguyen2013semfix,liu2019avatar,tbar-issta19}.
-%
+We introduce {\tool}, a context-aware dual-task learning APR model,
+which dedicates one model for learning the bug-fixing code
+transformations (CTL) and another one for learning the corresponding
+surrounding code contexts (CCL). Instead of cascading them, we train
+the models simultaneously with softsharing their parameters to exploit
+this duality. We apply a probabilistic correlation as a regularization
+term in the loss function in the join training. ...
 
-%Other approaches use software mining to {\em mine and learn fixing
-% patterns} from prior bug fixes
-%\cite{kim2013automatic,le2016history,liu2019avatar,tbar-issta19,nguyen2013semfix} or cloned code~\cite{icse10,ray-fse12}. Fixing patterns are at the
-%source code level \cite{liu2019avatar,tbar-issta19} or at the change
-%level~\cite{wen2018context,Simfix,koyuncu2018fixminer}.  {\em Machine
-%  learning} has been used to mine fixing patterns and the candidate
-%fixes are ranked according to their
-%likelihoods~\cite{long2016automatic,long2017automatic,saha2017elixir}.
-  
+{\bf Technical overview} paragraph
+
+{\bf Empirical Results overview} paragraph
+
+The contributions of this paper are listed as follows:
+
+%{\bf A. DL for APR:} {\tool} is the first DL APR that generates
+%comparable and complementary results with powerful pattern-based
+%tools, as recently published DL-based APR can only fix very few bugs
+%on Defects4J. {\tool} helps confirm that further research on building
+%advanced DL to improve APR is promising and valuable.
+
+{\bf A. A Novel Dual-Task Learning APR Model:} A DL-based,
+context-aware APR approach with a novel dual-task learning model that
+exploits the duality of learning bug-fixing code transformations and
+learning code contexts.
+
+{\bf B. Empirical Results:} (Code and data are published~\cite{AutoFix2019})
+
+1) {\bf Comparable and Improving over recent Pattern-based APR}.  We
+show {\tool} can auto-fix more bugs than the state-of-the-art
+pattern-based APR models. Importantly, {\tool} is data-driven and do
+not require explicitly learning of bug-fixing patterns.
+
+%pattern-based APR tools, and its result is comparable and
+%complementary to the ones from the two best pattern-based
+%tools.
+
+2) {\bf Improving over all the DL-based APR}. We evaluated {\tool}
+against the most recent DL-based models to show our model's better
+performance.
+%{\tool} is able to detect 2.5 times more bugs than the best performing
+%baseline.  {\tool} can fix 253 new bugs (out of 1158 in Bugs.jar) than
+%all the other DL-based APR techniques combined.
+
+%-------------------------------------------------------------
+
+%{\bf 1. {\tool}: Novel DL-based fault localization approach} that
+%derives the co-change fixing locations for a bug. Our idea is
+%to treat such problem as a dual learning task with the joint training
+%of the method-level and statement-level co-fixing learning models.
+
+%{\bf 2. Novel graph-based representation learning with co-change
+%  statements.} Our graph-based representation learning with GCN
+%and the novel type of features in co-change statements enables
+%the dual-task models learn derive co-change fixing locations.
+
+%{\bf 3. Extensive empirical evaluation.} We evaluated {\tool} against
+%the most recent FL models to show our model's better performance. Our
+%replication package is available at~\cite{FixLocator2022}.

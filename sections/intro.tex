@@ -74,7 +74,7 @@ changes or do not have a clear boundary of the fixing changes and the
 context. Let us elaborate this point. Some DL-based APR approaches aim
 to learn only the code changes for a fix, e.g., from one buggy subtree
 in an Abstract Syntax Tree (AST) or a buggy statement to the correct
-subtree or statement~\cite{chakrabortycodit,hata2018learning}. In this
+subtree or statement~\cite{chakrabortycodit}. In this
 treatment, too little context might not help a model learn the fixes
 that depend on a larger surrounding code. In contrast, other
 approaches~\cite{chen2018sequencer,hata2018learning} take the entire
@@ -140,7 +140,7 @@ learning code contexts.
 
 {\bf B. Empirical Results:} (Code and data are published~\cite{AutoFix2019})
 
-1) {\bf Comparable and Improving over recent Pattern-based APR}.  We
+1) {\bf Improving over recent Pattern-based APR}.  We
 show {\tool} can auto-fix more bugs than the state-of-the-art
 pattern-based APR models. Importantly, {\tool} is data-driven and do
 not require explicitly learning of bug-fixing patterns.

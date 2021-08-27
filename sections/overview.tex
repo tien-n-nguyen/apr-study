@@ -23,7 +23,17 @@ process has two main steps:
 	\label{overview-training}
 \end{figure}
 
-\noindent 
+\noindent {\bf Tree-based Representation Learning.} The goal of this
+step is to take the source code under study and to build the
+tree-based vector representations (embeddings) to be the input for our
+dual models: \code{CCL} and \code{CTL}. To achieve that, we first
+parse the given source code to obtain the abstract syntax tree (AST)
+for the entire method and the subtree for the buggy statement.  We
+then use a word embedding technique to produce the vector for each
+node in the AST when we flatten the AST. The output of this step is
+the AST for the method and the AST subtree for the buggy statement in
+which each node is replaced by its embedding vector
+(Figure~\ref{overview-training}).
 
 
 

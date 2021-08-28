@@ -10,11 +10,7 @@
 After having the $Tree_m$, $Tree_{mf}$ pair and $Tree_s$, $Tree_{sf}$ pair from the first step, \tool uses them as the input and the ground truth to train the dual learning program repair model in this step. \tool uses the generated after fixing AST $Tree'_m$ and after fixing subtree of AST $Tree'_s$ as output for this step when making the prediction. Specifically, there are two small steps, including the AST node representation learning and the dual learning framework.
 
 
-\subsection{AST Node Representation Learning}
 
-To make the dual learning program repair model can take information from the input, \tool firstly needs to vectorize the AST and the subtree of AST by using the node representation learning. 
-
-For a given tree $T$, \tool firstly uses the deep traversal to covert it into a sequence of tokens $S$. Here, $T$ could be $Tree_m$, $Tree_{mf}$, $Tree_s$, and $Tree_{sf}$. And then, \tool uses the famous technique GloVe \cite{pennington2014glove} to transform each AST node into a vector. The GloVe is a great tool for vectorizing the sequence of tokens by considering co-occurrence between different tokens. It can help predict for the often appeared together tokens. That's the reason why to choose it here to vectorize the tree $T$. For example, in Figure \ref{program-repair}, the AST node $N1-N5$ has been embedded into the vector $V1-V5$ in the top raw.
 
 \subsection{Dual Learning Framework}
 

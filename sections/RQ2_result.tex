@@ -1,0 +1,24 @@
+\subsection{RQ2. Comparison with State-of-the-art APR Approaches on Big Datasets.}
+
+\begin{table}[t]
+	\caption{RQ2. Accuracy Comparison with DL-based APR approaches on three Datasets.}
+	\vspace{-10pt}
+	\begin{center}
+		\renewcommand{\arraystretch}{1}
+		\begin{tabular}{p{1.6cm}|p{0.7cm}|p{0.7cm}|p{0.7cm}|p{0.7cm}|p{0.7cm}|p{0.7cm}}\hline
+			\multirow{2}{*}{Approach}&\multicolumn{3}{c|}{Bugs.jar (1,158 Bugs)}&\multicolumn{3}{c}{BigFix (2,176 Bugs)}\\\cline{2-7}
+		                          & Top1   & Top5   & Top10  & Top1   & Top5   & Top10\\
+			\hline
+			\textbf{CODIT}        & 7.4\%  & 10.3\% & 12.5\% & 7.8\%  & 8.5\%  & 9.2\%\\
+			\textbf{Tufano('19)}  & 6.5\%  & 9.7\%  & 11.6\% & 4.1\%  & 6.5\%  & 9.4\%\\
+			\textbf{SequenceR}    & 8.8\%  & 10.8\% & 12.9\% & 8.3\%  & 9.2\%  & 10.3\%\\
+			\textbf{DLFix}        & 10.7\% & 12.1\% & 14.6\% & 11.3\% & 11.8\% & 12.7\%\\
+			\textbf{CoCoNut}      & 12.1\% & 14.2\% & 16.5\% & 12.4\% & 13.5\% & 14.1\%\\
+			\textbf{CURE}         & 13.2\% & 14.9\% & 17.4\% & 13.0\% & 13.8\% & 14.5\%\\
+			\hline
+			\textbf{\tool}        & \textbf{14.8\%} & \textbf{17.1\%} & \textbf{18.5\%} & \textbf{14.9\%} & \textbf{16.1\%} & \textbf{16.8\%}\\
+			\hline
+		\end{tabular}
+		\label{RQ2_results}
+	\end{center}
+\end{table}

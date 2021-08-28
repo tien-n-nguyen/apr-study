@@ -1,0 +1,32 @@
+\begin{algorithm}[t]
+	\caption{Tree-structured Beam Search}
+	\label{algo}
+	\scriptsize
+	\begin{algorithmic}[1]
+		\Function {TreeStructuredBeamSearch}{$NodeList, Dictionary, BeamSize$}
+		\State $HeightList = GetNodeHeight(NodeList)$ 
+		\State $ReorderedNodeList = ReorderList(NodeList, HeightList)$ % Based on node height in the tree to rerank all nodes
+		\If {$N_i,N_j \in ReorderedNodeList$ $\textbf{\&}$ $HaveSameParent(N_i, N_j)$}
+			\State $GroupedNodeList = GroupStatement(ReorderedNodeList, N_i, N_j)$ %If two nodes have the same parent node, we group them as one
+		\EndIf
+		\State $Result = BeamSearch(GroupedNodeList, Dictionary, BeamSize)$
+		\State \textbf{return} $Result$
+		\EndFunction
+		
+		
+		
+		\Function {BeamSearch}{$GroupedNodeList, Dictionary, BeamSize$}
+		\State $PreCand, PrePoss = Initialize(BeamSize)$ %Initialize two variables
+		\For {$\textbf{each} Node in GroupedNodeList$}
+			\State $Cand, Poss = PickCand(Node, PreCand, Dictionary, BeamSize)$ %For current node, based on previous node selection, we calculate the possiblity and pick the top N candidates. N here is the beam size which is changable parameter.
+			\For {$C_i, P_i \in PreCand, PrePoss$ $\textbf{\&}$ $C_j, P_j \in Cand, Poss$}
+				\State $NewCand = C_i + C_j$
+				\State $NewPoss = P_i * P_j$ % Combining the candidates in the last step and the current step
+				\State $PreCand, PrePoss = PickHighest(NewCand, NewPoss, BeamSize)$ % Pick the top N combined candidates and update the two variables for the next step usage
+			\EndFor
+		\EndFor
+		\State \textbf{return} $[PreCand, PrePoss]$ % The updated candidates combinations with the possibility in the end are the final results get from beam search.
+		\EndFunction 
+		
+	\end{algorithmic}
+\end{algorithm}

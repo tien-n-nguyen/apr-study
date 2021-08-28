@@ -2,12 +2,12 @@
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=2.6in]{graphs/beam.png}
-	\caption{Beam Search Example}
-	\label{patch-validation}
+	\includegraphics[width=3.2in]{graphs/beam-search.png}
+	\caption{Tree-Structured Beam Search for Patch Generation}
+	\label{beam}
 \end{figure}
 
-\input{sections/beam}
+%\input{sections/beam}
 
 This step will only be used during the prediction, and because the statement-level program repair is our main goal for the dual learning, \tool only consider the output from the statement-level here. After \tool has the predicted fixing for the subtree of AST $Tree_s$, \tool uses the beam search to help the model reduce the search space and run the test cases to do the validation. Beam search is an optimized greedy strategy, and Beam search keeps only the $n$ optimal tokens for each step to help reduce the search space. However, there are two problems the beam search may face when applying to \tool to do the validation.
 

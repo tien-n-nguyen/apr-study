@@ -69,60 +69,122 @@ in~\cite{misra2016cross}.
 
 \subsection{Dual Learning between CCL and CTL}
 
-First, \tool uses two separate attention-based seq2seq frameworks to learn the code fixing for both the method-level and the statement-level. We all use the tree-based deep learning model to process the AST or subtree of AST for the encoder and decoder of these two tasks. Based on the recent study, we select a well-performed baseline TreeCaps \cite{bui2021treecaps} here to do so. Between the encoder and decoder, there is an attention layer for both tasks to help improve the accuracy of generating the fixing.
-
-In the regular attention-based seq2seq model, the hidden status $H$ is directly passed to the attention layer. However, \tool uses a cross-stitch unit to accept the hidden status $H_m$ and $H_s$ from both method-level and the statement-level to achieve the dual learning. And then, the \tool passes the output of the cross-stitch unit to the method-level and statement-level attention layer. Just like the Figure \ref{program-repair} shown, the output from the encoder does not go to the attention layer. They go to the cross-stitch unit instead. The cross-stitch unit helps both the method-level and the statement-level attention-based seq2seq model catch the input features within the buggy method and the buggy statement.
-
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=3.2in]{graphs/program_repair.png}
-	\caption{Dual Learning Program Repair}
-	\label{program-repair}
+	\includegraphics[width=3in]{graphs/dual-learning-repair.png}
+	\caption{Dual Learning between CCL and CTL}
+	\label{fig:dual-learning}
 \end{figure}
 
-As for the TreeCaps model \tool is using, it is built on top of $k$ TBCNN layers \cite{mou2014tbcnn}. So, for the TBCNN layer $k$, the output of the convolution window is calculated as:
+We use two separate attention-based \code{seq2seq} models to implement
+\code{CCL} and \code{CTL}. The dual training is illustrated in
+Figure~\ref{fig:dual-learning}. Specifically, we use
+TreeCaps~\cite{bui2021treecaps} with an attention layer in between of
+an encoder and a decoder. In a regular attention-based \code{seq2seq}
+model, the hidden state output from the encoder is directly
+connected to the attention layer. In {\tool}, for dual learning, we
+use a cross-stitch unit to accept the hidden state from the outputs of
+the encoders of \code{CCL} and \code{CTL}. The output of the
+cross-stitch unit is connected to the attention layers of both the
+models. This joint training enables the dual learning and propagates
+the impact of context learning on the transformation learning and vice
+versa.
 
-\begin{equation}\label{eq:1}
+\subsubsection*{\bf Formulation.}
+As we use TreeCaps~\cite{bui2021treecaps}, which is built on top of
+$k$ TBCNN layers~\cite{mou2014tbcnn}, at the layer $k$, the output of
+the convolution window is calculated as:
+\begin{equation}\label{eq:treecaps}
 	Y = tanh(\sum_{i=1}^{N}[\Delta^t_iW^t + \Delta^t_iW^t + \Delta^t_iW^t]X_i + b)
 \end{equation}
-
-Where $\Delta$ are weights calculated corresponding to the depth and the position of the nodes. One can see this as a
-way to learn the position of a node inside AST. $W$ is the trainable matrix; $b$ is the bias; $N$ is the total number of nodes in the convolution window. TreeCaps merges the output from all TBCNN layers by using a non-linear squash
-function \cite{sabour2017dynamic}. For an AST node $j$, we calculate the capsules $u_j$ as:
-
+Where $\Delta$ are the weights calculated corresponding to the depth
+and the position of the nodes in a tree. This is the mechanism in
+TreeCaps to learn the importance of the position of a node in a
+tree. $W$ is the trainable matrix; $b$ is the bias factor; $N$ is the
+total number of nodes in the convolution window. TreeCaps merges the
+output from all TBCNN layers by using a non-linear squash
+function~\cite{sabour2017dynamic}. For an AST node $j$, TreeCaps
+calculates the capsule $u_j$ as:
 \begin{equation}\label{eq:2}
 	u_j = \frac{||c_j||^2}{||c_j||^2+1}\frac{c_j}{||c_j||}
 \end{equation}
+We then perform depth-first-search traversal, and merge all the
+capsules of all the nodes in that order. We consider the list of
+capsules as the output $U$ of the TreeCaps model. With both
+\code{CCL} and \code{CTL}, we have the outputs $U_C$ for the context
+learning part and $U_T$ for the transformation learning part.
 
-By merging all capsules as a list with the deep traversal order, \tool has the output $H$ for the TreeCaps model.
-
-After \tool has $H_m$ and $H_s$ for both method-level and statement-level in the encoder, we aim to learn the linear combinations of both inputs of the cross-stitch unit. The output of the cross-stitch unit is computed as:
-
+With both $U_C$ and $U_T$ as the inputs of the cross-stitch unit, its
+output is computed as:
 \begin{equation}\label{eq:3}
 	\begin{bmatrix}
-		X_m\\
-		X_s
+		X_C\\
+		X_T
 	\end{bmatrix}
 	=
 	\begin{bmatrix}
-		\alpha_{mm} &  \alpha_{ms} \\
-		\alpha_{sm} &  \alpha_{ss}
+		\alpha_{CC} &  \alpha_{CT} \\
+		\alpha_{TC} &  \alpha_{TT}
 	\end{bmatrix}
 	\begin{bmatrix}
-		H_s\\
-		H_m
+		U_C\\
+		U_T
 	\end{bmatrix}
 \end{equation}
-
-Where $\aleph$ is the trainable weight matrix, $X_m$ and $X_s$ are the inputs for the attention layers of both two tasks. For $X_m$ and $X_s$, they both contain the information learned from the method-level and the statement-level, which achieves the main goal of the dual learning framework. From formula \ref{eq:3}, we could know:
-
+Where $\alpha$ is the trainable weight matrix, $X_C$ and $X_T$ are the
+outputs of the cross-stitch unit, which are in turn fed into the
+attention layers of both models. $X_C$ and $X_T$ contain the
+information learned from both context learning and transformation
+learning models, which helps achieve the main goal for dual learning
+to enhance the APR performance. From Formula~\ref{eq:3}, we have
 \begin{equation}\label{eq:4}
-	X_m = \alpha_{mm}H_m + \alpha_{ms}H_s
+	X_C = \alpha_{CC}U_C + \alpha_{CT}U_T
 \end{equation}
 \begin{equation}\label{eq:5}
-	X_s = \alpha_{sm}H_m + \alpha_{ss}H_s
+	X_T = \alpha_{TC}U_C + \alpha_{TT}U_T
 \end{equation}
+If the $X_C$ and $X_T$ have different sizes, we need to resize them
+for consistence. If the size needs to be increased, we use the
+bilinear interpolation for resizing. If the size needs to be reduced,
+we do the center crop on the matrix to match the required
+size. Moreover, for efficiency, we also have a size limit for the
+fixed tree in which each buggy node have at most $P+P^2+...+P^Q$
+nodes.  $P$ is the number of children nodes and $Q$ is the child node
+depth. When making predictions, if one vector is close to zero, we consider
+it as empty, and all of its children nodes are considered as empty.
 
-However, if the $H_s$ and $H_m$ have different sizes, we need to resize them to be consistent. If the size needs to be increased, we use the bilinear interpolation for resizing. If the size needs to be reduced, we do the center crop on the matrix to match the required size.
+%After solving this, here is one last problem the dual learning may
+%face. When making the prediction, because we don't know how the tree
+%structure changes, \tool needs to have a size limit to control the
+%fixing. \tool expands the child node number to $P$ and expands the
+%child node depth to $Q$ for a buggy node. It means that we make each
+%buggy node have at most $P+P^2+...+P^Q$ nodes.
+%When making predictions, if one vector is close to zero, we consider
+%it as empty, and all of its children nodes are considered as empty.
 
-After solving this, here is one last problem the dual learning may face. When making the prediction, because we don't know how the tree structure changes, \tool needs to have a size limit to control the fixing. \tool expands the child node number to $P$ and expands the child node depth to $Q$ for a buggy node. It means that we make each buggy node have at most $P+P^2+...+P^Q$ nodes. When making predictions, if one node is close to zero, we think it is empty and drop it. At the same time, all child nodes of it will be dropped by \tool.
+%First, \tool uses two separate attention-based seq2seq frameworks to learn the code fixing for both the method-level and the statement-level. We all use the tree-based deep learning model to process the AST or subtree of AST for the encoder and decoder of these two tasks. Based on the recent study, we select a well-performed baseline TreeCaps \cite{bui2021treecaps} here to do so. Between the encoder and decoder, there is an attention layer for both tasks to help improve the accuracy of generating the fixing.
+
+%In the regular attention-based seq2seq model, the hidden status $H$ is directly passed to the attention layer. However, \tool uses a cross-stitch unit to accept the hidden status $H_m$ and $H_s$ from both method-level and the statement-level to achieve the dual learning. And then, the \tool passes the output of the cross-stitch unit to the method-level and statement-level attention layer. Just like the Figure \ref{program-repair} shown, the output from the encoder does not go to the attention layer. They go to the cross-stitch unit instead. The cross-stitch unit helps both the method-level and the statement-level attention-based seq2seq model catch the input features within the buggy method and the buggy statement.
+
+
+
+%As for the TreeCaps model \tool is using, it is built on top of $k$
+%TBCNN layers \cite{mou2014tbcnn}. So, for the TBCNN layer $k$, the
+%output of the convolution window is calculated as:
+
+
+
+
+
+%After \tool has $H_m$ and $H_s$ for both method-level and
+%statement-level in the encoder, we aim to learn the linear
+%combinations of both inputs of the cross-stitch unit. The output of
+%the cross-stitch unit is computed as:
+
+
+
+
+
+
+
+%After solving this, here is one last problem the dual learning may face. When making the prediction, because we don't know how the tree structure changes, \tool needs to have a size limit to control the fixing. \tool expands the child node number to $P$ and expands the child node depth to $Q$ for a buggy node. It means that we make each buggy node have at most $P+P^2+...+P^Q$ nodes. When making predictions, if one node is close to zero, we think it is empty and drop it. At the same time, all child nodes of it will be dropped by \tool.

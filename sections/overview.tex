@@ -19,7 +19,7 @@ process has two main steps:
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=3.4in]{graphs/overview-training.png}
-	\caption{{\tool}: Training}
+	\caption{{\tool}: Training Process}
 	\label{overview-training}
 \end{figure}
 
@@ -62,9 +62,24 @@ features in both models. The output of this step includes the trained
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=3.4in]{graphs/overview-predict.png}
-	\caption{{\tool}: Fixing}
+	\caption{{\tool}: Fixing Process}
 	\label{overview-fixing}
 \end{figure}
 
 Figure~\ref{overview-fixing} illustrates the prediction, i.e., the
-automated fixing process. 
+automated fixing process. The input of the auto-fixing process is the
+buggy statement in the enclosing method. A common usage of our model
+is that before using {\tool}, a developer could use a fault
+localization tool (FL) to detect a buggy statement that needs to be
+fixed. Another usage is that a developer can pinpoint the buggy
+statement and ask {\tool} for an auto-fixing suggestion. The fixing
+process shares the first step of Tree Representation Learning with the
+training process. After that step, the vectorized buggy AST subtree
+(each tree node is represented by an embedding), is used as the input
+of the {\em trained tree-based transformation learning model}
+(\code{CTL}). The output of the trained \code{CTL} model is the fixed
+AST subtree, which is converted back into source code to form a
+candidate patch. Then, the candidate patch is validated. We design a
+novel patch validation scheme that makes use of beam search for an
+efficient process. The final candidate patches are then produced.
+

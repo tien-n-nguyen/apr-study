@@ -1,1 +1,74 @@
 \subsection{Empirical Methodology}
+
+\subsubsection{Dataset}
+\hspace{1cm}
+In this paper, we evaluate approaches on three different datasets: Defects4J~\cite{defects4j}, Bugs.jar~\cite{saha2018bugs}, and BigFix ~\cite{yioopsla19}. The current study DLFix \cite{li2020dlfix} uses the same three datasets and we just follow it.
+
+The version of the Defects4J dataset we used in this study is the V1.2.0 ~\cite{defects4j} version with 395 bugs from 6 Java projects. For each bug in a project, Defects4J has the faulty and fixed versions of the project. Thus, there are relevant test cases for each bug. The $diff$ between the faulty and fixed versions of the project is the correct fixing for the bug.
+The Bugs.jar dataset contains 1,158 bugs and patches from 8 large, popular open-source Java projects. The BigFix dataset contains +4.9 million Java methods, and among them, +1.8 million Java methods are buggy. There are also the corresponding bug fixes for the buggy methods in the dataset. We conducted all the experiments on a server with 16
+core CPU and a single Nvidia A100 GPU.
+
+\subsubsection{Evaluation Metrics}
+
+We use three evaluation metrics for the Defects4J dataset and the big datasets to evaluate the performance of \tool and baselines.
+
+{\bf 1> Correct Patches/Plausible Patches:} Correct Patches here means the generated fixing exactly matches or in the same meaning of the ground truth. Plausible Patches here mean the generated fixing passes all test cases. It may contain the correct patches and the situation that the generated fixing is not correct but passes all test cases.
+
+{\bf 2> P:} P is the probability of the generated plausible patches to be correct.
+
+{\bf 3> Top K:} Top K is the percentage of the total bugs that a correct patch is in the ranked list of top K candidate patches.
+
+\subsubsection{Analysis Approaches for RQs.} 
+\hspace{1cm}
+To answer our research	questions, we use the following settings:
+
+{\bf RQ1. Comparison with State-of-the-art APR Approaches on Defects4J Dataset.}
+
+\underline{Baselines.} We compare {\tool} with the following state-of-the-art baselines:
+
+%{\it Hercules \cite{hercules-icse19}: } is a novel APR technique that generalizes single-hunk repair to encompass a specific but significant class of multi-hunk repair problems.
+
+{\it Tbar \cite{tbar-issta19}: } is a template-based APR to build comprehensive knowledge about the effectiveness of fix patterns.
+
+{\it SequenceR \cite{chen2018sequencer}: } is a novel end-to-end approach to program repair based on sequence-to-sequence learning.
+
+{\it DLFix \cite{li2020dlfix}: } is a two-tier DL model that treats APR as code transformation learning from the prior bug fixes and the surrounding code contexts of the fixes.
+
+{\it CoCoNut \cite{lutellier2020coconut}: } is a novel deep learning-based generate-and-validate program repair technique.
+
+{\it Cure \cite{cure-icse21}: } is a new NMT-based program repair technique that by design parses, models, and searches source code, as opposed to natural language text, to fix bugs automatically.
+
+In this RQ, for %Hercules and 
+Tbar, we directly use the results reported in their original paper because they are pattern-based approaches. As for the rest baselines, we rerun them with only the fixing step and validation step instead. For all approaches, we use the BigFix as the training dataset and evaluate on Defects4J dataset. Then, for each bug $b_i$ in Defects4J, we use the rest bugs in Defects4J as the developing dataset to fine-tune the model. And use the fine-tuned model to predict the fixing for bug $b_i$. We use the perfect location as the fixing position for all baselines and \tool. 
+
+\underline{Parameter tuning.} We tuned the baselines with the parameters that mentioned in their original paper and tune \tool with the following parameters: $epoch$, $batch size$, $learning rate$, $embedding length$, max child node number $P$, the max child node depth $Q$, and the beam search space $n$. {\color{blue}{I will add the final parameters when the experiments are all finished}}
+
+{\bf RQ2. Comparison with State-of-the-art APR Approaches on Big Datasets.}
+
+\underline{Baselines.} We compare {\tool} with the following state-of-the-art baselines:
+
+{\it SequenceR \cite{chen2018sequencer}, DLFix \cite{li2020dlfix}, CoCoNut \cite{lutellier2020coconut}, Cure \cite{cure-icse21}: } Introduced in RQ1.
+
+{\it Tufano 19’ \cite{tufano2019learning}: } is the deep learning-based approach using a code change learning approach adopting NMT with some code abstractions and program analysis filtering.
+
+{\it CODIT \cite{chakrabortycodit}: } is the deep learning-based approach using sequence-to-sequence NMT model with the abstractions on tree structures.
+
+The two new baselines in this RQ, including Tufano 19\' and CODIT are not designed for the Defects4J dataset, and there is not validation step in these two approaches. Therefore, comparing these two approaches to other baselines and \tool with the validation step is not fair. So we did not compare these two approaches as baselines in RQ1. As for this RQ, for all baselines and \tool, we directly run the fixing step without validation. So it is fair to add these two baselines.
+
+We run the baselines and \tool on two big datasets in this RQ, including Bugs.jar and BigFix. For each dataset, we randomly split the dataset into 80\%/10\%/10\% for training, developing, and testing. Then, we do the experiments for all baselines and \tool in the same data split to make a fair comparison.
+
+\underline{Parameter tuning.} We tuned the baselines with the parameters mentioned in their original paper and tune \tool in the same way as in RQ1 with autoML \cite{NNI}.
+
+{\bf RQ3. Sensitivity Analysis.}
+
+\underline{Baselines.} To study the impact of dual-learning, we built two naive model of {\tool}: 
+
+(1) \textbf{only-statement-model:} The method-level program repair is removed from {\tool} and only statement-level program repair is kept for training in step 2 of \tool.
+
+(2) \textbf{Two-tier model:} We also build the other naive model, the two-tier model, as the baseline. As for the two-tier model, we removed the dual-learning from {\tool} and make the statement-level program repair is dependent on the output of the method-level program repair.
+
+We use the same process to run the baselines and \tool in this RQ. Therefore, the parameters that need to be tuned in both baselines are the same as the ones of \tool. 
+
+{\bf RQ4. Evaluation on C Projects.}
+
+To evaluate the performance of \tool on different programming languages. We run the \tool on the C/C++ benchmark Codeflaws \cite{tan2017codeflaws} with 3902 bugs. We run \tool on it with the same process as on the Java projects in RQ22 to compare the performance of \tool.

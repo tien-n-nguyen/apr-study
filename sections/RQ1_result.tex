@@ -1,0 +1,30 @@
+\subsection{RQ1. Comparison with State-of-the-art APR Approaches on Defects4J Dataset.}
+
+{\footnotesize{
+		\begin{table}[h]
+			\caption{RQ1. Comparison with the Pattern-based APR Baselines on Defect4J.}
+			\begin{center}
+				\renewcommand{\arraystretch}{1}
+				\begin{tabular}{p{0.8cm}<{\centering}|p{0.6cm}<{\centering}|p{1.1cm}<{\centering}|p{0.8cm}<{\centering}|p{1cm}<{\centering}|p{0.6cm}<{\centering}|p{0.8cm}<{\centering}}
+					
+					\hline
+					&\textbf{Tbar}&\textbf{SequenceR}&\textbf{DLFix}& \textbf{Coconut}&\textbf{CURE}&\textbf{\tool}\\
+					\hline
+					Chart  & 11/13  & 4/5   & 7/13  & 8/13  & 7/12   & 9/12\\
+					Closure& 17/26  & 5/7   & 7/12  & 7/18  & 9/27   & 12/24\\
+					Lang   & 13/18  & 2/2   & 6/15  & 6/16  & 7/12   & 9/16\\
+					Math   & 22/35  & 8/11  & 18/28 & 20/31 & 21/33  & 22/34\\
+					Mockito& 3/3    & 0/0   & 1/1   & 2/3   & 2/3    & 2/4\\
+					Time   & 3/6    & 0/0   & 1/3   & 2/4   & 3/5    & 3/6\\
+					\hline
+					Total  & 69/101 & 19/25 & 40/72 & 44/85 & 48/92  & 56/96\\
+					\hline
+					P(\%)  & 68.3   & 76.0  & 55.6  & 51.8  & 52.2   & 58.3\\
+					\hline
+				\end{tabular}
+				Note: P is the probability of the generated plausible patches to be correct.\\
+				In the cells, x/y: x means the number of correct fixes and y means the number of candidate patches that can pass all test cases. For example, for \tool, 96 candidate patches can pass all test cases. However, 56 out of 96 are the correct fixes compared with the fixes in the ground truth.
+				\label{RQ1_defect4j}
+			\end{center}
+		\end{table}
+}}

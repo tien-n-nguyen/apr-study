@@ -1,45 +1,85 @@
 \subsection{Empirical Methodology}
 
-\subsubsection{Dataset}
-\hspace{1cm}
-In this paper, we evaluate approaches on three different datasets: Defects4J~\cite{defects4j}, Bugs.jar~\cite{saha2018bugs}, and BigFix ~\cite{yioopsla19}. The current study DLFix \cite{li2020dlfix} uses the same three datasets and we just follow it.
-
-The version of the Defects4J dataset we used in this study is the V1.2.0 ~\cite{defects4j} version with 395 bugs from 6 Java projects. For each bug in a project, Defects4J has the faulty and fixed versions of the project. Thus, there are relevant test cases for each bug. The $diff$ between the faulty and fixed versions of the project is the correct fixing for the bug.
-The Bugs.jar dataset contains 1,158 bugs and patches from 8 large, popular open-source Java projects. The BigFix dataset contains +4.9 million Java methods, and among them, +1.8 million Java methods are buggy. There are also the corresponding bug fixes for the buggy methods in the dataset. We conducted all the experiments on a server with 16
-core CPU and a single Nvidia A100 GPU.
+\subsubsection{Datasets}
+We perform evaluation on three different datasets that have been used
+in the prior research in APR~\cite{icse20}:
+Defects4J~\cite{defects4j}, Bugs.jar~\cite{saha2018bugs}, and
+BigFix~\cite{yioopsla19}. The version of the Defects4J dataset we used
+in this study is the V1.2.0~\cite{defects4j} with 395 bugs
+from 6 Java projects. For each bug in a project, Defects4J has the
+faulty and fixed versions of the project. There are relevant test
+cases for each bug. With the \code{Diff} comparison between faulty and
+fixed versions of a project, we can identify the buggy statements. The
+Bugs.jar dataset contains 1,158 bugs and patches from 8 large, popular
+open-source Java projects. The BigFix dataset contains +4.9 million
+Java methods, and among them, +1.8 million Java methods are
+buggy. There are also the corresponding bug fixes for the buggy
+methods in each dataset as in Defects4J. We conducted all the
+experiments on a server with 16 core CPU and a single Nvidia A100 GPU.
 
 \subsubsection{Evaluation Metrics}
 
-We use three evaluation metrics for the Defects4J dataset and the big datasets to evaluate the performance of \tool and baselines.
+We use three evaluation metrics to evaluate the performance of \tool
+and the baseline models.
 
-{\bf 1> Correct Patches/Plausible Patches:} Correct Patches here means the generated fixing exactly matches or in the same meaning of the ground truth. Plausible Patches here mean the generated fixing passes all test cases. It may contain the correct patches and the situation that the generated fixing is not correct but passes all test cases.
+{\bf 1. Correct Patches/Plausible Patches:} Correct patches are the
+ones that exactly match or has the same meaning as the fixes in the
+ground truth by the real developers. Plausible patches are the ones
+that pass all the test cases, but might not match exactly with the
+real fixes by developers.
 
-{\bf 2> P:} P is the probability of the generated plausible patches to be correct.
+%It may contain the correct patches and the situation that
+%the generated fixing is not correct but passes all test cases.
 
-{\bf 3> Top K:} Top K is the percentage of the total bugs that a correct patch is in the ranked list of top K candidate patches.
+{\bf 2. P:} is the probability of the generated plausible patches to
+be correct.
 
-\subsubsection{Analysis Approaches for RQs.} 
-\hspace{1cm}
-To answer our research	questions, we use the following settings:
+{\bf 3. Top $K$:} is the percentage of the total bugs that a correct
+patch is in the ranked list of top-$K$ candidate patches.
+
+\subsubsection{Evaluation Methodology.} 
+We use the following settings for different RQs:
 
 {\bf RQ1. Comparison with State-of-the-art APR Approaches on Defects4J Dataset.}
 
-\underline{Baselines.} We compare {\tool} with the following state-of-the-art baselines:
+\underline{Baselines.} We compare {\tool} with the following
+state-of-the-art deep learning (DL)-based baselines:
 
 %{\it Hercules \cite{hercules-icse19}: } is a novel APR technique that generalizes single-hunk repair to encompass a specific but significant class of multi-hunk repair problems.
 
-{\it Tbar \cite{tbar-issta19}: } is a template-based APR to build comprehensive knowledge about the effectiveness of fix patterns.
+%{\it Tbar \cite{tbar-issta19}: } is a template-based APR to build comprehensive% knowledge about the effectiveness of fix patterns.
 
-{\it SequenceR \cite{chen2018sequencer}: } is a novel end-to-end approach to program repair based on sequence-to-sequence learning.
+{\bf SequenceR~\cite{chen2018sequencer}: } uses machine translation
+approach with sequence-to-sequence learning.
 
-{\it DLFix \cite{li2020dlfix}: } is a two-tier DL model that treats APR as code transformation learning from the prior bug fixes and the surrounding code contexts of the fixes.
+{\bf DLFix~\cite{li2020dlfix}: } is a two-tier DL-based model that
+treats APR as code transformation learning from the prior bug fixes
+and the surrounding code contexts. It follows a cascading architecture
+between two models of context learning and transformation learning.
 
-{\it CoCoNut \cite{lutellier2020coconut}: } is a novel deep learning-based generate-and-validate program repair technique.
+{\bf CoCoNuT~\cite{lutellier2020coconut}:} uses a context-aware neural
+machine translation architecture to represent the buggy source code
+and its surrounding context separately. However, it does not have the
+dual learning for context learning and code transformation learning.
+It uses ensemble learning on the combination of convolutional neural
+networks (CNNs) and a context-aware machine translation.
 
-{\it Cure \cite{cure-icse21}: } is a new NMT-based program repair technique that by design parses, models, and searches source code, as opposed to natural language text, to fix bugs automatically.
+{\bf CURE~\cite{cure-icse21}: } is a new NMT-based program repair
+technique that by design parses, models, and searches source code, as
+opposed to natural language text, to fix bugs automatically. It treats
+context separately from the buggy statements as in CoCoNuT.
 
-In this RQ, for %Hercules and 
-Tbar, we directly use the results reported in their original paper because they are pattern-based approaches. As for the rest baselines, we rerun them with only the fixing step and validation step instead. For all approaches, we use the BigFix as the training dataset and evaluate on Defects4J dataset. Then, for each bug $b_i$ in Defects4J, we use the rest bugs in Defects4J as the developing dataset to fine-tune the model. And use the fine-tuned model to predict the fixing for bug $b_i$. We use the perfect location as the fixing position for all baselines and \tool. 
+%In this RQ, for %Hercules and 
+%Tbar, we directly use the results reported in their original paper because they are pattern-based approaches.
+
+For all approaches, we use the BigFix as the training dataset and
+evaluate on Defects4J dataset. Then, for each bug $b_i$ in Defects4J,
+we use the remaining bugs in Defects4J as the developing dataset to
+fine-tune the model, and use the fine-tuned model to predict the
+fixing for bug $b_i$.
+%We re-ran the with only the fixing step and validation step instead.
+We used the perfect location as the fixing position for all baselines
+and \tool, and performed the fixing and validation steps.
 
 \underline{Parameter tuning.} We tuned the baselines with the parameters that mentioned in their original paper and tune \tool with the following parameters: $epoch$, $batch size$, $learning rate$, $embedding length$, max child node number $P$, the max child node depth $Q$, and the beam search space $n$. {\color{blue}{I will add the final parameters when the experiments are all finished}}
 

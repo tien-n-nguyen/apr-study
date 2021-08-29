@@ -28,7 +28,7 @@ the prior bug
 fixes~\cite{kim2013automatic,le2016history,liu2019avatar,tbar-issta19,nguyen2013semfix,
   icse10,ray-fse12}. Some mining-based approaches learn the patterns
 from the source code~\cite{liu2019avatar,tbar-issta19} and others
-learn them from prior bug-fixing 
+learn them from prior bug-fixing
 changes~\cite{wen2018context,Simfix,koyuncu2018fixminer}.  The fixing
 patterns/templates could be mined automatically from the repositories
 or pre-defined via semi-automated
@@ -83,7 +83,7 @@ buggy method and translate it to the correct one, while the fix might
 be only a small editing change to a single statement. Those
 translation-based approaches {\em do not distinguish clearly the
   boundary} of the fixing change (e.g., to a buggy statement) and the
-surrounding context (e.g., the preceeding or succeeding code). Due to
+surrounding context (e.g., the preceding or succeeding code). Due to
 the mixture of fixing changes and context, those machine translation
 models or transformers might not learn what fixing changes are
 appropriate in specific contexts~\cite{icse20}.
@@ -95,7 +95,7 @@ tree-based RNN model that learns the contexts of bug fixes and its
 result is used as an additional weighting input for the second layer
 designed to learn the bug-fixing code transformations. However, the
 cascading architecture in DLFix from the two layers create a
-comfounding effect from the inaccuracy of the learning of the context
+confounding effect from the inaccuracy of the learning of the context
 to the learning of the bug-fixing code transformations.
 
 In this work, we conjecture that the two tasks of learning the code
@@ -115,17 +115,45 @@ change from \code{if (fd == null)} into \code{if (fd != null)}, then the
 preceding code more likely contains \code{fopen} than \code{fread}.
 Let us call such relation between two tasks as {\em duality}.
 
-We introduce {\tool}, a context-aware dual-task learning APR model,
-which dedicates one model for learning the bug-fixing code
-transformations (CTL) and another one for learning the corresponding
-surrounding code contexts (CCL). Instead of cascading them, we train
-the models simultaneously with softsharing their parameters to exploit
-this duality. We apply a probabilistic correlation as a regularization
-term in the loss function in the join training. ...
+We introduce {\tool}, a context-aware dual-learning APR model, which
+dedicates one model to learn the bug-fixing code transformations
+(CTL) and another one to learn the corresponding surrounding code
+contexts (CCL). Instead of cascading them, we train the two models
+simultaneously with soft-sharing their parameters to exploit this
+duality. Specifically, we use a model called cross-stitch
+unit~\cite{misra2016cross} that connects CTL and CCL models. The
+sharing of representations between CCL and CTL is modeled by the
+learning a linear combination of the input features from two models.
+Cross-stitch unit helps regularize both CCL and CTL by learning and
+enforcing shared representations by combining feature maps. This joint
+training enables the dual learning and propagates the impact of
+context learning on the transformation learning and vice~versa.
 
-{\bf Technical overview} paragraph
+In {\tool}, source code is represented by the abstract syntax tree
+(AST). For training, the input for the CCL model is the AST of a buggy
+method and that of the fixed method, and the input of the CTL model is
+the AST subtree of each of its buggy statements, and that of the
+respective fixed statement. For auto-fixing, a buggy statement to be
+fixed can be identified either by a developer or by a fault
+localization tool.  Then, {\tool} parses the buggy method including
+the buggy statement into AST. The AST subtree for the buggy statement
+is fed into the trained CTL model to produce the candidate patches. We
+design a novel beam search that considers the tree-structure of the
+AST to improve the efficiency. Finally, the candidate patches are
+ranked and validated via test cases.
 
-{\bf Empirical Results overview} paragraph
+We conducted several experiments to evaluate {\tool} on three
+different datasets: Defects4J~\cite{defects4j} (395 bugs),
+Bugs.jar~\cite{saha2018bugs} (1,158 bugs), and
+BigFix~\cite{yioopsla19} (+4.9M methods and 1.8M buggy ones).  We
+compared {\tool} against several state-of-the-art pattern-based and
+DL-based APR approaches. Our results show that {\tool} is able to fix {\bf
+  XX\%} and {\bf XX\%} more bugs than the best performance
+pattern-based models. {\tool} fixed {\bf XX\%} and {\bf XX\%} more
+bugs than the best performance DL-based baselines, in which several of
+them are context-dependent bugs. {\tool} detected {\bf XX} unique bugs
+that all the other DL-based APR models missed, while {\tool} missed only
+{\bf XX} bugs that were fixed by the others.
 
 The contributions of this paper are listed as follows:
 
@@ -136,9 +164,9 @@ The contributions of this paper are listed as follows:
 %advanced DL to improve APR is promising and valuable.
 
 {\bf A. A Novel Dual-Task Learning APR Model:} A DL-based,
-context-aware APR approach with a novel dual-task learning model that
+context-aware APR approach with the use of a dual learning scheme that
 exploits the duality of learning bug-fixing code transformations and
-learning code contexts.
+learning code contexts to improve APR performance.
 
 {\bf B. Empirical Results:} (Code and data are published~\cite{AutoFix2019})
 

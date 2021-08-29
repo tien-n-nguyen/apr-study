@@ -10,27 +10,27 @@
 The goal of this step is to take the source code under study and to
 build the tree-based vector representations (embeddings).
 
-\subsection{AST Building and Pairing}
+\subsection{AST Building and Pairing of Subtrees}
 
 First, for a buggy method $M$, we use Java JDT~\cite{JDT} to parse the
 code to produce the AST for $M$. We also identify the subtree $T_s$
 corresponding to each buggy statement $s$. If there are multiple buggy
-statements in $M$, we generate multiple AST subtrees for them.
-We use each of the buggy statements to train the context learning
-and code transformation models.
+statements in $M$, we generate multiple AST subtrees for them.  We use
+each of the buggy statements together with $M$ to train the context
+learning and code transformation models.
 
-Second, to train the contex learning model (\code{CCL}), we need the
+Second, to train the context learning model (CCL), we need the
 two ASTs for the buggy method $M$ and the corresponding fixed version
 of $M$. This is straightforward to collect them in the training
 dataset and build the ASTs before and after the fix.  However, as
 shown in Figure~\ref{overview-training}, to train the tree-based code
-transformation learning model (\code{CTL}), we need to identify the
-corresponding fixed subtree for a buggy subtree $T_s$ of a buggy
-statement under consideration. To do so, we use a tree differencing
+transformation learning model (CTL), we need to identify the
+respective fixed subtree for the subtree $T_s$ of a buggy
+statement under study. To do so, we use a tree differencing
 tool, named CPatMiner~\cite{nguyen2019graph}, to derive the fixing
 changes. If a subtree corresponds to a statement, let us call it {\em
   S-subtree}. From the result of CPatMiner, we use the following rules
-to pair a buggy subtree with the corresponding fixed subtree:
+to {\em pair a buggy subtree with the corresponding fixed subtree}:
 
 1. A buggy subtree ($S$-subtree) is a subtree with
 \code{update} or \code{delete}.
@@ -58,26 +58,26 @@ inserted $S$-subtree.
 
 \subsection{AST Node Representation Learning}
 
-To provide the compatible inputs for \code{CCL} and \code{CTL} models,
-we need to perform an AST node representation learning process in
-which each node in the AST subtree or the AST of the method is
-replaced by the vector representation (embedding) of the node. To
-achieve that, we first flatten the abstract syntax (sub)tree under
-consideration by a deep-first-search traversal to obtain a sequence of
-tokens. For the case of an AST subtree, we consider the sequence of
-tokens of a $S$-subtree as a sentence. For the case of the AST of the
-method, we consider the sequence of tokens for the method as a
-sentence. We then use a word embedding technique, named
-GloVe~\cite{pennington2014glove} to run on those sentences to build a
-vector representation for each token, i.e., each AST node in the AST
-subtree or in the AST of the method. We used GloVe because it can
-capture well the co-occurrences among
-tokens~\cite{pennington2014glove}. After running GloVe, we replace
-each node in the (sub)tree with its GloVe vector representation (see
-Figures~\ref{overview-training} and~\ref{overview-fixing}). Similarly,
-we replace each node with its vector in the AST of the fixed method
-and in the AST subtree of the fixed~statement.
+To provide the compatible inputs for CCL and CTL models, we need to
+perform an AST node representation learning process in which each node
+in the AST subtree or the AST of the method is replaced by the vector
+representation (embedding) of the node. To achieve that, we first
+flatten the abstract syntax (sub)tree under study by a
+depth-first-search traversal to obtain a sequence of tokens. For the
+case of an AST subtree, we consider the sequence of tokens of a
+$S$-subtree as a sentence. For the case of the AST of the method, we
+consider the sequence of tokens for the method as a sentence. We then
+use a word embedding technique, named GloVe~\cite{pennington2014glove}
+to run on those sentences to build a vector representation for each
+token, i.e., for each AST node in the method's AST or in the AST
+subtree. We used GloVe because it can capture well the co-occurrences
+among tokens~\cite{pennington2014glove}. After running GloVe, we
+replace each node in the (sub)tree with its GloVe vector
+representation (see Figures~\ref{overview-training}
+and~\ref{overview-fixing}). Similarly, we replace each node with its
+vector in the AST of the fixed method and in the AST subtree of the
+fixed~statement.
 
-%To make the dual learning program repair model can take information from the input, \tool firstly needs to vectorize the AST and the subtree of AST by using the node representation learning. 
+%To make the dual learning program repair model can take information from the input, \tool firstly needs to vectorize the AST and the subtree of AST by using the node representation learning.
 
 %For a given tree $T$, \tool firstly uses the deep traversal to covert it into a sequence of tokens $S$. Here, $T$ could be $Tree_m$, $Tree_{mf}$, $Tree_s$, and $Tree_{sf}$. And then, \tool uses the famous technique GloVe \cite{pennington2014glove} to transform each AST node into a vector. The GloVe is a great tool for vectorizing the sequence of tokens by considering co-occurrence between different tokens. It can help predict for the often appeared together tokens. That's the reason why to choose it here to vectorize the tree $T$. For example, in Figure \ref{program-repair}, the AST node $N1-N5$ has been embedded into the vector $V1-V5$ in the top raw.

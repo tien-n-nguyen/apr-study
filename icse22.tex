@@ -19,7 +19,7 @@
 %\usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
-\usepackage{float} 
+\usepackage{float}
 \usepackage{listings}
 \usepackage{xspace}
 \usepackage{multirow}
@@ -94,12 +94,12 @@
 
 %\title[Deep Learning-Based Automated Program Repair:\\ Are We There Yet?]{Deep Learning-Based Automated Program Repair:\\ Are We There Yet?}
 
-\title[Context-aware Dual-Task Learning for Automated Program Repair]{Context-aware Dual-Task Learning\\ for Automated Program Repair}
+\title[Context-aware Dual Learning for Automated Program Repair of Context-Dependent Bugs]{Context-aware Dual Learning for Automated Program Repair\\ of Context-Dependent Bugs}
 
 %%%---- AUTHORS BLOCK ------
 
 %Yi Li:New Jersey Institute of Technology;Shaohua Wang:New Jersey
-%Institute of Technology;Tien Nguyen:University of Texas at Dallas 
+%Institute of Technology;Tien Nguyen:University of Texas at Dallas
 
 %\author{Yi Li}
 %\affiliation{
@@ -143,34 +143,44 @@
 
 %\input{sections/abstract}
 \begin{abstract}
-{\bf FIXME.} Automated Program Repair (APR) is very useful in helping
-developers in the process of software development and maintenance.
-Despite recent advances in deep learning (DL), the DL-based APR
-approaches still have limitations in learning bug-fixing code changes
-and the context of the surrounding source code of the bug-fixing code
-changes.
-%which context of the surrounding source code that certain bug-fixing changes should be made. 
-These limitations lead to incorrect fixing locations
-or fixes. 
-In this paper, we introduce {\tool}, a two-tier DL
-model that treats APR as code transformation learning from the prior
-bug fixes and the surrounding code contexts of the fixes. The
-first layer is a tree-based RNN model that learns the contexts
-of bug fixes and its result is used as an additional weighting input
-for the second layer designed to learn the bug-fixing
-code transformations.
 
-We conducted several experiments to evaluate {\tool} in two benchmarks: {\em Defect4J} and {\em Bugs.jar}, and a newly built bug
-datasets with a total of +20K real-world bugs in eight projects. We
-compared {\tool} against a total of 13 state-of-the-art pattern-based APR
-tools. Our results show that {\tool} can auto-fix more bugs than 11 of them, and is
-comparable and complementary to the top two pattern-based APR tools in
-which there are 7 and 11 unique bugs that they cannot detect,
-respectively, but we can. Importantly, {\tool} is fully automated and
-data-driven, and does not require hard-coding of bug-fixing patterns
-as in those tools. We compared {\tool} against 4 state-of-the-art deep
-learning based APR models. {\tool} is able to fix 2.5 times more bugs
-than the best performing~baseline.
+Recent advances in deep learning (DL) have helped improve the
+performance of the DL-based Automated Program Repair (APR) approaches.
+The bug-fixing changes in APR often depend on the surrounding code
+context. Despite their successes, the state-of-the-art DL-based APR
+approaches still have limitations in the integration of code contexts
+in learning bug fixes. The limitations lead to the ineffectiveness of
+those DL-based approaches in learning to auto-fix {\em
+context-dependent bugs}. In this work, we conjecture that correct
+learning of contexts can benefit the learning of code transformations
+and vice versa in auto-fixing context-dependent bugs. We introduce
+{\tool}, a context-aware dual learning APR model, which dedicates one
+model to learn the bug-fixing code transformations (CTL) and another
+one to learn the corresponding surrounding code contexts
+(CCL). Instead of cascading the two models, we train them
+simultaneously with soft-sharing their parameters via a cross-stitch
+unit to exploit the duality between CCL and CTL.
+
+We conducted several experiments to evaluate {\tool} on three
+different datasets: Defects4J~\cite{defects4j} (395 bugs),
+Bugs.jar~\cite{saha2018bugs} (1,158 bugs), and
+BigFix~\cite{yioopsla19} (+4.9M methods and 1.8M buggy ones).  We
+compared {\tool} against several state-of-the-art pattern-based and
+DL-based APR tools. Our results show that {\tool} is able to fix {\bf
+XX\%} and {\bf XX\%} more bugs than the best performance pattern-based
+and DL-based baseline models, in which several of them are
+context-dependent bugs. {\tool} detected {\bf XX} unique bugs that all
+the other DL-based APR models missed. Importantly, {\tool} is
+automated and data-driven, and does not require bug-fixing patterns.
+
+%{\tool} can auto-fix more bugs than 11 of them, and is comparable and
+%complementary to the top two pattern-based APR tools in which there
+%are 7 and 11 unique bugs that they cannot detect, respectively, but we
+%can. Importantly, {\tool} is fully automated and data-driven, and does
+%not require hard-coding of bug-fixing patterns as in those tools. We
+%compared {\tool} against 4 state-of-the-art deep learning based APR
+%models. {\tool} is able to fix 2.5 times more bugs than the best
+%performing~baseline.
 \end{abstract}
 
 

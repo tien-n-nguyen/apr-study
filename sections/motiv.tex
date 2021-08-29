@@ -69,8 +69,8 @@
 
 Let us start with a real-world example to motivate our approach.
 Figure~\ref{fig:motiv} shows a real bug from the project \code{Chart}
-in the Defect4J dataset. The bug occurred at line 8 in which the
-condition for stopping the updating process of the \code{result}
+in the Defects4J dataset. The bug occurred at line 8 in which the
+condition for stopping the updating process on the \code{result}
 variable is incorrect (\code{if (dataset != null)}). The result is
 returned only when the dataset (line 7) is empty. Thus, it was fixed
 into \code{if (dataset == null)}.
@@ -89,48 +89,54 @@ well as the other code such as \code{getIndexOf},
 
 Despite their successes, the state-of-the-art DL-based APR approaches
 are still limited in auto-fixing context-dependent
-bugs. \underline{First}, for the DL-based approaches that learn the
+bugs.
+
+\underline{First}, for the DL-based approaches that learn the
 fixes from prior {\em similar bug fixes or
   patterns}~\cite{gupta2017deepfix,white2019sorting,white2016deep},
 there might not be any similar fix to the one in
 Figure~\ref{fig:motiv}. In general, they focus on similar bug fixes
 with little or no consideration on whether a fix appears in certain
-context.  \underline{Second}, some other DL-based APR approaches learn
-the changes to fix an AST subtree or a
-statement~\cite{chakrabortycodit,see2017get}. For this example,
-without examining the context, e.g., the preceding code
-\code{getDataset} or the succeeding code \code{getRowCount} or
-\code{return result}, such a model will not likely learn to change
-line 8 into line 9. \underline{Third}, for the machine translation and
-transformer-based APR
-models~\cite{chen2018sequencer,hata2018learning}, the entire method in
-Figure~\ref{fig:motiv} is used as the input. Without distinguishing
-the boundary of the context and the fixing changes, such a model faces
-the noise, i.e., the code that is irrelevant to the actual fix at
-lines 8--9. For example, the code at lines 2--5 on the legends is not
-crucial for the bug regarding the dataset at line 8. Thus, such a
-model might not learn to correctly fix the bug.
+context.
 
-Recent DL-based APR approaches~\cite{icse20,cure-icse21} have
-leveraged the context to help better fix a bug. They separately
-consider the surrounding code as the context (e.g., lines 2--7, lines
-10--15). DLFix~\cite{icse20} has a two-tier model in which one
-tree-based LSTM model learns the context and another one learns the
-code transformation (from line 8 to line 9). However, it cascades the
-first LSTM model to the second one in which the output of the model
-for contexts is used as a weight for the one for bug-fixing
-transformations. This cascading architecture will create a comfounding
-effect from the inaccuracy of the learning of the context to the
-learning of the transformations.
+\underline{Second}, some other DL-based APR approaches focus {\em only on
+learning the changes} to fix an AST subtree or a
+statement~\cite{chakrabortycodit,see2017get} without considering the
+context. For this example, without examining the context, e.g., the
+preceding code \code{getDataset} or the succeeding code
+\code{getRowCount} or \code{return result}, such a model will not
+likely learn to change line 8 into line 9.
+
+\underline{Third}, for the machine translation and transformer-based
+APR models~\cite{chen2018sequencer,hata2018learning}, the entire
+method in Figure~\ref{fig:motiv} is used as the input. {\em Without
+distinguishing the boundary of the context and the fixing changes},
+such a model faces the noise, i.e., the code that is irrelevant to the
+actual fix at lines 8--9. For example, the code at lines 2--5 on the
+legends is not crucial for the fix regarding the dataset at line
+9. Thus, such a model might not learn to correctly fix the bug.
+
+\underline{Finally}, recent DL-based APR
+approaches~\cite{icse20,cure-icse21} have leveraged the context to
+help better fix a bug. They separately consider the surrounding code
+as the context (e.g., lines 2--7, lines 10--15). DLFix~\cite{icse20}
+has a two-tier model in which one tree-based LSTM model learns the
+context and another one learns the code transformation (from line 8 to
+line 9). However, it cascades the first LSTM model to the second one
+in which the output of the model for contexts is used as a weight for
+the one for bug-fixing transformations. This cascading architecture
+creates a confounding effect from the inaccuracy of the learning
+of the context to the learning of the transformations.
 
 \subsection{Key idea}
+\label{sec:key-idea}
 
 To address the above issue with the cascading architecture, we design
 {\tool}, a solution that treats the learning of contexts and that of
-bug-fixing code transformations as a dual-task learning. {\tool} is a
-two-tier model. The first layer, the \code{CCL} model, is dedicated
-for learning code contexts, and the second one, the \code{CTL} model,
-for learning code transformations.
+bug-fixing code transformations as a dual-task learning. {\tool}
+consists of two models. The first one, the \code{CCL} model, is
+dedicated for learning code contexts, and the second one, the
+\code{CTL} model, for learning bug-fixing code transformations.
 
 
 %To avoid the confounding effect in a naive solution of detecting buggy
@@ -144,18 +150,20 @@ for learning code transformations.
 %different methods.
 
 Intuitively, the two models \code{CCL} and \code{CTL} are closely
-dependent on each other. The learning of the contexts can benefit for
-the learning of bug-fixing transformations and vice versa. We refer to
+dependent on each other. The learning of the contexts can benefit the
+learning of bug-fixing transformations and vice versa. We refer to
 this relation as {\em duality}, which can provide some useful
 constraints for {\tool} to learn to fix context-dependent bugs. We
 conjecture that the join training of the two models can improve the
-performance of both models, when we leverage the constraints of this
-duality in term of conditional probabilities. For example, in
-Figure~\ref{fig:motiv}, if the context is observed as containing
-\code{getDataset} at line 7, \code{getIndexOf} at line 6, and
-\code{return result} at line 10, the likelihood of the fixing change
-at line 8 becoming \code{(dataset == null)} is more than that of
-\code{(dataset != 0)}. The rationale is that only if the retrieved
+performance of both models, if we can achieve the shared
+representations.
+%when we leverage the constraints of this duality in term of
+%conditional probabilities.
+For example, in Figure~\ref{fig:motiv}, if the context is observed as
+containing \code{getDataset} at line 7, \code{getIndexOf} at line 6,
+and \code{return result} at line 10, the likelihood of the fixing
+change at line 8 becoming \code{(dataset == null)} is more than that
+of \code{(dataset != 0)}. The rationale is that only if the retrieved
 data is empty, the result is returned. On the other hand, if the
 bug-fixing transformation is observed as \code{(data != null)}
 becoming \code{(data == null)}, it is likely to have an assignment
@@ -163,3 +171,13 @@ statement to the variable \code{dataset} preceding that checking.
 Therefore, in {\tool}, we joinly train \code{CTL} for context learning
 and \code{CCL} for transformation learning with soft-sharing their
 parameters to exploit their relation.
+
+Specifically, we use a model called cross-stitch
+unit~\cite{misra2016cross} that connects CTL and CCL models. The
+sharing of representations between them is modeled by the
+learning a linear combination of the input features from two
+models. Cross-stitch unit helps regularize both CCL and CTL by
+learning and enforcing shared representations by combining feature
+maps. This joint training enables the dual learning and propagates the
+impact of context learning on the transformation learning and vice
+versa, improving APR performance.

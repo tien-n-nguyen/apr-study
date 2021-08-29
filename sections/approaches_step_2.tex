@@ -1,24 +1,23 @@
 \section{Dual Learning Program Repair}
-
-
+\label{sec: dual-learning}
 
 After the representation learning step, we obtain the vectorized AST
 $T^{M}_b$ for the buggy method $M$ and the vectorized AST subtree
 $T^{s}_b$ for the buggy statement $s$, as well as the one for the
 respective fixed method $T^{M}_f$ and the one for the respective fixed
 statement $T^{s}_f$. $T^{M}_b$ and $T^{M}_f$ are used at the input and
-output layers of the context learning model (\code{CCL}); and
+output layers of the context learning model (CCL); and
 $T^{s}_b$ and $T^{s}_f$ are used at the input and output layers of the
-transformation learning model (\code{CTL}). Let us explain the dual
-learning framework for \code{CCL} and \code{CTL}.
+transformation learning model (CTL). Let us explain the dual
+learning framework for CCL and CTL.
 
 %After having the $Tree_m$, $Tree_{mf}$ pair and $Tree_s$, $Tree_{sf}$ pair from the first step, \tool uses them as the input and the ground truth to train the dual learning program repair model in this step. \tool uses the generated after fixing AST $Tree'_m$ and after fixing subtree of AST $Tree'_s$ as output for this step when making the prediction. Specifically, there are two small steps, including the AST node representation learning and the dual learning framework.
 
 
 \subsection{Cross-stitch Unit}
 
-We perform a joint training between \code{CCL} and \code{CTL} via
-cross-stitch units~\cite{misra2016cross}. Let us first explain the
+We perform a joint training between CCL and CTL via
+a cross-stitch unit~\cite{misra2016cross}. Let us first explain the
 cross-stitch unit and then how we leverage it for the auto bug-fixing
 problem.
 
@@ -30,24 +29,24 @@ problem.
 \end{figure}
 
 In Figure~\ref{fig:cross-stitch}, to apply dual learning between
-\code{CCL} and \code{CTL}, we use the cross-stitch unit to connect
-them together. The sharing of representations between \code{CCL} and
-\code{CTL} is modeled by the learning a linear combination of the
+CCL and CTL, we use the cross-stitch unit to connect
+them together. The sharing of representations between CCL and
+CTL is modeled by the learning a linear combination of the
 input features from the vectorized AST (sub)trees. The top sub-network
-of the cross-stitch unit get direct supervision from \code{CCL} and
-indirect supervision from \code{CTL}. Cross-stitch units help
-regularize both \code{CCL} and \code{CTL} by learning and enforcing
+of the cross-stitch unit gets direct supervision from CCL and
+indirect supervision from CTL. Cross-stitch units help
+regularize both CCL and CTL by learning and enforcing
 shared representations by combining feature
 maps~\cite{misra2016cross}.
 
 The goal of cross-stitch unit is to learn such a linear combination of
-both inputs from \code{CCL} and \code{CTL}, which is parameterized
+both inputs from CCL and CTL, which are parameterized
 using the weights $\alpha$. The output of the cross-stitch unit is
 computed as:
 \begin{equation}\label{eq:cross-stitch}
 	\begin{bmatrix}
-		I_C\\
-		I_T
+		O_C\\
+		O_T
 	\end{bmatrix}
 	=
 	\begin{bmatrix}
@@ -55,16 +54,16 @@ computed as:
 		\alpha_{TC} &  \alpha_{TT}
 	\end{bmatrix}
 	\begin{bmatrix}
-		O_C\\
-		O_T
+		I_C\\
+		I_T
 	\end{bmatrix}
 \end{equation}
 $I_C$ and $I_T$ are the inputs for the cross-stitch unit, which are
-the outputs from a layer of \code{CCL} and \code{CTL}. $O_C$ and $O_T$
-are the outputs from the cross-stitch unit, which can be used as the
-inputs for the next layer of the two models. In this case, the next
-layers (noted as \code{CCL*} and \code{CTL*}) are the ones with the
-shared representations and having the joint training. More details are
+the outputs from a layer of CCL and CTL. $O_C$ and $O_T$ are the
+outputs from the cross-stitch unit, which can be used as the inputs
+for the next layer of the two models. In this case, the next layers
+(noted as CCL* and CTL*) are the ones with the shared representations
+and having the joint training. More details on cross-stitch are
 in~\cite{misra2016cross}.
 
 \subsection{Dual Learning between CCL and CTL}
@@ -77,23 +76,22 @@ in~\cite{misra2016cross}.
 \end{figure}
 
 We use two separate attention-based \code{seq2seq} models to implement
-\code{CCL} and \code{CTL}. The dual training is illustrated in
+CCL and CTL. The dual training is illustrated in
 Figure~\ref{fig:dual-learning}. Specifically, we use
 TreeCaps~\cite{bui2021treecaps} with an attention layer in between of
 an encoder and a decoder. In a regular attention-based \code{seq2seq}
-model, the hidden state output from the encoder is directly
-connected to the attention layer. In {\tool}, for dual learning, we
-use a cross-stitch unit to accept the hidden state from the outputs of
-the encoders of \code{CCL} and \code{CTL}. The output of the
-cross-stitch unit is connected to the attention layers of both the
-models. This joint training enables the dual learning and propagates
-the impact of context learning on the transformation learning and vice
-versa.
+model, the hidden state output from the encoder is directly connected
+to the attention layer. In {\tool}, for dual learning, we use a
+cross-stitch unit to accept as the input the hidden state from the
+outputs of the encoders of CCL and CTL. The output of the cross-stitch
+unit is connected to the attention layers of both the models. This
+joint training enables the dual learning and propagates the impact of
+context learning on code transformation learning and vice versa.
 
 \subsubsection*{\bf Formulation.}
 As we use TreeCaps~\cite{bui2021treecaps}, which is built on top of
-$k$ TBCNN layers~\cite{mou2014tbcnn}, at the layer $k$, the output of
-the convolution window is calculated as:
+$k$ TBCNN layers~\cite{mou2014tbcnn}, at the $k^{th}$ layer, the
+output of the convolution window is calculated as:
 \begin{equation}\label{eq:treecaps}
 	Y = tanh(\sum_{i=1}^{N}[\Delta^t_iW^t + \Delta^t_iW^t + \Delta^t_iW^t]X_i + b)
 \end{equation}
@@ -108,14 +106,14 @@ calculates the capsule $u_j$ as:
 \begin{equation}\label{eq:2}
 	u_j = \frac{||c_j||^2}{||c_j||^2+1}\frac{c_j}{||c_j||}
 \end{equation}
-We then perform depth-first-search traversal, and merge all the
+We then perform a depth-first-search traversal, and merge all the
 capsules of all the nodes in that order. We consider the list of
 capsules as the output $U$ of the TreeCaps model. With both
-\code{CCL} and \code{CTL}, we have the outputs $U_C$ for the context
+CCL and CTL, we have the outputs $U_C$ for the context
 learning part and $U_T$ for the transformation learning part.
 
-With both $U_C$ and $U_T$ as the inputs of the cross-stitch unit, its
-output is computed as:
+With both $U_C$ and $U_T$ as the inputs of the cross-stitch unit, the
+outputs of the cross-stitch unit are computed as:
 \begin{equation}\label{eq:3}
 	\begin{bmatrix}
 		X_C\\
@@ -135,7 +133,7 @@ Where $\alpha$ is the trainable weight matrix, $X_C$ and $X_T$ are the
 outputs of the cross-stitch unit, which are in turn fed into the
 attention layers of both models. $X_C$ and $X_T$ contain the
 information learned from both context learning and transformation
-learning models, which helps achieve the main goal for dual learning
+learning models, which helps achieve the main goal of dual learning
 to enhance the APR performance. From Formula~\ref{eq:3}, we have
 \begin{equation}\label{eq:4}
 	X_C = \alpha_{CC}U_C + \alpha_{CT}U_T
@@ -148,9 +146,9 @@ for consistence. If the size needs to be increased, we use the
 bilinear interpolation for resizing. If the size needs to be reduced,
 we do the center crop on the matrix to match the required
 size. Moreover, for efficiency, we also have a size limit for the
-fixed tree in which each buggy node have at most $P+P^2+...+P^Q$
+fixed tree in which each buggy tree has at most $P+P^2+...+P^Q$
 nodes.  $P$ is the number of children nodes and $Q$ is the child node
-depth. When making predictions, if one vector is close to zero, we consider
+depth. When making prediction, if one vector is close to zero, we consider
 it as empty, and all of its children nodes are considered as empty.
 
 %After solving this, here is one last problem the dual learning may

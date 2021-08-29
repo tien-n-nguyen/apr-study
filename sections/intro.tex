@@ -146,14 +146,16 @@ We conducted several experiments to evaluate {\tool} on three
 different datasets: Defects4J~\cite{defects4j} (395 bugs),
 Bugs.jar~\cite{saha2018bugs} (1,158 bugs), and
 BigFix~\cite{yioopsla19} (+4.9M methods and 1.8M buggy ones).  We
-compared {\tool} against several state-of-the-art pattern-based and
-DL-based APR approaches. Our results show that {\tool} is able to fix {\bf
-  XX\%} and {\bf XX\%} more bugs than the best performance
-pattern-based models. {\tool} fixed {\bf XX\%} and {\bf XX\%} more
-bugs than the best performance DL-based baselines, in which several of
-them are context-dependent bugs. {\tool} detected {\bf XX} unique bugs
-that all the other DL-based APR models missed, while {\tool} missed only
-{\bf XX} bugs that were fixed by the others.
+compared {\tool} against several state-of-the-art DL-based APR
+approaches. Our results show that in Defects4J, {\tool} is able to fix
+{\bf XX} more bugs than the best performance DL-based models,
+%{\tool} fixed {\bf XX\%}, and {\bf XX\%} more bugs than the best
+%performance DL-based baselines,
+in which several of them are context-dependent bugs. {\tool} detected
+{\bf XX} unique bugs that all the other DL-based APR models missed,
+while {\tool} missed only {\bf XX} bugs that were fixed by the others.
+In the large datasets Bugs.jar and BigFix, {\tool} can fix {\bf XX\%}
+and {\bf XX\%} more bugs than the best performance DL-based models.
 
 The contributions of this paper are listed as follows:
 
@@ -169,19 +171,13 @@ exploits the duality of learning bug-fixing code transformations and
 learning code contexts to improve APR performance.
 
 {\bf B. Empirical Results:} (Code and data are published~\cite{AutoFix2019})
-
-1) {\bf Improving over recent Pattern-based APR}.  We
-show {\tool} can auto-fix more bugs than the state-of-the-art
-pattern-based APR models. Importantly, {\tool} is data-driven and do
-not require explicitly learning of bug-fixing patterns.
-
-%pattern-based APR tools, and its result is comparable and
-%complementary to the ones from the two best pattern-based
-%tools.
-
-2) {\bf Improving over all the DL-based APR}. We evaluated {\tool}
-against the most recent DL-based models to show our model's better
-performance.
+%1) {\bf Improving over recent Pattern-based APR}.  We
+%show {\tool} can auto-fix more bugs than the state-of-the-art
+%pattern-based APR models. Importantly, {\tool} is data-driven and do
+%not require explicitly learning of bug-fixing patterns.
+{\bf Improving over all the DL-based APR approaches}. We evaluated
+{\tool} against the most recent DL-based models to show that it can
+auto-fix more bugs than those state-of-the-art approaches.
 %{\tool} is able to detect 2.5 times more bugs than the best performing
 %baseline.  {\tool} can fix 253 new bugs (out of 1158 in Bugs.jar) than
 %all the other DL-based APR techniques combined.

@@ -4,9 +4,16 @@
 Figure~\ref{overview-fixing} shows the overview of the fixing process.
 While the steps of parsing and tree-based representation learning are
 the same as in the training process, the step of applying the trained
-\code{CCL} and \code{CTL} models to produce the candidate patches is
+CCL and CTL models to produce the candidate patches is
 different. Let us detail that step, which is illustrated in
 Figure~\ref{fig:patch-gen}.
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=3.2in]{graphs/beam-search.png}
+	\caption{Patch Generation via Tree-Structured Beam Search}
+	\label{fig:patch-gen}
+\end{figure}
 
 As explained earlier, the output of the cross-stitch unit connects to
 the attention layer, which in turn connects to the decoder. The
@@ -28,16 +35,17 @@ strategy is that at each node when we convert a vector back to a code
 token, we might have multiple candidate tokens for each node. For
 example, in Figure~\ref{fig:patch-gen}, we might have multiple
 candidate code tokens for the nodes $N_1$, $N_2$, and $N_3$. Thus, we
-might face the combinatorial explosion when considering all the nodes
-in the output subtree $T_i$ at each time step $i$.
+might face the combinatorial explosion when considering a potential
+large number of nodes in the output subtree $T_i$ at each time step
+$i$.
 
 Because the beam search component aims to produce the subtree to be
 used as the input of the decoder at the next time step $i+1$
-(Figure~\ref{fig:patch-gen}, it must work in accordance with the
-TreeCaps component. TreeCapscomputes the vector from bottom up (i.e.,
+(Figure~\ref{fig:patch-gen}), it must work in accordance with the
+TreeCaps component. TreeCaps computes the vector from bottom up (i.e.,
 the vectors for children nodes are computed before the one for their
 parent node). Therefore, our beam search component considers the order
-of the nodes in the AST subtree from the bottom up first, and for the
+of the nodes in the AST subtree from the bottom up first, and the
 left-to-right order of the sibling nodes of the same parent node. For
 example, for the tree $V1$--$V5$ in Figure~\ref{overview-training},
 the beam search component will consider the order of the nodes as
@@ -49,22 +57,22 @@ maintained.
 
 Another issue occurs during the conversion from an embedding to a code
 token. When we search in our dictionary for a token that has a vector
-closest to the vector of the current node under consideration, we
+closest to the vector of the current node, we
 might encounter a token that is not in the same project or invalid for
 the current scope of the program. Thus, we perform static analysis
 with several filters to keep only the valid tokens in the current
 scope. Specifically, we apply a set of filters to verify the program
 semantics as in DLFix~\cite{icse20}. We use the alpha-renaming filter
-to change the names back to the normal Java code using a dictionary
+to change the names back to Java code using a dictionary
 containing all the valid names in the scope, the syntax-checking
 filter to remove the candidates with syntax errors, and the name
 validation filter to check the validity of the variables, methods, and
 classes.
 
-Afterward, \tool runs the corresponding test cases for the bug
-$b_i$. If there is any test case failed, \tool attempts the next
+Afterward, \tool runs the corresponding test cases for the current
+bug. If there is any test case failed, \tool attempts the next
 candidate. If all test cases pass, we regards the candidate as
-a correct fix.
+correct.
 
 %The first problem is that when transferring the predicted fixing to
 %the real tokens, beam search uses the GloVe embedding
@@ -101,9 +109,4 @@ a correct fix.
 
 %After doing the beam search, \tool runs the corresponding test cases for the bug $b_i$. If there is any test case failed, \tool tries the second candidate for the fixing. If all test cases passed, \tool regards the current candidate as the correct fixing for the bug $b_i$, which is the final output for the \tool.
 
-\begin{figure}[t]
-	\centering
-	\includegraphics[width=3.2in]{graphs/beam-search.png}
-	\caption{Patch Generation via Tree-Structured Beam Search}
-	\label{fig:patch-gen}
-\end{figure}
+

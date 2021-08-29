@@ -4,12 +4,12 @@
 %activities. Thus,
 
 Detecting and fixing software defects is one of the most crucial
-activities in software development. Thus, several researchers have
-developed the approaches to automate the process of bug detecting and
-fixing. The approaches that help developers automatically identifying
-and fixing a software defect in a program is referred to as {\em
-  automated program repair} (APR). The APR approaches can be broadly
-classified in the following categories according to their techniques:
+activities in software development. Several researchers have
+developed the approaches to automate that process. The approaches that
+help developers automatically fix a software defect in a program is
+referred to as {\em automated program repair} (APR). The APR
+approaches can be broadly classified in the following categories
+according to their techniques:
 %Researchers have proposed several approaches to help developers in
 %automatically identifying and fixing the defects in programs. Such
 %approaches are referred to as {\em automated program~repair}
@@ -28,7 +28,7 @@ the prior bug
 fixes~\cite{kim2013automatic,le2016history,liu2019avatar,tbar-issta19,nguyen2013semfix,
   icse10,ray-fse12}. Some mining-based approaches learn the patterns
 from the source code~\cite{liu2019avatar,tbar-issta19} and others
-learn them from the bug-fixing code
+learn them from prior bug-fixing 
 changes~\cite{wen2018context,Simfix,koyuncu2018fixminer}.  The fixing
 patterns/templates could be mined automatically from the repositories
 or pre-defined via semi-automated
@@ -36,10 +36,10 @@ techniques~\cite{le2016history,nguyen2013semfix,liu2019avatar,tbar-issta19}.
 
 Recent advances in machine learning (ML) enable several models to
 implicitly learn from prior bug fixes to apply to repair the current
-buggy code.  They then derive the candidate fixes and rank them
+buggy code. Then, they derive the candidate fixes and rank them
 according to their
 likelihoods~\cite{long2016automatic,long2017automatic,saha2017elixir}.
-With the recent revolutionary advances in deep learning (DL), software
+With the revolutionary advances in deep learning (DL), software
 engineering researchers have leverage them to automatically derive the
 fixing changes to a given buggy code. Some DL-based approaches learn
 the fix from prior {\em similar bug fixes and/or
@@ -55,63 +55,65 @@ transformations~\cite{icse20,tufano2019learning,cure-icse21}. Those
 recent DL-based APR approaches have showed that {\em learning
   bug-fixing changes needs to be dependent on the surrounding {\bf
     code context}}.  For example, a null check is needed after a call
-to create a new \code{FileInputStream}.  Those context-aware APR models
-have achieved better performance in
-APR~\cite{icse20,tufano2019learning,chakrabortycodit}.
+to read data from a socket with \code{BufferedReader.readline} to make
+sure a successful data retrieval. Those context-aware APR models have
+achieved better performance in
+automated program repair~\cite{icse20,tufano2019learning,chakrabortycodit}.
 
-Despite recognizing the importance of the surrounding context in
-learning the fixes, the existing DL-based APR approaches still have
-limitations in integrating contextual information in the process.
-First, the DL-based APR approaches that learn from {\em bug-fixing
-  patterns}~\cite{white2016deep,gupta2017deepfix} have focused on
-similar code and/or code changes with {\em little or no consideration}
-on whether those code or fixing patterns appear in certain surrounding
-contexts. Second, the DL-based APR approaches that leverage {\em
-  machine translation or
+Despite recognizing the importance of contexts in learning the fixes,
+the existing DL-based APR approaches still have limitations in
+integrating contextual information in the APR
+process. \underline{First}, the DL-based APR approaches that learn
+from {\em bug-fixing patterns}~\cite{white2016deep,gupta2017deepfix}
+have focused on similar code and/or code changes with {\em little or
+  no consideration} on whether those code or fixing patterns appear in
+certain surrounding contexts. \underline{Second}, the DL-based APR
+approaches that leverage {\em machine translation or
   transformers}~\cite{chakrabortycodit,chen2018sequencer,hata2018learning,tufano2018empirical,see2017get}
 often take too little surrounding code as context to learn fixing
 changes or do not have a clear boundary of the fixing changes and the
 context. Let us elaborate this point. Some DL-based APR approaches aim
-to learn only the code changes for a fix, e.g., from one buggy subtree
-in an Abstract Syntax Tree (AST) or a buggy statement to the correct
-subtree or statement~\cite{chakrabortycodit}. In this
+to learn {\em only the code changes} for a fix, e.g., from one buggy
+subtree in an Abstract Syntax Tree (AST) or a buggy statement to the
+correct subtree or statement~\cite{chakrabortycodit}. In this
 treatment, too little context might not help a model learn the fixes
 that depend on a larger surrounding code. In contrast, other
 approaches~\cite{chen2018sequencer,hata2018learning} take the entire
 buggy method and translate it to the correct one, while the fix might
 be only a small editing change to a single statement. Those
-translation-based approaches do not distinguish clearly the boundary
-of the fixing change (e.g., to a buggy statement) and the surrounding
-context (e.g., the preceeding or succeeding code). Due to the mixture
-of fixing changes and context, those machine translation models or
-transformers might not learn what fixing changes are proper in what
-contexts~\cite{icse20}.
+translation-based approaches {\em do not distinguish clearly the
+  boundary} of the fixing change (e.g., to a buggy statement) and the
+surrounding context (e.g., the preceeding or succeeding code). Due to
+the mixture of fixing changes and context, those machine translation
+models or transformers might not learn what fixing changes are
+appropriate in specific contexts~\cite{icse20}.
 
-To address that issue, DLFix~\cite{icse20} makes a clear boundary of
-fixing changes and the surrounding context, and dedicates two layers
-for those two tasks. The first layer is a tree-based RNN model that
-learns the contexts of bug fixes and its result is used as an
-additional weighting input for the second layer designed to learn the
-bug-fixing code transformations. However, the cascading architecture
-in DLFix from the two layers create a comfounding effect from the
-inaccuracy of the learning of the context to the learning of the
-bug-fixing transformations.
+\underline{Third}, to address that issue, DLFix~\cite{icse20} makes a
+clear boundary of fixing changes and the surrounding context, and
+dedicates two layers for those two tasks. The first layer is a
+tree-based RNN model that learns the contexts of bug fixes and its
+result is used as an additional weighting input for the second layer
+designed to learn the bug-fixing code transformations. However, the
+cascading architecture in DLFix from the two layers create a
+comfounding effect from the inaccuracy of the learning of the context
+to the learning of the bug-fixing code transformations.
 
 In this work, we conjecture that the two tasks of learning the code
-context and learning of bug-fixing code transformations are related
-and dependent on each other. Correct learning of context can benefit
-for learning of code transformations and vice versa. For example, in
-C code, if the preceding code (i.e., part of the context) contains
-\code{fopen} as in \code{FILE *fd = fopen (fname, ``rb'');}, then the
-succeeding bug-fixing code is more likely to be \code{if (fd != null)}
-or \code{if (fd == null)}. However, if the preceding code contains
+context and learning the bug-fixing code transformations are related
+and dependent on each other. {\bf Correct learning of contexts can
+  benefit the learning of code transformations and vice versa in
+  auto-fixing context-dependent bugs}. For example, in C code, if the
+preceding code (i.e., part of the context) contains \code{fopen} as in
+\code{FILE *fd = fopen (fname, ``rb'');}, then the succeeding
+bug-fixing code is more likely to be \code{if (fd != null)} or
+\code{if (fd == null)}. However, if the preceding code contains
 \code{fread} as in \code{n = fread(buffer,1,size,fd);}, then the
 succeeding bug-fix is more likely to be \code{if (n != size)} or
 \code{if (n == size)}, rather than a null check (\code{if (n !=
-  null)}).  On the other hand, if the bug-fixing transformation is a
-change from \code{if (fd == null)} to \code{if (fd != null)}, then the
+  null)}). In contrast, if the bug fix is a
+change from \code{if (fd == null)} into \code{if (fd != null)}, then the
 preceding code more likely contains \code{fopen} than \code{fread}.
-Let us call such dependence between two parts as {\em duality}.
+Let us call such relation between two tasks as {\em duality}.
 
 We introduce {\tool}, a context-aware dual-task learning APR model,
 which dedicates one model for learning the bug-fixing code

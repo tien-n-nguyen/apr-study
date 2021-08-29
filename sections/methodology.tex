@@ -69,8 +69,17 @@ technique that by design parses, models, and searches source code, as
 opposed to natural language text, to fix bugs automatically. It treats
 context separately from the buggy statements as in CoCoNuT.
 
-In this RQ, for %Hercules and 
-Tbar, we directly use the results reported in their original paper because they are pattern-based approaches. As for the rest baselines, we rerun them with only the fixing step and validation step instead. For all approaches, we use the BigFix as the training dataset and evaluate on Defects4J dataset. Then, for each bug $b_i$ in Defects4J, we use the rest bugs in Defects4J as the developing dataset to fine-tune the model. And use the fine-tuned model to predict the fixing for bug $b_i$. We use the perfect location as the fixing position for all baselines and \tool. 
+%In this RQ, for %Hercules and 
+%Tbar, we directly use the results reported in their original paper because they are pattern-based approaches.
+
+For all approaches, we use the BigFix as the training dataset and
+evaluate on Defects4J dataset. Then, for each bug $b_i$ in Defects4J,
+we use the remaining bugs in Defects4J as the developing dataset to
+fine-tune the model, and use the fine-tuned model to predict the
+fixing for bug $b_i$.
+%We re-ran the with only the fixing step and validation step instead.
+We used the perfect location as the fixing position for all baselines
+and \tool, and performed the fixing and validation steps.
 
 \underline{Parameter tuning.} We tuned the baselines with the parameters that mentioned in their original paper and tune \tool with the following parameters: $epoch$, $batch size$, $learning rate$, $embedding length$, max child node number $P$, the max child node depth $Q$, and the beam search space $n$. {\color{blue}{I will add the final parameters when the experiments are all finished}}
 

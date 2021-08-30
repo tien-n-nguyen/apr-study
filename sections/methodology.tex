@@ -23,18 +23,17 @@ We use three evaluation metrics to evaluate the performance of \tool
 and the baseline models.
 
 {\bf 1. Correct Patches/Plausible Patches:} Correct patches are the
-ones that exactly match or has the same meaning as the fixes in the
-ground truth by the real developers. Plausible patches are the ones
+ones that exactly match or have the same semantic meaning as the fixes in the
+ground truth by real developers. Plausible patches are the ones
 that pass all the test cases, but might not match exactly with the
 real fixes by developers.
 
 %It may contain the correct patches and the situation that
 %the generated fixing is not correct but passes all test cases.
+{\bf 2. P\%:} is the percentage of generated plausible patches to
+be correct ones matching the ground truth by real developers.
 
-{\bf 2. P:} is the probability of the generated plausible patches to
-be correct.
-
-{\bf 3. Top $K$:} is the percentage of the total bugs that a correct
+{\bf 3. Top-$K$:} is the percentage of total bugs that a correct
 patch is in the ranked list of top-$K$ candidate patches.
 
 \subsubsection{Evaluation Methodology.}
@@ -175,5 +174,5 @@ previous experiments for the other RQs. We run all approaches on the BigFix data
 
 {\bf RQ5. Evaluation on C/C++ Projects.}  To evaluate {\tool} on C/C++
 code, we ran it on the C/C++ benchmark
-Codeflaws~\cite{tan2017codeflaws} with 3902 bugs. We used the same
-process and setting as in RQ2.
+Codeflaws~\cite{tan2017codeflaws} with 3902 bugs. 
+We used the same process and setting as in RQ2.

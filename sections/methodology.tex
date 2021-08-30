@@ -37,78 +37,143 @@ be correct.
 {\bf 3. Top $K$:} is the percentage of the total bugs that a correct
 patch is in the ranked list of top-$K$ candidate patches.
 
-\subsubsection{Evaluation Methodology.} 
+\subsubsection{Evaluation Methodology.}
 We use the following settings for different RQs:
 
-{\bf RQ1. Comparison with State-of-the-art APR Approaches on Defects4J Dataset.}
+{\bf RQ1. Comparison with the state-of-the-art DL-based APR Approaches on
+  Defects4J Dataset.}
 
 \underline{Baselines.} We compare {\tool} with the following
-state-of-the-art deep learning (DL)-based baselines:
+state-of-the-art deep learning (DL)-based APR baseline models:
 
 %{\it Hercules \cite{hercules-icse19}: } is a novel APR technique that generalizes single-hunk repair to encompass a specific but significant class of multi-hunk repair problems.
 
 %{\it Tbar \cite{tbar-issta19}: } is a template-based APR to build comprehensive% knowledge about the effectiveness of fix patterns.
 
-{\bf SequenceR~\cite{chen2018sequencer}: } uses machine translation
-approach with sequence-to-sequence learning.
+{\bf SequenceR~\cite{chen2018sequencer}: } uses the machine
+translation approach with sequence-to-sequence learning.
+
+{\bf CoCoNuT~\cite{lutellier2020coconut}:} uses a context-aware neural
+machine translation architecture to represent the buggy source code
+and its surrounding context separately. However, it does not have the
+dual learning for context learning and code transformation learning as
+in {\tool}. It uses ensemble learning on the combination of
+convolutional neural networks and a context-aware machine translation.
 
 {\bf DLFix~\cite{li2020dlfix}: } is a two-tier DL-based model that
 treats APR as code transformation learning from the prior bug fixes
 and the surrounding code contexts. It follows a cascading architecture
 between two models of context learning and transformation learning.
 
-{\bf CoCoNuT~\cite{lutellier2020coconut}:} uses a context-aware neural
-machine translation architecture to represent the buggy source code
-and its surrounding context separately. However, it does not have the
-dual learning for context learning and code transformation learning.
-It uses ensemble learning on the combination of convolutional neural
-networks (CNNs) and a context-aware machine translation.
-
-{\bf CURE~\cite{cure-icse21}: } is a new NMT-based program repair
+{\bf CURE~\cite{cure-icse21}: } is a machine-translation-based program repair
 technique that by design parses, models, and searches source code, as
 opposed to natural language text, to fix bugs automatically. It treats
-context separately from the buggy statements as in CoCoNuT.
+context separately from the buggy statements as in CoCoNuT. It does
+not have the dual learning for context learning and code
+transformation learning as in {\tool}.
 
-%In this RQ, for %Hercules and 
+
+%Tien
+%In this RQ, for %Hercules and
 %Tbar, we directly use the results reported in their original paper because they are pattern-based approaches.
 
-For all approaches, we use the BigFix as the training dataset and
-evaluate on Defects4J dataset. Then, for each bug $b_i$ in Defects4J,
-we use the remaining bugs in Defects4J as the developing dataset to
-fine-tune the model, and use the fine-tuned model to predict the
-fixing for bug $b_i$.
-%We re-ran the with only the fixing step and validation step instead.
-We used the perfect location as the fixing position for all baselines
-and \tool, and performed the fixing and validation steps.
+For all approaches under study in this RQ, we used the BigFix as the
+training dataset and evaluated on Defects4J dataset. For each bug in
+Defects4J, we used the remaining bugs in Defects4J as the developing
+dataset to fine-tune the model, and used the fine-tuned model to
+predict the fix for the bug. We used the correct fixing locations for
+the models to perform the fixing and validation steps.
 
-\underline{Parameter tuning.} We tuned the baselines with the parameters that mentioned in their original paper and tune \tool with the following parameters: $epoch$, $batch size$, $learning rate$, $embedding length$, max child node number $P$, the max child node depth $Q$, and the beam search space $n$. {\color{blue}{I will add the final parameters when the experiments are all finished}}
 
-{\bf RQ2. Comparison with State-of-the-art APR Approaches on Big Datasets.}
+\underline{Parameter tuning.} We tuned the baselines with the
+parameters that mentioned in their papers. We tuned \tool with the
+following parameters: {\em epoch}, {\em batch size}, {\em learning
+  rate}, {\em embedding length}, the {\em max children node number
+  $P$}, {\em the max children node depth} $Q$, and {\em the beam
+  search size $n$}. {\bf YI: add more...}
 
-\underline{Baselines.} We compare {\tool} with the following state-of-the-art baselines:
+{\bf RQ2. Comparison with State-of-the-art DL-based APR Approaches on
+  Large Datasets.}
 
-{\it SequenceR \cite{chen2018sequencer}, DLFix \cite{li2020dlfix}, CoCoNut \cite{lutellier2020coconut}, Cure \cite{cure-icse21}: } Introduced in RQ1.
+\underline{Baselines.} We compare {\tool} with the following state-of-the-art DL-based APR baseline models:
 
-{\it Tufano 19’ \cite{tufano2019learning}: } is the deep learning-based approach using a code change learning approach adopting NMT with some code abstractions and program analysis filtering.
+{\bf SequenceR~\cite{chen2018sequencer}, CoCoNuT~\cite{lutellier2020coconut}, DLFix~\cite{li2020dlfix}, CURE~\cite{cure-icse21}:} as explained in RQ1.
 
-{\it CODIT \cite{chakrabortycodit}: } is the deep learning-based approach using sequence-to-sequence NMT model with the abstractions on tree structures.
+{\bf CODIT~\cite{chakrabortycodit}:} is the DL-based APR approach using
+sequence-to-sequence machine translation model with the abstractions on tree
+structures to learn the code transformations for bug fixing.
 
-The two new baselines in this RQ, including Tufano 19\' and CODIT are not designed for the Defects4J dataset, and there is not validation step in these two approaches. Therefore, comparing these two approaches to other baselines and \tool with the validation step is not fair. So we did not compare these two approaches as baselines in RQ1. As for this RQ, for all baselines and \tool, we directly run the fixing step without validation. So it is fair to add these two baselines.
+{\bf Tufano'19~\cite{tufano2019learning}:} is also a DL-based approach
+aiming to learn code changes by adopting neural machine translation
+with code abstractions and filtering via program analysis.
 
-We run the baselines and \tool on two big datasets in this RQ, including Bugs.jar and BigFix. For each dataset, we randomly split the dataset into 80\%/10\%/10\% for training, developing, and testing. Then, we do the experiments for all baselines and \tool in the same data split to make a fair comparison.
+We did not compare with CODIT~\cite{chakrabortycodit} and
+Tufano'19~\cite{tufano2019learning} in RQ1 on Defects4J dataset,
+because they do not have the validation step in their approaches to
+run on Defects4J. It is unfair if we compared them with the other
+approaches having the validation step.
 
-\underline{Parameter tuning.} We tuned the baselines with the parameters mentioned in their original paper and tune \tool in the same way as in RQ1 with autoML \cite{NNI}.
+We compared {\tool} with those two baselines in this experiment for
+RQ2 running on two large datasets, in which we directly ran the fixing
+step without the validation. The two large datasets do not contain the
+corresponding test cases for the bugs. Thus, we could not run a model
+with the validation step on these datasets.
 
-{\bf RQ3. Sensitivity Analysis.}
+%The two new baselines in this RQ, including Tufano 19\' and CODIT are not designed for the Defects4J dataset, and there is not validation step in these two approaches. Therefore, comparing these two approaches to other baselines and \tool with the validation step is not fair. So we did not compare these two approaches as baselines in RQ1.
 
-\underline{Baselines.} To study the impact of dual-learning, we built two naive model of {\tool}: 
+%As for this RQ, for all baselines and \tool, we directly run the
+%fixing step without validation. So it is fair to add these two
+%baselines.
 
-(1) \textbf{only-statement-model:} The method-level program repair is removed from {\tool} and only statement-level program repair is kept for training in step 2 of \tool.
+%We ran the baselines and \tool on two big datasets in this RQ, including Bugs.jar and BigFix.
 
-(2) \textbf{Two-tier model:} We also build the other naive model, the two-tier model, as the baseline. As for the two-tier model, we removed the dual-learning from {\tool} and make the statement-level program repair is dependent on the output of the method-level program repair.
+In this RQ2, as running a model on each dataset, we randomly splitted
+it into 80\%/10\%/10\% for training, developing, and testing. We used
+the same slitting scheme for all models.
 
-We use the same process to run the baselines and \tool in this RQ. Therefore, the parameters that need to be tuned in both baselines are the same as the ones of \tool. 
 
-{\bf RQ4. Evaluation on C Projects.}
+\underline{Parameter tuning.} We tuned the baselines with the
+parameters mentioned in their papers and tuned {\tool} in the same
+manner as in RQ1 with autoML \cite{NNI}.
 
-To evaluate the performance of \tool on different programming languages. We run the \tool on the C/C++ benchmark Codeflaws \cite{tan2017codeflaws} with 3902 bugs. We run \tool on it with the same process as on the Java projects in RQ22 to compare the performance of \tool.
+{\bf RQ3. Overlapping Analysis.} To further study the comparative
+result between a baseline model $M$ and {\tool}, we analyzed and
+counted the number of bugs that were fixed by {\tool} and were missed
+by $M$, the number of bugs that were fixed by $M$ and were missed
+by {\tool}, and the number of bugs that were fixed by both.
+
+
+{\bf RQ4. Sensitivity Analysis.}
+
+\underline{Baselines.} To study the contributions of dual-learning in
+{\tool}, we built two variants:
+
+(1) \textbf{Only-transformation-model:} In this variant, the
+context learning model is removed from {\tool} and only the bug-fixing
+code transformation learning model is kept. The result allows us to
+understand the contributions of the context learning model (CCL).
+
+%for training in step 2 of \tool.
+
+(2) \textbf{Cascading model:} We also built another variant model in
+which we removed the cross-stitch unit for dual learning, and we
+connected the context learning model (CCL) to the transformation
+learning model (CTL) in a cascading manner as in DLFix~\cite{icse20}
+(the context learning result is added as a weight
+as the additional input of the transformation learning model).
+
+%the other naive model, the
+%two-tier model, as the baseline. As for the two-tier model, we removed
+%the dual-learning from {\tool} and make the statement-level program
+%repair is dependent on the output of the method-level program repair.
+
+In this RQ, we used the same process and parameter tuning as in the
+previous experiments for the other RQs.
+
+%the baselines and \tool in this RQ. Therefore, the parameters that
+%eed to be tuned in both baselines are the same as the ones of \tool.
+
+{\bf RQ5. Evaluation on C Projects.}  To evaluate {\tool} on C/C++
+code, we ran it on the C/C++ benchmark
+Codeflaws~\cite{tan2017codeflaws} with 3902 bugs. We used the same
+process and setting as in RQ2.

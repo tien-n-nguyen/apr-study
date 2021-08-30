@@ -1,7 +1,7 @@
 \subsubsection{RQ2. Comparison with State-of-the-art APR Approaches on Big Datasets.}
 
 \begin{table}[t]
-	\caption{RQ2. Accuracy Comparison with DL-based APR approaches on three Datasets.}
+	\caption{RQ2. Comparison Results with DL-based APR Approaches on Big Datasets using Top-K.}
 	\vspace{-10pt}
 	\begin{center}
 		\renewcommand{\arraystretch}{1}
@@ -22,3 +22,8 @@
 		\label{RQ2_results}
 	\end{center}
 \end{table}
+
+
+As seen in Table~\ref{RQ2_results}, {\tool} can auto-fix more bugs than any baseline in any metric on both big datasets. 
+Particularly, {\tool} can fix 14.8\% of 1,158 bugs in Bugs.jar and 14.9\% of 2,176 bugs in BigFix using only Top-1 ranked candidates. Compared with the best performing baseline CURE, {\tool} can 
+fix 12.1\% and 14.6\% more bugs using only Top-1 ranked candidates,  14.8\% and 16.7\% more bugs using the Top-5 ranked candidates, and 6.3\% and 15.9\% more bugs using the Top-10 ranked candidates, on Bugs.jar and BigFix, respectively. 

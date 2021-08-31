@@ -1,2 +1,20 @@
 \section{Conclusion}
 
+The bug-fixing changes in APR often depend on the surrounding code
+context. Despite their successes, the state-of-the-art DL-based APR
+approaches still have limitations in the integration of code contexts
+in learning bug fixes. In this work, we conjecture that correct
+learning of contexts can benefit the learning of code transformations
+and vice versa in auto-fixing context-dependent bugs. We introduce
+{\tool}, a context-aware dual learning APR model, which dedicates one
+model to learn the bug-fixing code transformations (CTL) and another
+one to learn the corresponding surrounding code contexts
+(CCL). Instead of cascading the two models, we train them
+simultaneously with soft-sharing their parameters via a cross-stitch
+unit to exploit the duality between CCL and CTL. We conducted several
+experiments to evaluate {\tool} on three large datasets. Our results
+show that {\tool} is able to fix {\bf XX\%} and {\bf XX\%} more bugs
+than the best-performance DL-based baseline models, in which several
+of them are context-dependent bugs. {\tool} detected {\bf XX} unique
+bugs that all the other DL-based APR models missed.
+

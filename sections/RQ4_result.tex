@@ -3,13 +3,14 @@
 
 
 \begin{table}[t]
-	\caption{RQ4.Impact Analysis Results of Dual Learning using BigFix Dataset.}
+  \caption{RQ4.Impact Analysis Results of Dual Learning using BigFix Dataset.}
+  \vspace{-6pt}
 	{\small
 		\begin{center}
 			\renewcommand{\arraystretch}{1}
 			\begin{tabular}{p{1cm}<{\centering}|p{2.7cm}<{\centering}|p{1.7cm}<{\centering}|p{1cm}<{\centering}}
 				\hline
-				Metrics & Only-transformation-Model & Cascading Model &  \tool \\			
+				Top-$K$ & Transformation-only Model & Cascading Model &  \tool \\			
 				\hline
 				Top-1   & 7.1\% & 11.7\% & 14.9\% \\ \hline
 				Top-5	& 8.9\% & 13.1\% & 16.1\% \\ \hline
@@ -17,11 +18,31 @@
 			
 				\hline
 			\end{tabular}
-			
 			\label{fig:rq4_results}
 		\end{center}
 	}
 \end{table}
 
+Table~\ref{fig:rq4_results} shows the result on the impact of our dual
+learning architecture on the overall {\tool}'s bug-fixing performance.
+As seen, the top-$K$ values of the \code{Transformation-only} model
+are 52.3\%, 44.7\% and 42.3\% lower than those of {\tool} in Top-1,
+Top-5, and Top-10, respectively. This result shows that 1) the context learning model in {\tool} has good impact on the overall performance, 
+and 2) the dual learning enables such impact from context learning to
+transformation learning to achieve high performance in APR.
 
-Table~\ref{fig:rq4_results} presents the results of contributions of dual-learning in CDFix. The results show that Only-transformation-model reduces 52.3\%, 44.7\% and 42.3\% of {\tool} using Top-1, Top-5, and Top-10, respectively, which indicates that context-learning model is important to our {\tool}. The Cascading model also reduces the Top-1, Top-5, and Top-10 of {\tool} by 21.5\%, 18.6\%, and 14.9\%, respectively, indicating that the simultaneous dual-learning of context learning model and transformation learning model is effective.  
+Moreover, the top-$K$ values of the \code{cascading} model are 21.5\%,
+18.6\%, and 14.9\% lower than those of {\tool} in Top-1, Top-5, and
+Top-10, respectively. This result shows that 1) the cascading
+architecture between context learning (CCL) and transformation
+learning (CTL) is not effective as the dual-learning architecture as
+in {\tool}, and 2) dual learning between CCL and CTL is effective and
+helps improve APR performance. This result also explains the reason
+for the higher performance of {\tool} over the state-of-the-art APR
+approach in DLFix~\cite{icse20}, which has a cascading architecture of
+context learning and transformation learning.
+
+
+%Table~\ref{fig:rq4_results} presents the results of contributions of dual-learning in CDFix. The results show that Only-transformation-model reduces 52.3\%, 44.7\% and 42.3\% of {\tool} using Top-1, Top-5, and Top-10, respectively, which indicates that context-learning model is important to our {\tool}.
+
+%The Cascading model also reduces the Top-1, Top-5, and Top-10 of {\tool} by 21.5\%, 18.6\%, and 14.9\%, respectively, indicating that the simultaneous dual-learning of context learning model and transformation learning model is effective.

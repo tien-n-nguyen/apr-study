@@ -1,11 +1,30 @@
 \subsection{Threats to Validity}
-The threats of this paper come from the following aspects: 
-(1) We evaluated our {\tool} on Java and C/C++ code. 
-The key modules in {\tool} are language-independent and can be applied to
-other types of programming languages. 
-(2) We re-implemented CURE as its code was not publicly available online and also the authors of CURE never replied our emails. Under the above circumstances, we tried our best to follow the details in their paper during the implementation. 
-(3) The result of our implemented CURE in this paper is lower than the one in its original paper (48 vs 57) on the same Defects4J dataset. The reasons can be two folds: First, in the validation step of the original CURE, the authors first ranked 10,000 candidates and refined the ranking to pick top 5,000 candidates, then validated each candidate. 
-In our setting, we set the 5-hr time limit on the validation step, instead of a cut-off on the number of candidates. In the cases that our implemented CURE could not identify a plausible patch after 5-hr limit, on average, we only looped through about ~2350 candidates, which is far fewer than 5,000. Second, we used BigFix as our training dataset, which is different from the one used in the original paper of CURE. However, we evaluated all DL-based approaches using the same training dataset and under the same settings and computing environments. 
+
+
+
+Our empirical results have the following threats to the validity. (1)
+We evaluated our {\tool} on Java and C/C++ code.  The key modules in
+{\tool} are language-independent and can be applied to other types of
+programming languages.  (2) We re-implemented CURE as its code was not
+publicly available online. Despite our effort to contact the authors
+of CURE, we have never received their response. Under that
+circumstance, we tried our best to follow the details in their paper
+during the implementation. (3) The result of our implemented CURE in
+this paper is lower than the one in its original paper (48 vs 57) on
+the same Defects4J dataset. The reasons can be two folds. First, in
+the validation step of the original CURE, the authors first ranked
+10,000 candidates and refined the ranking to pick top 5,000
+candidates, then validated each candidate. In our setting, we set the
+5-hour time limit on the validation step, instead of a cut-off on the
+number of candidates. The rationale for our setting is that it is the
+one used in all other studies of the baseline models. In the cases
+that our implemented CURE could not identify a plausible patch after
+5-hour limit, on average, we only looped through about ~2,350
+candidates, which is far fewer than 5,000. Second, we used BigFix as
+our training dataset, which is different from the one used in the
+original paper of CURE. In brief, for all DL-based approaches, we
+used the same training dataset and under the same settings and
+computing environments.
 
 
 

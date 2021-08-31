@@ -1,8 +1,9 @@
-\subsection{\bf RQ2. Comparison with State-of-the-art APR Approaches on Big Datasets.}
+\subsection{\bf RQ2. Comparison with State-of-the-art APR Approaches on Big Datasets}
 
 \begin{table}[t]
-	\caption{RQ2. Comparison Results with DL-based APR Approaches on Big Datasets using Top-K.}
+	\caption{RQ2. Comparison Results with DL-based APR Approaches on Large Datasets using Top-$K$.}
 	\vspace{-10pt}
+        {\small
 	\begin{center}
 		\renewcommand{\arraystretch}{1}
 		\begin{tabular}{p{1.6cm}|p{0.7cm}|p{0.7cm}|p{0.7cm}|p{0.7cm}|p{0.7cm}|p{0.7cm}}\hline
@@ -13,7 +14,7 @@
 			\textbf{Tufano('19)}  & 6.5\%  & 9.7\%  & 11.6\% & 4.1\%  & 6.5\%  & 9.4\%\\
 			\textbf{SequenceR}    & 8.8\%  & 10.8\% & 12.9\% & 8.3\%  & 9.2\%  & 10.3\%\\
 			\textbf{DLFix}        & 10.7\% & 12.1\% & 14.6\% & 11.3\% & 11.8\% & 12.7\%\\
-			\textbf{CoCoNut}      & 12.1\% & 14.2\% & 16.5\% & 12.4\% & 13.5\% & 14.1\%\\
+			\textbf{CoCoNuT}      & 12.1\% & 14.2\% & 16.5\% & 12.4\% & 13.5\% & 14.1\%\\
 			\textbf{CURE}         & 13.2\% & 14.9\% & 17.4\% & 13.0\% & 13.8\% & 14.5\%\\
 			\hline
 			\textbf{\tool}        & \textbf{14.8\%} & \textbf{17.1\%} & \textbf{18.5\%} & \textbf{14.9\%} & \textbf{16.1\%} & \textbf{16.8\%}\\
@@ -21,9 +22,15 @@
 		\end{tabular}
 		\label{RQ2_results}
 	\end{center}
+        }
 \end{table}
 
 
-As seen in Table~\ref{RQ2_results}, {\tool} can auto-fix more bugs than any baseline in any metric on both big datasets. 
-Particularly, {\tool} can fix 14.8\% of 1,158 bugs in Bugs.jar and 14.9\% of 2,176 bugs in BigFix using only Top-1 ranked candidates. Compared with the best performing baseline CURE, {\tool} can 
-fix 12.1\% and 14.6\% more bugs using only Top-1 ranked candidates,  14.8\% and 16.7\% more bugs using the Top-5 ranked candidates, and 6.3\% and 15.9\% more bugs using the Top-10 ranked candidates, on Bugs.jar and BigFix, respectively. 
+As seen in Table~\ref{RQ2_results}, {\tool} can auto-fix more bugs
+than any baseline in any metric on both large datasets.  Particularly,
+{\tool} can fix 14.8\% of 1,158 bugs in Bugs.jar and 14.9\% of 2,176
+bugs in BigFix using only top-1 candidates. Compared with the
+best-performing baseline CURE, {\tool} can fix relatively 12.1\% and
+14.6\% more bugs using only top-1 candidates, 14.8\% and 16.7\% more
+bugs using the top-5 candidates, and 6.3\% and 15.9\% more bugs using
+the top-10 candidates, on Bugs.jar and BigFix, respectively.

@@ -51,3 +51,133 @@
 Table~\ref{RQ3_results} shows the overlapping analysis of the bugs fixed by {\tool} and the studied baselines. The results show that {\tool} can fix more unique bugs than any compared baseline. For example, {\tool} can fix 89 bugs that cannot be fixed by CURE, while CURE can fix 50 bugs that our {\tool} cannot fix. %{\tool} can fix more bugs than the studied baselines and also complement with each other
 Consolidating results from RQ2 and RQ3, overall, {\tool} can auto-fix more bugs and unique bugs than any studied baselines, indicating that {\tool} is better and complementary to other baselines.
 
+
+\begin{figure}[t]
+	\centering
+	\lstset{
+		numbers=left,
+		numberstyle= \tiny,
+		keywordstyle= \color{blue!70},
+		commentstyle= \color{red!50!green!50!blue!50},
+		frame=shadowbox,
+		rulesepcolor= \color{red!20!green!20!blue!20} ,
+		xleftmargin=1.5em,xrightmargin=0em, aboveskip=1em,
+		framexleftmargin=1.5em,
+		numbersep= 5pt,
+		language=Java,
+		basicstyle=\scriptsize\ttfamily,
+		numberstyle=\scriptsize\ttfamily,
+		emphstyle=\bfseries,
+		moredelim=**[is][\color{red}]{@}{@},
+		escapeinside= {(*@}{@*)}
+	}
+	\begin{lstlisting}[]
+public void visit(LOProject project) throws VisitorException {
+    ...
+(*@{\color{red}{-	\quad else if( op instanceof LOProject ) \{ }}@*)
+(*@{\color{cyan}{+ \quad	else if( op instanceof ExpressionOperator ) \{}}@*)
+		LogicalExpression expOper = exprOpsMap.get(op);
+	...
+	if (currentOp instanceof ExpressionOperator) {
+		LogicalExpression exp = exprOpsMap.get(currentOp);
+	...
+}
+	\end{lstlisting}
+	\caption{The Example for Comparing with CODIT}
+	\label{example_1}
+\end{figure}
+
+
+{\color{blue}{1. CODIT only do the prediction and token generation on the buggy sub-tree that covers all edited nodes without considering the other information in the same method. So it cannot catch the information about the variable $ExpressionOperator$ in the method.
+2. Fixing results: \textit{CODIT: else if( op )$ \{$}
+CDFIX: \textit{else if( op instanceof ExpressionOperator ) $\{$}}}
+
+\begin{figure}[t]
+	\centering
+	\lstset{
+		numbers=left,
+		numberstyle= \tiny,
+		keywordstyle= \color{blue!70},
+		commentstyle= \color{red!50!green!50!blue!50},
+		frame=shadowbox,
+		rulesepcolor= \color{red!20!green!20!blue!20} ,
+		xleftmargin=1.5em,xrightmargin=0em, aboveskip=1em,
+		framexleftmargin=1.5em,
+		numbersep= 5pt,
+		language=Java,
+		basicstyle=\scriptsize\ttfamily,
+		numberstyle=\scriptsize\ttfamily,
+		emphstyle=\bfseries,
+		moredelim=**[is][\color{red}]{@}{@},
+		escapeinside= {(*@}{@*)}
+	}
+	\begin{lstlisting}[]
+private Tuple readFromMemory() {
+    if (mContents.size() == 0) return null;
+    if (mMemoryPtr < mContents.size()) {
+(*@{\color{red}{-\quad\quad\quad     return ((ArrayList<Tuple>)mContents).get(mMemoryPtr++);}}@*)
+(*@{\color{cyan}{+\quad\quad\quad    return ((List<Tuple>)mContents).get(mMemoryPtr++);}}@*)
+	} else {
+        return null;
+	}
+}
+	\end{lstlisting}
+	\caption{The Example for Comparing with Tufano 19'}
+	\label{example_2}
+\end{figure}
+
+
+{\color{blue}{1. Tufano 19' learns and makes prediction only on the method level. In this case, it may fix the wrong position.
+2. Fixing results: 
+Tufano 19': \textit{if (mMemoryPtr.size() == 0) return null;} (this fix at line 2)
+CDFIX: \textit{return ((List<Tuple>)mContents).get(mMemoryPtr++);}}}
+
+\begin{figure}[t]
+	\centering
+	\lstset{
+		numbers=left,
+		numberstyle= \tiny,
+		keywordstyle= \color{blue!70},
+		commentstyle= \color{red!50!green!50!blue!50},
+		frame=shadowbox,
+		rulesepcolor= \color{red!20!green!20!blue!20} ,
+		xleftmargin=1.5em,xrightmargin=0em, aboveskip=1em,
+		framexleftmargin=1.5em,
+		numbersep= 5pt,
+		language=Java,
+		basicstyle=\scriptsize\ttfamily,
+		numberstyle=\scriptsize\ttfamily,
+		emphstyle=\bfseries,
+		moredelim=**[is][\color{red}]{@}{@},
+		escapeinside= {(*@}{@*)}
+	}
+	\begin{lstlisting}[]
+public int getPartition(PigNullableWritable wrappedKey, Writable value, int numPartitions) {
+	....
+	indexes = reducerMap.get(keyTuple);
+	// if the reducerMap does not contain the key, do the default hash based partitioning
+	if (indexes == null) {
+(*@{\color{red}{-\quad\quad\quad  return (Math.abs(keyTuple.hashCode()) \% totalReducers);	}}@*)
+(*@{\color{cyan}{+\quad\quad\quad     return (Math.abs(keyTuple.hashCode() \% totalReducers));}}@*)
+	}
+	....
+}
+	\end{lstlisting}
+	\caption{The Example for Comparing with SequenceR, CoCoNut, DLFix, and CURE}
+	\label{example_3}
+\end{figure}
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=3.2in]{graphs/example_3.png}
+	\caption{AST Structure Changes in Example 3}
+	\label{example_3_tree}
+\end{figure}
+
+{\color{blue}{1. SequenceR, CoCoNut, CURE all using sequence structure to do the code fixing. However, it is hard for them to learn the structure changes in this example. DLFix learns the structure changes, but it does not learn it as well as CDFix.
+2. Fixing results: 
+SequenceR: \textit{return (Math.abs( keyTuple.get()) \% totalReducers);}
+CoCoNut: \textit{return (Math.abs( keyTuple.hashCode()));}
+DLFix: \textit{return (Math.abs( keyTuple.hashCode()) \% curIndex);}
+CURE: \textit{return (Math.abs( keyTuple.hashCode()) / totalReducers);}
+CDFIX: \textit{return (Math.abs( keyTuple.hashCode() \% totalReducers));}}}

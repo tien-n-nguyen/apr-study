@@ -147,14 +147,10 @@ different datasets: Defects4J~\cite{defects4j} (395 bugs),
 Bugs.jar~\cite{saha2018bugs} (1,158 bugs), and
 BigFix~\cite{yioopsla19} (+4.9M methods and 1.8M buggy ones).  
 We compared {\tool} against several state-of-the-art DL-based APR
-approaches. Our results show that in Defects4J, {\tool} is able to fix
-8 more bugs than the best performance DL-based model,
-%{\tool} fixed {\bf XX\%}, and {\bf XX\%} more bugs than the best
-%performance DL-based baselines,
-in which several of them are context-dependent bugs. 
-In the large datasets Bugs.jar and BigFix, {\tool} can fix 12.1\% and 14.6\% more bugs than the best performance DL-based model, CURE~\cite{cure-icse21}, using only the Top-1 ranked patches. Additionally, {\tool} fix 89 and 45 unique bugs that CURE missed, while {\tool} missed only 50 and 27 bugs that were fixed by CURE in the Bugs.jar and BigFix datasets, respectively. 
-Furthermore, {\tool} can autofix 194.7\%, 40\%, 27.3\%, and 16.7\% more Defects4J bugs than the baseline models: SequenceR, DLFix, CoCoNuT, CURE, respectively. 
-
+approaches. 
+Our results show that {\tool} can fix 12.1\% and 14.6\% more bugs than the best performance DL-based model, CURE~\cite{cure-icse21}, using only the Top-1 ranked patches,  in the large datasets Bugs.jar and BigFix, respectively. 
+Additionally, {\tool} fix 89 and 45 unique bugs that CURE missed, while {\tool} missed only 50 and 27 bugs that were fixed by CURE in the Bugs.jar and BigFix datasets, respectively. 
+Furthermore, in Defects4j, {\tool} is able to fix 8 more bugs than the best performance DL-based model, CURE~\cite{cure-icse21}, in which several of them are context-dependent bugs. {\tool} can autofix 194.7\%, 40\%, 27.3\%, and 16.7\% more Defects4J bugs than the baseline models: SequenceR~\cite{chen2018sequencer}, DLFix~\cite{li2020dlfix}, CoCoNuT~\cite{lutellier2020coconut}, CURE~\cite{cure-icse21}, respectively. 
 The contributions of this paper are listed as follows:
 
 %{\bf A. DL for APR:} {\tool} is the first DL APR that generates

@@ -15,16 +15,17 @@ Figure~\ref{fig:patch-gen}.
 	\label{fig:patch-gen}
 \end{figure}
 
-As explained earlier, the output of the cross-stitch unit connects to
-the attention layer, which in turn connects to the decoder. The
-decoder has four main components: 1) the embedding component to encode
-the input at a time step into the subtree whose nodes are vectors; 2)
-the TreeCaps~\cite{bui2021treecaps} component to summarize the vectors
-in a subtree into a vector; 3) the output layer; and 4) the beam
-search component, which takes the output at the output layer and
-produces a candidate patch in terms of the output AST subtree $T_i$
-with the concrete source code for the nodes at the current time step
-$i$.  While the embedding component, TreeCaps, and the output layer
+As explained earlier in Figure~\ref{fig:dual-learning}, the output of the
+cross-stitch unit connects to the attention layer, which in turn
+connects to the decoder. The decoder has four main components: 1) the
+embedding component to encode the input at a time step into the
+subtree whose nodes are vectors; 2) the
+TreeCaps~\cite{bui2021treecaps} component to summarize the vectors in
+a subtree into a vector; 3) the output layer; and 4) the beam search
+component, which takes the output at the output layer and produces a
+candidate patch (at the current time step $i$) in terms of the output
+AST subtree $T_i$ with the concrete source code for the AST
+nodes. While the embedding component, TreeCaps, and the output layer
 are straightforward, we need to explain the adaptation we have made in
 the beam search component.
 

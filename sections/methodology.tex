@@ -1,7 +1,7 @@
 \subsection{Empirical Methodology}
 
 \subsubsection{Datasets}
-We perform evaluation on three different datasets that have been used
+We perform our valuation on three datasets that have been used
 in the prior research in APR~\cite{icse20}:
 Defects4J~\cite{defects4j}, Bugs.jar~\cite{saha2018bugs}, and
 BigFix~\cite{yioopsla19}. The version of the Defects4J dataset we used
@@ -23,18 +23,18 @@ We use three evaluation metrics to evaluate the performance of \tool
 and the baseline models.
 
 {\bf 1. Correct Patches/Plausible Patches:} Correct patches are the
-ones that exactly match or have the same semantic meaning as the fixes in the
-ground truth by real developers. Plausible patches are the ones
-that pass all the test cases, but might not match exactly with the
-real fixes by developers.
+fixes that exactly match or have the same semantic meaning as the
+fixes in the ground truth by real developers. Plausible patches are
+the fixes that pass all the test cases, but might not match exactly
+with the actual fixes by developers.
 
 %It may contain the correct patches and the situation that
 %the generated fixing is not correct but passes all test cases.
 {\bf 2. P\%:} is the percentage of generated plausible patches to
 be correct ones matching the ground truth by real developers.
 
-{\bf 3. Top-$K$:} is the percentage of total bugs that a correct
-patch is in the ranked list of top-$K$ candidate patches.
+{\bf 3. Top-$K$:} is the percentage of total bugs in which a correct
+patch for a bug is in the ranked list of top-$K$ candidate patches.
 
 \subsubsection{Evaluation Methodology.}
 We use the following settings for different RQs:
@@ -79,8 +79,10 @@ transformation learning as in {\tool}.
 For all approaches under study in this RQ, we used the BigFix as the
 training dataset and evaluated on Defects4J dataset. 
 %For each bug in Defects4J, we used the remaining bugs in Defects4J as the developing dataset to fine-tune the model, and used the fine-tuned model to predict the fix for the bug. 
-We used the correct fixing locations for the models to perform the fixing and test cases for validation steps. 
-We set a 5-hr limit for the validation step for all approaches. 
+We used the correct fixing locations for the models to perform fixing
+and used test cases for validation steps.  We set a 5-hour limit for
+the validation step for all approaches as in previous
+work~\cite{icse20,tbar-issta19}.
 
 
 \underline{Parameter tuning.} We tuned the baselines with the
@@ -118,8 +120,8 @@ approaches having the validation step.
 We compared {\tool} with those two baselines in this experiment for
 RQ2 running on two large datasets, in which we directly ran the fixing
 step without the validation. The two large datasets do not contain the
-corresponding test cases for the bugs. Thus, we could not run a model
-with the validation step on these datasets.
+corresponding test cases for the bugs. Thus, we ran a model
+without the validation step on these two datasets.
 
 %The two new baselines in this RQ, including Tufano 19\' and CODIT are not designed for the Defects4J dataset, and there is not validation step in these two approaches. Therefore, comparing these two approaches to other baselines and \tool with the validation step is not fair. So we did not compare these two approaches as baselines in RQ1.
 
@@ -161,8 +163,8 @@ understand the contributions of the context learning model (CCL).
 which we removed the cross-stitch unit for dual learning, and we
 connected the context learning model (CCL) to the transformation
 learning model (CTL) in a cascading manner as in DLFix~\cite{icse20}
-(the context learning result is added as a weight
-as the additional input of the transformation learning model).
+(the context learning result is added as an additional input of the
+transformation learning model).
 
 %the other naive model, the
 %two-tier model, as the baseline. As for the two-tier model, we removed
@@ -170,8 +172,7 @@ as the additional input of the transformation learning model).
 %repair is dependent on the output of the method-level program repair.
 
 In this RQ, we used the same process and parameter tuning as in the
-previous experiments for the other RQs. 
-We run all approaches on the BigFix dataset.
+experiments for the other RQs. We run all models on BigFix.
 
 %the baselines and \tool in this RQ. Therefore, the parameters that
 %eed to be tuned in both baselines are the same as the ones of \tool.

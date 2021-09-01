@@ -16,10 +16,9 @@ learning framework for CCL and CTL.
 
 \subsection{Cross-stitch Unit}
 
-We perform a joint training between CCL and CTL via
-a cross-stitch unit~\cite{misra2016cross}. Let us first explain the
-cross-stitch unit and then how we leverage it for the auto bug-fixing
-problem.
+We perform a joint training between CCL and CTL via a cross-stitch
+unit~\cite{misra2016cross}. Let us first explain the cross-stitch unit
+and then how we leverage it for the Automated Program Repair problem.
 
 \begin{figure}[t]
 	\centering
@@ -28,18 +27,17 @@ problem.
 	\label{fig:cross-stitch}
 \end{figure}
 
-In Figure~\ref{fig:cross-stitch}, to apply dual learning between
-CCL and CTL, we use the cross-stitch unit to connect
-them together. The sharing of representations between CCL and
-CTL is modeled by the learning a linear combination of the
-input features from the vectorized AST (sub)trees. The top sub-network
-of the cross-stitch unit gets direct supervision from CCL and
-indirect supervision from CTL. Cross-stitch units help
-regularize both CCL and CTL by learning and enforcing
-shared representations by combining feature
+In Figure~\ref{fig:cross-stitch}, for dual learning, we use the
+cross-stitch unit to connect CCL and CTL. The sharing of
+representations between CCL and CTL is modeled by the learning a
+linear combination of the input features from the vectorized AST
+(sub)trees. The top output of the cross-stitch unit, which becomes
+CCL*, gets direct supervision from CCL and indirect supervision from
+CTL. Cross-stitch units help regularize both CCL and CTL by learning
+and enforcing shared representations by combining feature
 maps~\cite{misra2016cross}.
 
-The goal of cross-stitch unit is to learn such a linear combination of
+The goal of a cross-stitch unit is to learn a linear combination of
 both inputs from CCL and CTL, which are parameterized
 using the weights $\alpha$. The output of the cross-stitch unit is
 computed as:
@@ -82,9 +80,9 @@ TreeCaps~\cite{bui2021treecaps} with an attention layer in between of
 an encoder and a decoder. In a regular attention-based \code{seq2seq}
 model, the hidden state output from the encoder is directly connected
 to the attention layer. In {\tool}, for dual learning, we use a
-cross-stitch unit to accept as the input the hidden state from the
-outputs of the encoders of CCL and CTL. The output of the cross-stitch
-unit is connected to the attention layers of both the models. This
+cross-stitch unit to accept as the input the hidden states from the
+outputs of the encoders of CCL and CTL. The outputs of the cross-stitch
+units are connected to the attention layers of both the models. This
 joint training enables the dual learning and propagates the impact of
 context learning on code transformation learning and vice versa.
 
@@ -142,14 +140,15 @@ to enhance the APR performance. From Formula~\ref{eq:3}, we have
 	X_T = \alpha_{TC}U_C + \alpha_{TT}U_T
 \end{equation}
 If the $X_C$ and $X_T$ have different sizes, we need to resize them
-for consistence. If the size needs to be increased, we use the
-bilinear interpolation for resizing. If the size needs to be reduced,
-we do the center crop on the matrix to match the required
-size. Moreover, for efficiency, we also have a size limit for the
-fixed tree in which each buggy tree has at most $P+P^2+...+P^Q$
+for consistence. If the size needs to be increased, we use bilinear
+interpolation~\cite{bilinear-interpolation} for resizing. If the size
+needs to be reduced, we do the center crop on the matrix to match the
+required size. Moreover, for efficiency, we also have a size limit for
+the fixed tree in which each buggy tree has at most $P+P^2+...+P^Q$
 nodes.  $P$ is the number of children nodes and $Q$ is the child node
-depth. When making prediction, if one vector is close to zero, we consider
-it as empty, and all of its children nodes are considered as empty.
+depth. When making prediction, if one vector is close to zero, we
+consider it as empty, and all of its children nodes are considered as
+empty.
 
 %After solving this, here is one last problem the dual learning may
 %face. When making the prediction, because we don't know how the tree

@@ -145,10 +145,10 @@ interpolation~\cite{bilinear-interpolation} for resizing. If the size
 needs to be reduced, we do the center crop on the matrix to match the
 required size. Moreover, for efficiency, we also have a size limit for
 the fixed tree in which each buggy tree has at most $P+P^2+...+P^Q$
-nodes.  $P$ is the number of children nodes and $Q$ is the child node
-depth. When making prediction, if one vector is close to zero, we
-consider it as empty, and all of its children nodes are considered as
-empty.
+nodes.  $P$ is the max number of children nodes of a node and $Q$ is
+the max child node depth. When predicting, if one vector is close
+to zero, we consider it as empty, and all of its children nodes are
+considered as empty.
 
 %After solving this, here is one last problem the dual learning may
 %face. When making the prediction, because we don't know how the tree

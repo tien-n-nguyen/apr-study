@@ -12,9 +12,11 @@ one to learn the corresponding surrounding code contexts
 (CCL). Instead of cascading the two models, we train them
 simultaneously with soft-sharing their parameters via a cross-stitch
 unit to exploit the duality between CCL and CTL. We conducted several
-experiments to evaluate {\tool} on three large datasets. Our results
-show that {\tool} is able to fix {\bf XX\%} and {\bf XX\%} more bugs
-than the best-performance DL-based baseline models, in which several
-of them are context-dependent bugs. {\tool} detected {\bf XX} unique
-bugs that all the other DL-based APR models missed.
-
+experiments to evaluate {\tool} on three large datasets.  Our results
+show that {\tool} can fix 16.7\%, 12.1\%, and 14.6\% more bugs than
+the best-performance DL-based baseline model with only the top-1
+patches in Defects4J, Bugs.jar, and BigFix, respectively. In
+Defects4J, it improves over the baseline models from
+16.7\%--194.7\%. In Bugs.jar and BigFix, it fixes 26.4\% and
+27.7\% of the total fixed bugs that were missed by the best
+DL-based baseline.

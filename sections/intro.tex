@@ -193,9 +193,9 @@ fix 8 more bugs than the best-performance DL-based model,
 CURE~\cite{cure-icse21}.
 %, in which several of them are context-dependent bugs.
 In Defects4J, {\tool} fixes 194.7\%, 40\%, 27.3\%, and 16.7\% more
-bugs than the baseline models: SequenceR~\cite{chen2018sequencer},
+bugs than the baselines: SequenceR~\cite{chen2018sequencer},
 DLFix~\cite{li2020dlfix}, CoCoNuT~\cite{lutellier2020coconut},
-CURE~\cite{cure-icse21}, respectively. In brief, the contributions of
+CURE~\cite{cure-icse21}, respectively. The contributions of
 this paper are listed as follows:
 
 %{\bf A. DL for APR:} {\tool} is the first DL APR that generates
@@ -204,9 +204,19 @@ this paper are listed as follows:
 %on Defects4J. {\tool} helps confirm that further research on building
 %advanced DL to improve APR is promising and valuable.
 
-{\bf A. A Novel Dual-Task Learning DL-based APR Model:} A context-aware APR approach with the use of a dual learning scheme that
-exploits the duality of learning bug-fixing code transformations and
-learning code contexts to improve APR performance.
+{\bf A. A Novel Dual-Task Learning DL-based APR Model:} A
+context-aware APR approach that leverages {\bf dual learning}
+{\em to propagate the impact between context learning and
+  bug-fixing code transformation learning to improve APR
+  performance}. We propose novel {\em explicit modeling of the impact of
+contexts in APR via dual learning}.
+
+%{\bf B. Dual Learning Technique for Context Learning.} to explicitly
+%model the context and
+
+%with the use of a dual learning scheme that exploits the duality of
+%learning bug-fixing code transformations and learning code contexts to
+%improve APR performance.
 
 {\bf B. Empirical Results:} (Code and data are published~\cite{AutoFix2019}).
 {\bf Improving over all the DL-based APR approaches}: we evaluated

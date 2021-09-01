@@ -100,7 +100,9 @@ tree. $W$ is the trainable matrix; $b$ is the bias factor; $N$ is the
 total number of nodes in the convolution window. TreeCaps merges the
 output from all TBCNN layers by using a non-linear squash
 function~\cite{sabour2017dynamic}. For an AST node $j$, TreeCaps
-calculates the capsule $u_j$ as:
+calculates the capsule $u_j$ as follows (Details of the computation of
+$Y$ and $u_j$, and their relations can be found in
+TreeCaps~\cite{bui2021treecaps}):
 \begin{equation}\label{eq:2}
 	u_j = \frac{||c_j||^2}{||c_j||^2+1}\frac{c_j}{||c_j||}
 \end{equation}

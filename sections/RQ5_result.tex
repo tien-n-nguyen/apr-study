@@ -1,31 +1,6 @@
 \subsection{\bf RQ5. Evaluation on C/C++ Projects}
 \label{sec:eval-c}
 
-To evaluate {\tool} on the projects with a different programming
-language, we ran it on Codeflaws, a dataset of bugs in C/C++ projects.
-As seen in Table~\ref{RQ5}, {\tool} is able to correctly fix 513 bugs
-in the total of 3,902 bugs in that dataset, with 672 plausible
-patches. The percentage of the number of fixed bugs over the plausible
-patches for C/C++ projects is higher than that for Java projects
-(76.3\% versus 58.3\%). However, the percentage of the fixed bugs in
-the total bugs in the each dataset is similar (13.1\% in
-Codeflaws versus 14.2\% in Defects4J). In brief, the performance of
-{\tool} for C/C++ projects in Codeflaws is consistent with that for
-Java projects in Defects4J. This result also shows that {\tool} is
-able to work on any programming language because the concepts used in
-{\tool} such as code tokens, Abstract Syntax Tree (AST), the dual
-learning scheme, and the sub-models are language-independent.
-
-
-
-%As seen in Table~\ref{RQ5}, {\tool} can autofix xx bugs in C/C++
-%projects of Codeflaws.  The empirical results show that the
-%performance of {\tool} on the C/C++ projects is consistent with the
-%one on the Java projects. Specifically, the percentages of the C/C++
-%and Java bugs that can be fixed are similar, e.g., 13.1\% vs. 14.2\%,
-%respectively.
-
-
 \begin{table}[t]
 	\caption{RQ4. Codeflaws (C/C++ Projects) versus Defects4J (Java Projects). P\% = $|$Fixed Bugs$|$/\{Plausible Patches\}.}
 	\vspace{-5pt}
@@ -49,3 +24,30 @@ learning scheme, and the sub-models are language-independent.
 	}
 %	\vspace{-10pt}
 \end{table}
+  
+To evaluate {\tool} on the projects with a different programming
+language, we ran it on Codeflaws, a dataset of bugs in C/C++ projects.
+As seen in Table~\ref{RQ5}, {\tool} is able to correctly fix 513 bugs
+in the total of 3,902 bugs in that dataset, with 672 plausible
+patches. The percentage of the number of fixed bugs over the plausible
+patches for C/C++ projects is higher than that for Java projects
+(76.3\% versus 58.3\%). However, the percentage of the fixed bugs in
+the total bugs in the each dataset is similar (13.1\% in Codeflaws
+versus 14.2\% in Defects4J). In brief, the performance of {\tool} for
+C/C++ projects in Codeflaws is consistent with that for Java projects
+in Defects4J. This result also shows that {\tool} is able to work on
+any programming language because the concepts used in {\tool} such as
+code tokens, AST, dual learning, and sub-models are
+language-independent.
+
+
+
+%As seen in Table~\ref{RQ5}, {\tool} can autofix xx bugs in C/C++
+%projects of Codeflaws.  The empirical results show that the
+%performance of {\tool} on the C/C++ projects is consistent with the
+%one on the Java projects. Specifically, the percentages of the C/C++
+%and Java bugs that can be fixed are similar, e.g., 13.1\% vs. 14.2\%,
+%respectively.
+
+
+

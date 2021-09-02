@@ -112,7 +112,8 @@ public void visit(LOProject project) throws VisitorException {
 		LogicalExpression exp = exprOpsMap.get(currentOp);
 	...
   }
-  // CODIT's incorrect fix at line 3: (*@{\color{blue}else if( op)}@*) 
+// CODIT's incorrect fix at line 3:
+// (*@{\color{orange}else if( op)}@*) 
 	\end{lstlisting}
         \vspace{-17pt}
 	\caption{Comparison with CODIT: An Example}
@@ -146,13 +147,14 @@ public void visit(LOProject project) throws VisitorException {
 private Tuple readFromMemory() {
     if (mContents.size() == 0) return null;
     if (mMemoryPtr < mContents.size()) {
-(*@{\color{red}{-\quad\quad\quad     return ((ArrayList<Tuple>)mContents).get(mMemoryPtr++);}}@*)
-(*@{\color{cyan}{+\quad\quad\quad    return ((List<Tuple>)mContents).get(mMemoryPtr++);}}@*)
+(*@{\color{red}{-\quad\quad return ((ArrayList<Tuple>)mContents).get(mMemoryPtr++);}}@*)
+(*@{\color{cyan}{+\quad\quad return ((List<Tuple>)mContents).get(mMemoryPtr++);}//correct fix by {\tool} }@*)
 	} else {
         return null;
     }
-    // 
 }
+// Tufano19's incorrect fix at line 2:
+// (*@{\color{orange}if( mMemoryPtr.size () == 0) return null}@*) 
 	\end{lstlisting}
         \vspace{-15pt}
 	\caption{Comparison with Tufano19': An Example}
@@ -244,18 +246,26 @@ is not well-suited for structural changes.
 	}
 	\begin{lstlisting}[]
 public int getPartition(PigNullableWritable wrappedKey, Writable value, int numPartitions) {
-	....
-	indexes = reducerMap.get(keyTuple);
-	// if the reducerMap does not contain the key, do the default hash based partitioning
-	if (indexes == null) {
-(*@{\color{red}{-\quad\quad\quad  return (Math.abs(keyTuple.hashCode()) \% totalReducers);	}}@*)
-(*@{\color{cyan}{+\quad\quad\quad     return (Math.abs(keyTuple.hashCode() \% totalReducers));}}@*)
-	}
-	....
+  ....
+  indexes = reducerMap.get(keyTuple);
+  // if reducerMap does not contain the key, default hash based partitioning
+  if (indexes == null) {
+(*@{\color{red}{-\quad return (Math.abs(keyTuple.hashCode()) \% totalReducers);	}}@*)
+(*@{\color{cyan}{+\quad return (Math.abs(keyTuple.hashCode() \% totalReducers)); // correct fix by {\tool}}}@*)
+  }
+  ....
 }
+// SequenceR's incorrect fix at line 6:
+// (*@{\color{orange}return (Math.abs( keyTuple. get()) \% totalReducers);}@*)
+// CoCoNuT's incorrect fix at line 6:
+// (*@{\color{orange}return ( Math.abs( keyTuple. hashCode());}@*)
+// CURE's incorrect fix at line 6:
+// (*@{\color{orange}return ( Math.abs( keyTuple. hashCode()) / totalReducers);}@*)
+// DLFix's incorrect fix at line 6:
+// (*@{\color{orange}return ( Math.abs( keyTuple. hashCode()) \% curIndex);}@*)
 	\end{lstlisting}
-        \vspace{-12pt}
-	\caption{Comparison with the Context-aware, DL-based APR baselines: SequenceR, CoCoNuT, DLFix, and CURE}
+        \vspace{-15pt}
+	\caption{Comparison with the Context-aware, DL-based APR baselines: SequenceR, CoCoNuT, CURE, and DLFix}
 	\label{example_3}
 \end{figure}
 
@@ -263,7 +273,7 @@ public int getPartition(PigNullableWritable wrappedKey, Writable value, int numP
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=3in]{graphs/example_3.png}
-        \vspace{-6pt}
+        \vspace{-9pt}
 	\caption{AST Structural Changes for the Fix in Figure~\ref{example_3}}
 	\label{tree-change}
 \end{figure}

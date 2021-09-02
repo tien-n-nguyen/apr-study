@@ -1,4 +1,4 @@
-\section{Dual Learning Program Repair}
+\section{Dual-Learning Program Repair}
 \label{sec: dual-learning}
 
 After the representation learning step, we obtain the vectorized AST
@@ -14,7 +14,7 @@ learning framework for CCL and CTL.
 %After having the $Tree_m$, $Tree_{mf}$ pair and $Tree_s$, $Tree_{sf}$ pair from the first step, \tool uses them as the input and the ground truth to train the dual learning program repair model in this step. \tool uses the generated after fixing AST $Tree'_m$ and after fixing subtree of AST $Tree'_s$ as output for this step when making the prediction. Specifically, there are two small steps, including the AST node representation learning and the dual learning framework.
 
 
-\subsection{Cross-stitch Unit}
+\subsection{Cross-Stitch Unit}
 
 We perform a joint training between CCL and CTL via a cross-stitch
 unit~\cite{misra2016cross}. Let us first explain the cross-stitch unit

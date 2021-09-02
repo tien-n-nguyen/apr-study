@@ -1,2 +1,10 @@
 \subsection{Limitations}
 \label{sec:limitations}
+
+{\tool} still has the following limitations. First, it fixes only
+single-statement bugs. Second, it could not produce a fix with an
+arbitrarily large size because it sets a limit with $P$ and $Q$ in the
+size of the fixed subtree. Third, it does work well for the cases of
+only inserting or deleting code. Fourth, {\tool} learns only the
+tree-based code transformation, thus, has limitations in learning
+program semantic changes involving complex program dependencies, etc.

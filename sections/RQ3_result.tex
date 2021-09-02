@@ -4,7 +4,8 @@
 {\footnotesize{
 \definecolor{mygray}{gray}{.9}
 \begin{table}[t]
-	\caption{RQ3. Overlapping Analysis. The number in the gray boxes: the unique bugs that the current approach can fix. P: \% of the bugs fixed by a tool and missed by the other.}
+  \caption{RQ3. Overlapping Analysis. The number in the gray boxes: the unique bugs that the current approach can fix. P: \% of the bugs fixed by a tool and missed by the other.}
+  \vspace{-9pt}
 	\begin{center}
 		\renewcommand{\arraystretch}{1}
 		\begin{tabular}{p{1cm}<{\centering}|p{1.1cm}<{\centering}|p{0.8cm}<{\centering}|p{0.7cm}<{\centering}|p{1.1cm}<{\centering}|p{0.8cm}<{\centering}|p{0.7cm}<{\centering}}\hline
@@ -62,6 +63,25 @@ fixed by either tools in Bugs.jar dataset, 53.4\% of them were fixed by
 CODIT and missed by {\tool}. In BigFix dataset, while {\tool} can fix
 165 bugs that CODIT missed, it missed only 13 bugs that CODIT can fix.
 
+
+
+Figure~\ref{example_codit} shows an example that was correctly fixed
+by {\tool}, but missed by CODIT. The correct fix is at line 4 by
+{\tool}: \code{else} \code{if} \code{(op} \code{instanceof}
+\code{ExpressionOperator)}.  However, CODIT fixed it into \code{else}
+\code{if(} \code{op)}.
+%This is an example that CODIT missed.
+CODIT performs patch generation via translation of the buggy AST
+sub-tree. It analyzes the buggy sub-tree that covers all the edited
+nodes {\em without considering the surrounding context} in the method.
+Thus, it did not fix this bug correctly. In this case, {\tool} could
+leverage the surrounding context at line 7 with
+`\code{currentOp} \code{instanceof} \code{ExpressionOperator}' to
+generate the correct patch at line 4.
+
+%{\color{blue}{1. CODIT only do the prediction and token generation on the buggy sub-tree that covers all edited nodes without considering the other information in the same method. So it cannot catch the information about the variable $ExpressionOperator$ in the method.
+%2. Fixing results: \textit{CODIT: else if( op )$ \{$} CDFIX: \textit{else if( op instanceof ExpressionOperator ) $\{$}}}
+
 \begin{figure}[t]
 	\centering
 	\lstset{
@@ -85,37 +105,23 @@ CODIT and missed by {\tool}. In BigFix dataset, while {\tool} can fix
 public void visit(LOProject project) throws VisitorException {
     ...
 (*@{\color{red}{-	\quad else if( op instanceof LOProject ) \{ }}@*)
-(*@{\color{cyan}{+ \quad	else if( op instanceof ExpressionOperator ) \{}}@*)
+(*@{\color{cyan}{+ \quad	else if( op instanceof ExpressionOperator ) \{ //correct fix by {\tool} }}@*)
 		LogicalExpression expOper = exprOpsMap.get(op);
 	...
 	if (currentOp instanceof ExpressionOperator) {
 		LogicalExpression exp = exprOpsMap.get(currentOp);
 	...
-}
+  }
+  // CODIT's incorrect fix at line 3: (*@{\color{blue}else if( op)}@*) 
 	\end{lstlisting}
-        \vspace{-15pt}
+        \vspace{-17pt}
 	\caption{Comparison with CODIT: An Example}
 	\label{example_codit}
 \end{figure}
 
-Figure~\ref{example_codit} shows an example that was fixed by {\tool},
-but missed by CODIT. The correct fix is at line 4 by {\tool}:
-\code{else} \code{if} \code{(op} \code{instanceof}
-\code{ExpressionOperator)}.  However, CODIT fixed it into \code{else}
-\code{if(} \code{op)}.
-%This is an example that CODIT missed.
-CODIT performs patch generation via translation of the buggy AST
-sub-tree. It analyzes the buggy sub-tree that covers all the edited
-nodes {\em without considering the surrounding context} in the method.
-Thus, it did not fix this bug correctly. In this case, {\tool} could
-leverage the surrounding code context at line 7 containing
-`\code{currentOp} \code{instanceof} \code{ExpressionOperator}' to
-generate the correct patch at line 4.
-
-%{\color{blue}{1. CODIT only do the prediction and token generation on the buggy sub-tree that covers all edited nodes without considering the other information in the same method. So it cannot catch the information about the variable $ExpressionOperator$ in the method.
-%2. Fixing results: \textit{CODIT: else if( op )$ \{$} CDFIX: \textit{else if( op instanceof ExpressionOperator ) $\{$}}}
-
 \subsubsection{\bf Comparison with Tufano'19}
+
+
 
 \begin{figure}[t]
 	\centering
@@ -144,7 +150,8 @@ private Tuple readFromMemory() {
 (*@{\color{cyan}{+\quad\quad\quad    return ((List<Tuple>)mContents).get(mMemoryPtr++);}}@*)
 	} else {
         return null;
-	}
+    }
+    // 
 }
 	\end{lstlisting}
         \vspace{-15pt}

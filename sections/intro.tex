@@ -19,7 +19,7 @@ according to their techniques:
   machine learning (ML)}, and {\em deep learning (DL)}.
 
 In search-based
-  approaches~\cite{LeGoues-icse12,le2011genprog,martinez2016astor,qi2014strength},
+approaches~\cite{LeGoues-icse12,le2011genprog,martinez2016astor,qi2014strength},
 the buggy code is first mutated via certain operators to produce the
 potential solution space. Then, a search strategy is designed to find
 the fix in the solution space. Instead searching for a solution, the
@@ -36,8 +36,8 @@ techniques~\cite{le2016history,nguyen2013semfix,liu2019avatar,tbar-issta19}.
 
 Recent advances in machine learning (ML) enable several models to
 implicitly learn from prior bug fixes to apply to repair the current
-buggy code. Then, they derive the candidate fixes and rank them
-according to their
+buggy code. They derive the candidate fixes and rank them according to
+their
 likelihoods~\cite{long2016automatic,long2017automatic,saha2017elixir}.
 With the revolutionary advances in deep learning (DL), software
 engineering researchers have leverage them to automatically derive the
@@ -45,20 +45,21 @@ fixing changes to a given buggy code. Some DL-based approaches learn
 the fix from prior {\em similar bug fixes and/or
   patterns}~\cite{gupta2017deepfix,white2019sorting,white2016deep}.
 Other DL-based approaches treat APR as {\em machine translation} from
-a buggy version to a correct one with some DL models including
+a buggy version to a correct one using DL models including
 transformers and
 others~\cite{chakrabortycodit,chen2018sequencer,hata2018learning,tufano2018empirical,see2017get}. Instead
 of treating APR as machine translation, other DL-based approaches aim
 to implicitly learn the {\em transformation rules} from a buggy code
 to a correct one accordingly to the surrounding {\em context} of the
-transformations~\cite{icse20,tufano2019learning,cure-icse21}. Those
+transformations~\cite{chen2018sequencer,icse20,cure-icse21,lutellier2020coconut}. Those
 recent DL-based APR approaches have showed that {\em learning
   bug-fixing changes needs to be dependent on the surrounding {\bf
-    code context}}.  For example, a null check is needed after a call
+    code context}}. For example, a null check is needed after a call
 to read data from a socket with \code{BufferedReader.readline} to make
 sure a successful data retrieval. Those context-aware APR models have
-achieved better performance in
-automated program repair~\cite{icse20,tufano2019learning,chakrabortycodit}.
+achieved better performance in automated program
+repair~\cite{icse20,lutellier2020coconut,cure-icse21}.
+%tufano2019learning,chakrabortycodit}.
 
 Despite recognizing the importance of contexts in learning the fixes,
 the existing DL-based APR approaches still have limitations in
@@ -67,50 +68,84 @@ process. \underline{First}, the DL-based APR approaches that learn
 from {\em bug-fixing patterns}~\cite{white2016deep,gupta2017deepfix}
 have focused on similar code and/or code changes with {\em little or
   no consideration} on whether those code or fixing patterns appear in
-certain surrounding contexts. \underline{Second}, the DL-based APR
-approaches that leverage {\em machine translation or
-  transformers}~\cite{chakrabortycodit,chen2018sequencer,hata2018learning,tufano2018empirical,see2017get}
-often take too little surrounding code as context to learn fixing
-changes or do not have a clear boundary of the fixing changes and the
-context. Let us elaborate this point. Some DL-based APR approaches aim
-to learn {\em only the code changes} for a fix, e.g., from one buggy
-subtree in an Abstract Syntax Tree (AST) or a buggy statement to the
-correct subtree or statement~\cite{chakrabortycodit}. In this
-treatment, too little context might not help a model learn the fixes
-that depend on a larger surrounding code. In contrast, other
-approaches~\cite{chen2018sequencer,hata2018learning} take the entire
-buggy method and translate it to the correct one, while the fix might
-be only a small editing change to a single statement. Those
+certain surrounding contexts. \underline{Second}, some DL-based APR
+approaches aim to learn {\em only the code changes} for fixes, e.g.,
+from a buggy subtree in an Abstract Syntax Tree (AST) or a buggy
+statement to the correct subtree or correct
+statement~\cite{chakrabortycodit,see2017get}. In this treatment, too
+little context might not help a model learn the fixes that depend on a
+larger surrounding code.
+
+\underline{Third}, in contrast, other
+approaches~\cite{hata2018learning,tufano2019learning,tufano2018empirical}
+follow the machine translation direction to take the entire buggy
+method and translate it to the correct one, while the fix might be
+only a small editing change to a single statement. Those
 translation-based approaches {\em do not distinguish clearly the
   boundary} of the fixing change (e.g., to a buggy statement) and the
 surrounding context (e.g., the preceding or succeeding code). Due to
-the mixture of fixing changes and context, those machine translation
-models or transformers might not learn what fixing changes are
-appropriate in specific contexts~\cite{icse20}.
+the mixture of fixing changes and context, those translation models or
+transformers could pick the incorrect locations for fixing, because
+they might not learn what fixing changes are appropriate in specific
+contexts~\cite{icse20}. \underline{Fourth}, some other DL-based
+approaches have separate representations for
+contexts~\cite{chen2018sequencer,icse20,cure-icse21,lutellier2020coconut}.
+They extract features in the surrounding context to be fed into a DL
+model to learn to fix. \underline{Fifth}, a recent trend is to
+dedicate a separate model for context learning and another for
+transformation learning~\cite{icse20}. In DLFix~\cite{icse20}, the
+first layer is a tree-based RNN model that learns the contexts of bug
+fixes and its result is used as an additional weighting input for the
+second layer designed to learn the bug-fixing code
+transformations. However, the cascading architecture from the two
+layers create a confounding effect from the inaccuracy of the learning
+of the context to the learning of the bug-fixing transformations.
 
-\underline{Third}, to address that issue, DLFix~\cite{icse20} makes a
-clear boundary of fixing changes and the surrounding context, and
-dedicates two layers for those two tasks. The first layer is a
-tree-based RNN model that learns the contexts of bug fixes and its
-result is used as an additional weighting input for the second layer
-designed to learn the bug-fixing code transformations. However, the
-cascading architecture in DLFix from the two layers create a
-confounding effect from the inaccuracy of the learning of the context
-to the learning of the bug-fixing code transformations.
+%the DL-based APR approaches that leverage {\em machine translation or
+%  transformers}~\cite{chakrabortycodit,hata2018learning,tufano2018empirical,see2017get}
+%often take too little surrounding code as context to learn fixing
+%changes or do not have a clear boundary of the fixing changes and the
+%context. Let us elaborate this point. Some DL-based APR approaches aim
+%to learn {\em only the code changes} for a fix, e.g., from one buggy
+%subtree in an Abstract Syntax Tree (AST) or a buggy statement to the
+%correct subtree or statement~\cite{chakrabortycodit}. In this
+%treatment, too little context might not help a model learn the fixes
+%that depend on a larger surrounding code. In contrast, other
+%approaches~\cite{chen2018sequencer,hata2018learning} take the entire
+%buggy method and translate it to the correct one, while the fix might
+%be only a small editing change to a single statement. Those
+%translation-based approaches {\em do not distinguish clearly the
+%  boundary} of the fixing change (e.g., to a buggy statement) and the
+%surrounding context (e.g., the preceding or succeeding code). Due to
+%the mixture of fixing changes and context, those machine translation
+%models or transformers might not learn what fixing changes are
+%appropriate in specific contexts~\cite{icse20}.
+
+%===============================================
+%\underline{Third}, to address that issue, DLFix~\cite{icse20} makes a
+%clear boundary of fixing changes and the surrounding context, and
+%dedicates two layers for those two tasks. The first layer is a
+%tree-based RNN model that learns the contexts of bug fixes and its
+%result is used as an additional weighting input for the second layer
+%designed to learn the bug-fixing code transformations. However, the
+%cascading architecture in DLFix from the two layers create a
+%confounding effect from the inaccuracy of the learning of the context
+%to the learning of the bug-fixing code transformations.
+%---------------------------------
 
 In this work, we conjecture that the two tasks of learning the code
 context and learning the bug-fixing code transformations are related
 and dependent on each other. {\bf Correct learning of contexts can
   benefit the learning of code transformations and vice versa in
-  auto-fixing context-dependent bugs}. For example, in C code, if the
+  automated program repair}. For example, in C code, if the
 preceding code (i.e., part of the context) contains \code{fopen} as in
 \code{FILE *fd = fopen (fname, ``rb'');}, then the succeeding
 bug-fixing code is more likely to be \code{if (fd != null)} or
 \code{if (fd == null)}. However, if the preceding code contains
 \code{fread} as in \code{n = fread(buffer,1,size,fd);}, then the
 succeeding bug-fix is more likely to be \code{if (n != size)} or
-\code{if (n == size)}, rather than a null check (\code{if (n !=
-  null)}). In contrast, if the bug fix is a
+\code{if (n == size)}, rather than a null check \code{if (n !=
+  null)}. In contrast, if the bug fix is a
 change from \code{if (fd == null)} into \code{if (fd != null)}, then the
 preceding code more likely contains \code{fopen} than \code{fread}.
 Let us call such relation between two tasks as {\em duality}.
@@ -120,14 +155,14 @@ dedicates one model to learn the bug-fixing code transformations
 (CTL) and another one to learn the corresponding surrounding code
 contexts (CCL). Instead of cascading them, we train the two models
 simultaneously with soft-sharing their parameters to exploit this
-duality. Specifically, we use a model called cross-stitch
-unit~\cite{misra2016cross} that connects CTL and CCL models. The
+duality. Specifically, we use a model called {\em cross-stitch
+unit}~\cite{misra2016cross} that connects CTL and CCL. The
 sharing of representations between CCL and CTL is modeled by the
 learning a linear combination of the input features from two models.
 Cross-stitch unit helps regularize both CCL and CTL by learning and
 enforcing shared representations by combining feature maps. This joint
-training enables the dual learning and propagates the impact of
-context learning on the transformation learning and vice~versa.
+training enables the dual learning and propagates the impact of 
+context learning on transformation learning and vice~versa.
 
 In {\tool}, source code is represented by the abstract syntax tree
 (AST). For training, the input for the CCL model is the AST of a buggy
@@ -142,16 +177,26 @@ design a novel beam search that considers the tree-structure of the
 AST to improve the efficiency. Finally, the candidate patches are
 ranked and validated via test cases.
 
-We conducted several experiments to evaluate {\tool} on three
-different datasets: Defects4J~\cite{defects4j} (395 bugs),
+We conducted several experiments to evaluate {\tool} on three large
+datasets: Defects4J~\cite{defects4j} (395 bugs),
 Bugs.jar~\cite{saha2018bugs} (1,158 bugs), and
-BigFix~\cite{yioopsla19} (+4.9M methods and 1.8M buggy ones).  
-We compared {\tool} against several state-of-the-art DL-based APR
-approaches. 
-Our results show that {\tool} can fix 12.1\% and 14.6\% more bugs than the best performance DL-based model, CURE~\cite{cure-icse21}, using only the Top-1 ranked patches,  in the large datasets Bugs.jar and BigFix, respectively. 
-Additionally, {\tool} fix 89 and 45 unique bugs that CURE missed, while {\tool} missed only 50 and 27 bugs that were fixed by CURE in the Bugs.jar and BigFix datasets, respectively. 
-Furthermore, in Defects4j, {\tool} is able to fix 8 more bugs than the best performance DL-based model, CURE~\cite{cure-icse21}, in which several of them are context-dependent bugs. {\tool} can autofix 194.7\%, 40\%, 27.3\%, and 16.7\% more Defects4J bugs than the baseline models: SequenceR~\cite{chen2018sequencer}, DLFix~\cite{li2020dlfix}, CoCoNuT~\cite{lutellier2020coconut}, CURE~\cite{cure-icse21}, respectively. 
-The contributions of this paper are listed as follows:
+BigFix~\cite{yioopsla19} (+4.9M methods and 1.8M buggy ones).  We
+compared {\tool} against several state-of-the-art DL-based APR
+approaches.  Our results show that {\tool} can fix 12.1\% and 14.6\%
+more bugs than the best-performance DL-based model,
+CURE~\cite{cure-icse21}, using only the Top-1 patches, in the large
+datasets Bugs.jar and BigFix, respectively. Additionally, {\tool}
+fixed 89 and 45 unique bugs that CURE missed, while {\tool} missed
+only 50 and 27 bugs that were fixed by CURE in the Bugs.jar and BigFix
+datasets, respectively.  Furthermore, in Defects4J, {\tool} is able to
+fix 8 more bugs than the best-performance DL-based model,
+CURE~\cite{cure-icse21}.
+%, in which several of them are context-dependent bugs.
+In Defects4J, {\tool} fixes 194.7\%, 40\%, 27.3\%, and 16.7\% more
+bugs than the baselines: SequenceR~\cite{chen2018sequencer},
+DLFix~\cite{li2020dlfix}, CoCoNuT~\cite{lutellier2020coconut},
+CURE~\cite{cure-icse21}, respectively. The contributions of
+this paper are listed as follows:
 
 %{\bf A. DL for APR:} {\tool} is the first DL APR that generates
 %comparable and complementary results with powerful pattern-based
@@ -159,19 +204,32 @@ The contributions of this paper are listed as follows:
 %on Defects4J. {\tool} helps confirm that further research on building
 %advanced DL to improve APR is promising and valuable.
 
-{\bf A. A Novel Dual-Task Learning APR Model:} A DL-based,
-context-aware APR approach with the use of a dual learning scheme that
-exploits the duality of learning bug-fixing code transformations and
-learning code contexts to improve APR performance.
+{\bf A. A Novel Dual-Task Learning DL-based APR Model:} A
+context-aware APR approach that leverages {\bf dual learning} {\em to
+  propagate the impact between context learning and bug-fixing code
+  transformation learning to improve APR}. We {\bf advance
+DL-based APR} with {\em explicit modeling of the impact of contexts via
+  dual learning}.
 
-{\bf B. Empirical Results:} (Code and data are published~\cite{AutoFix2019})
-%1) {\bf Improving over recent Pattern-based APR}.  We
-%show {\tool} can auto-fix more bugs than the state-of-the-art
-%pattern-based APR models. Importantly, {\tool} is data-driven and do
-%not require explicitly learning of bug-fixing patterns.
-{\bf Improving over all the DL-based APR approaches}. We evaluated
-{\tool} against the most recent DL-based models to show that it can
-auto-fix more bugs than those state-of-the-art approaches.
+%{\bf B. Dual Learning Technique for Context Learning.} to explicitly
+%model the context and
+
+%with the use of a dual learning scheme that exploits the duality of
+%learning bug-fixing code transformations and learning code contexts to
+%improve APR performance.
+
+{\bf B. Empirical Results:} (Code and data are
+published~\cite{CDFix2022}).  {\bf Advancing DL-based APR approaches
+  with dual learning for contexts}: we evaluated {\tool} against the
+most recent DL-based models to show that it can fix more bugs than
+those approaches.
+
+
+%{\bf B. Empirical Results:} (Code and data are published~\cite{CDFix2022}).
+%{\bf Improving over all the DL-based APR approaches}: we evaluated
+%{\tool} against the most recent DL-based models to show that it can
+%auto-fix more bugs than those state-of-the-art approaches.
+
 %{\tool} is able to detect 2.5 times more bugs than the best performing
 %baseline.  {\tool} can fix 253 new bugs (out of 1158 in Bugs.jar) than
 %all the other DL-based APR techniques combined.

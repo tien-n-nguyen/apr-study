@@ -1,9 +1,11 @@
 \subsection{\bf RQ3. Overlapping Analysis}
+\label{sec:overlap}
 
 {\footnotesize{
 \definecolor{mygray}{gray}{.9}
 \begin{table}[t]
-	\caption{RQ3. Overlapping Analysis. The number in the gray boxes: the unique bugs that the current approach can fix. P: \% of the bugs fixed by a tool and missed by the other.}
+  \caption{RQ3. Overlapping Analysis. The number in the gray boxes: the unique bugs that the current approach can fix. P: \% of the bugs fixed by a tool and missed by the other.}
+  \vspace{-9pt}
 	\begin{center}
 		\renewcommand{\arraystretch}{1}
 		\begin{tabular}{p{1cm}<{\centering}|p{1.1cm}<{\centering}|p{0.8cm}<{\centering}|p{0.7cm}<{\centering}|p{1.1cm}<{\centering}|p{0.8cm}<{\centering}|p{0.7cm}<{\centering}}\hline
@@ -46,9 +48,9 @@
 }}
 
 To further study the comparison between {\tool} and the baseline
-models, we peformed an overlapping analysis on the results.  In
+models, we performed an overlapping analysis on the results.  In
 Table~\ref{RQ3_results}, each row section corresponds to the
-overlapping analysis between {\tool} and one baseline model
+overlapping result between {\tool} and one baseline model
 in two datasets.
 
 \subsubsection{{\bf Comparison with CODIT}}
@@ -56,10 +58,29 @@ in two datasets.
 As seen in Table~\ref{RQ3_results}, in Bugs.jar, {\tool} can fix 91
 bugs that CODIT missed and CODIT fixed 6 bugs that {\tool} missed,
 while both can fix the same 80 bugs. Among the total number of bugs
-fixed by both tools in Bugs.jar dataset, 53.4\% of them were fixed by
-{\tool} and missed by CODIT, while only 6\% of them were fixed by
+fixed by either tools in Bugs.jar dataset, 53.4\% of them were fixed by
+{\tool} and missed by CODIT, while only 6.8\% of them were fixed by
 CODIT and missed by {\tool}. In BigFix dataset, while {\tool} can fix
 165 bugs that CODIT missed, it missed only 13 bugs that CODIT can fix.
+
+
+
+Figure~\ref{example_codit} shows an example that was correctly fixed
+by {\tool}, but missed by CODIT. The correct fix is at line 4 by
+{\tool}: \code{else} \code{if} \code{(op} \code{instanceof}
+\code{ExpressionOperator)}.  However, CODIT fixed it into \code{else}
+\code{if(} \code{op)}.
+%This is an example that CODIT missed.
+CODIT performs patch generation via translation of the buggy AST
+sub-tree. It analyzes the buggy sub-tree that covers all the edited
+nodes {\em without considering the surrounding context} in the method.
+Thus, it did not fix this bug correctly. In this case, {\tool} could
+leverage the surrounding context at line 7 with
+`\code{currentOp} \code{instanceof} \code{ExpressionOperator}' to
+generate the correct patch at line 4.
+
+%{\color{blue}{1. CODIT only do the prediction and token generation on the buggy sub-tree that covers all edited nodes without considering the other information in the same method. So it cannot catch the information about the variable $ExpressionOperator$ in the method.
+%2. Fixing results: \textit{CODIT: else if( op )$ \{$} CDFIX: \textit{else if( op instanceof ExpressionOperator ) $\{$}}}
 
 \begin{figure}[t]
 	\centering
@@ -84,36 +105,24 @@ CODIT and missed by {\tool}. In BigFix dataset, while {\tool} can fix
 public void visit(LOProject project) throws VisitorException {
     ...
 (*@{\color{red}{-	\quad else if( op instanceof LOProject ) \{ }}@*)
-(*@{\color{cyan}{+ \quad	else if( op instanceof ExpressionOperator ) \{}}@*)
+(*@{\color{cyan}{+ \quad	else if( op instanceof ExpressionOperator ) \{ //correct fix by {\tool} }}@*)
 		LogicalExpression expOper = exprOpsMap.get(op);
 	...
 	if (currentOp instanceof ExpressionOperator) {
 		LogicalExpression exp = exprOpsMap.get(currentOp);
 	...
-}
+  }
+// CODIT's incorrect fix at line 3:
+// (*@{\color{orange}else if( op)}@*) 
 	\end{lstlisting}
-        \vspace{-15pt}
+        \vspace{-17pt}
 	\caption{Comparison with CODIT: An Example}
 	\label{example_codit}
 \end{figure}
 
-Figure~\ref{example_codit} shows an example that were fixed by
-{\tool}, but missed by CODIT. The correct fix is at line 4 by {\tool}:
-\code{else} \code{if} \code{(op} \code{instanceof}
-\code{ExpressionOperator)}.  However, CODIT fixed it into \code{else}
-\code{if(} \code{op)}. This is an example that CODIT missed.
-CODIT performs patch generation via translation of the buggy AST
-sub-tree. It analyzes the buggy sub-tree that covers all the edited
-nodes {\em without considering the surrounding context} in the method.
-Thus, it did not fix this bug correctly. In this case, {\tool} could
-leverage the surrounding code context at line 7 containing
-\code{currentOp} \code{instanceof} \code{ExpressionOperator} to
-generate the correct patch at line 4.
-
-%{\color{blue}{1. CODIT only do the prediction and token generation on the buggy sub-tree that covers all edited nodes without considering the other information in the same method. So it cannot catch the information about the variable $ExpressionOperator$ in the method.
-%2. Fixing results: \textit{CODIT: else if( op )$ \{$} CDFIX: \textit{else if( op instanceof ExpressionOperator ) $\{$}}}
-
 \subsubsection{\bf Comparison with Tufano'19}
+
+
 
 \begin{figure}[t]
 	\centering
@@ -138,12 +147,14 @@ generate the correct patch at line 4.
 private Tuple readFromMemory() {
     if (mContents.size() == 0) return null;
     if (mMemoryPtr < mContents.size()) {
-(*@{\color{red}{-\quad\quad\quad     return ((ArrayList<Tuple>)mContents).get(mMemoryPtr++);}}@*)
-(*@{\color{cyan}{+\quad\quad\quad    return ((List<Tuple>)mContents).get(mMemoryPtr++);}}@*)
+(*@{\color{red}{-\quad\quad return ((ArrayList<Tuple>)mContents).get(mMemoryPtr++);}}@*)
+(*@{\color{cyan}{+\quad\quad return ((List<Tuple>)mContents).get(mMemoryPtr++);}//correct fix by {\tool} }@*)
 	} else {
         return null;
-	}
+    }
 }
+// Tufano19's incorrect fix at line 2:
+// (*@{\color{orange}if( mMemoryPtr.size () == 0) return null}@*) 
 	\end{lstlisting}
         \vspace{-15pt}
 	\caption{Comparison with Tufano19': An Example}
@@ -159,20 +170,21 @@ bugs (58.8\%) that Tufano'19 missed and Tufano'19 fixed only 5 bugs
 In BigFix dataset, while {\tool} can fix 237 bugs that Tufano'19
 missed, it missed only 4 bugs that Tufano'19 can fix.
 
-Figure~\ref{example_tufano19} shows an example that were fixed by
-{\tool}, but missed by Tufano'19. For Tufano'19, the model uses a
-{\em machine translation approach on the entire buggy method}
-\code{readFromMemory}.  Because the model did not distinguish the
-buggy statement from the surrounding context in training, during
-fixing, the noise from the irrelevant statements in the method could
-cause it {\em predict an incorrect statement to be fixed}. In this
-example, Tufano'19 incorrectly identified line 2 as a buggy statement,
-and fixed it into \code{if(} \code{mMemoryPtr.size} \code{()}
-\code{==} \code{0)} \code{return} \code{null;}. The buggy line 4 was
-correctly fixed into line 5 by {\tool}. By distinguishing the context
-from the fixing changes, {\tool} could learn the type \code{List} of
-\code{mContents} from lines 2 and 3 in which the method \code{size()} is
-called on \code{mContents}.
+Figure~\ref{example_tufano19} shows an example that was fixed by
+{\tool}, but missed by Tufano'19. Tufano'19 uses a {\em
+  machine translation approach on the entire buggy method}
+\code{readFromMemory}.  Because {\em in training, the model did not
+distinguish the buggy statement from the surrounding context (did not
+make a clear boundary between them)}, during fixing, the noise from the
+irrelevant statements in the method could cause it {\em predict an
+  incorrect statement to be fixed}. In this example, Tufano'19
+incorrectly identified line 2 as a buggy statement, and fixed it into
+\code{if(} \code{mMemoryPtr.size} \code{()} \code{==} \code{0)}
+\code{return} \code{null;}. The buggy line 4 was correctly fixed into
+line 5 by {\tool}. By distinguishing the context from the fixing
+changes, {\tool} could learn the type \code{List} of \code{mContents}
+from lines 2 and 3 in which the method \code{size()} is called on
+\code{mContents}.
 
 %{\color{blue}{1. Tufano 19' learns and makes prediction only on the method level. In this case, it may fix the wrong position.
 %2. Fixing results:
@@ -184,31 +196,32 @@ called on \code{mContents}.
 
 \subsubsection{\bf Comparison with SequenceR}
 
-As seen in Table~\ref{RQ3_results}, in Bugs.jar dataset, {\tool} can
+As seen in Table~\ref{RQ3_results}, in Bugs\-.jar dataset, {\tool} can
 fix 76 bugs (44.6\%) that SequenceR missed and SequenceR fixed only 7
 bugs (6.8\%) that {\tool} missed, while both can fix the same 95 bugs.
 %Among the total number of bugs fixed by both tools in Bugs.jar
 %dataset, 53.4\% of them were fixed by {\tool} and missed by CODIT,
 %while only 6\% of them were fixed by CODIT and missed by {\tool}.
-In BigFix dataset, among the total number of bugs fixed by either
-tools, while {\tool} can fix 50.9\% (164 bugs) that SequenceR missed,
-it missed only 11.2\% (23 bugs) that SequenceR can fix.
+In BigFix, among all the bugs fixed by either
+tools, while {\tool} fixed 50.9\% (164 bugs) that SequenceR missed,
+it missed only 11.2\% (23 bugs) that SequenceR fixed.
 
 Figure~\ref{example_3} shows an example that SequenceR missed, but was
 fixed correctly by {\tool}. Despite considering the context, {\em
   SequenceR treats source code as a sequence of code tokens}. However,
 the fix from line 6 into line 7 involves structural changes to the AST
 of the statement at line 6 because the order of two operations
-\code{abs} and \code{\%} is changed.  In the buggy code, \code{abs} is
-operated first and then \code{\%} is next. In the correct code,
-\code{\%} is operated before \code{abs}. As shown in
+\code{abs} and \code{\%} is reversed. In the buggy code, \code{abs} is
+executed first and then \code{\%} is next. In the correct code,
+\code{\%} is executed before \code{abs}. As shown in
 Figure~\ref{tree-change}, the structure of the AST for the statement
 is changed to reflect the change in that order. However, SequenceR
-considers the statement as the sequence of tokens, and it just fixes
-it by replacing the token \code{hashCode} with the token
-\code{get}. That is, SequenceR incorrectly fixed the line 6 into
-\code{return} \code{(Math.} \code{abs(} \code{keyTuple.} \code{get()}
-\code{\%} \code{totalReducers);}.
+considers the statement as the sequence of tokens, and it fixed
+by replacing the token \code{hashCode} with the token
+\code{get}. That is, it incorrectly fixed the line 6 into
+\code{return} \code{(Math.abs(} \code{keyTuple.} \code{get())}
+\code{\%} \code{totalReducers);}. Thus, its sequence representations
+is not well-suited for structural changes.
 
 %SequenceR: \textit{return (Math.abs( keyTuple.get()) \% totalReducers);}
 
@@ -233,70 +246,80 @@ it by replacing the token \code{hashCode} with the token
 	}
 	\begin{lstlisting}[]
 public int getPartition(PigNullableWritable wrappedKey, Writable value, int numPartitions) {
-	....
-	indexes = reducerMap.get(keyTuple);
-	// if the reducerMap does not contain the key, do the default hash based partitioning
-	if (indexes == null) {
-(*@{\color{red}{-\quad\quad\quad  return (Math.abs(keyTuple.hashCode()) \% totalReducers);	}}@*)
-(*@{\color{cyan}{+\quad\quad\quad     return (Math.abs(keyTuple.hashCode() \% totalReducers));}}@*)
-	}
-	....
+  ....
+  indexes = reducerMap.get(keyTuple);
+  // if reducerMap does not contain the key, default hash based partitioning
+  if (indexes == null) {
+(*@{\color{red}{-\quad return (Math.abs(keyTuple.hashCode()) \% totalReducers);	}}@*)
+(*@{\color{cyan}{+\quad return (Math.abs(keyTuple.hashCode() \% totalReducers)); // correct fix by {\tool}}}@*)
+  }
+  ....
 }
+// SequenceR's incorrect fix at line 6:
+// (*@{\color{orange}return (Math.abs( keyTuple. get()) \% totalReducers);}@*)
+// CoCoNuT's incorrect fix at line 6:
+// (*@{\color{orange}return ( Math.abs( keyTuple. hashCode());}@*)
+// CURE's incorrect fix at line 6:
+// (*@{\color{orange}return ( Math.abs( keyTuple. hashCode()) / totalReducers);}@*)
+// DLFix's incorrect fix at line 6:
+// (*@{\color{orange}return ( Math.abs( keyTuple. hashCode()) \% curIndex);}@*)
 	\end{lstlisting}
-        \vspace{-12pt}
-	\caption{Comparison with the context-aware APR baseline models: SequenceR, CoCoNuT, DLFix, and CURE}
+        \vspace{-15pt}
+	\caption{Comparison with the Context-aware, DL-based APR baselines: SequenceR, CoCoNuT, CURE, and DLFix}
 	\label{example_3}
 \end{figure}
 
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=3in]{graphs/example_3.png}
-        \vspace{-6pt}
-	\caption{AST Structure Changes for Fixing in Figure~\ref{example_3}}
+	\includegraphics[width=3.3in]{graphs/example_3.png}
+        \vspace{-9pt}
+	\caption{AST Structural Changes for the Fix in Figure~\ref{example_3}}
 	\label{tree-change}
 \end{figure}
 
 
 \subsubsection{\bf Comparison with CoCoNuT}
 
-As seen in Table~\ref{RQ3_results}, in Bugs.jar, {\tool} can fix 51
-bugs that CoCoNuT missed and CoCoNuT fixed 20 bugs that {\tool}
+As seen in Table~\ref{RQ3_results}, in Bugs\-.jar, {\tool} can fix 51
+bugs that CoCoNuT missed and CoCoNuT fixed only 20 bugs that {\tool}
 missed, while both can fix the same 120 bugs. Among the total
-number of bugs fixed by both tools in BigFix dataset, 29.7\% of them
-were fixed by {\tool} and missed by CoCoNuT, while only 16.1\% of them
+number of bugs fixed by either tools in BigFix dataset, 29.7\% of them (96)
+were fixed by {\tool} and missed by CoCoNuT, while only 16.1\% of them (44)
 were fixed by CoCoNuT and missed by {\tool}.
 
-CoCoNuT did not fix correctly the example in Figure~\ref{example_3}.
-It fixed line 6 into \code{return (} \code{Math.} \code{abs(}
-\code{keyTuple.} \code{hashCode());}. First, CoCoNuT represents the
-source code by a sequence of tokens, which is not well-suited for this
-structural change in this example. Second, despite considering the
-context, CoCoNuT encode the surrounding code as a feature in a single
-model for learning the fix. {\tool} dedicates the context learning as
-a model separately from the model for code transformation learning.
-In this example, {\tool} is able to learn the structural change in the
-AST (Figure~\ref{tree-change}).
+CoCoNuT did not fix correctly the code in Figure~\ref{example_3}.  It
+fixed line 6 into \code{return (} \code{Math.abs(} \code{keyTuple.}
+\code{hashCode());}. First, CoCoNuT represents the source code by a
+sequence of tokens, which is not well-suited for this structural
+change in this example. Second, despite considering the context,
+CoCoNuT extracts from the surrounding code the features and feeds them
+in a single model for learning to fix. {\tool} dedicates a model for
+context learning separately from the model for code transformation
+learning. In this example, {\tool} is able to learn the structural
+changes in the AST (Figure~\ref{tree-change}).
 
 \subsubsection{\bf Comparison with CURE}
 
 As seen in Table~\ref{RQ3_results}, in Bugs.jar, {\tool} can fix 45
 bugs that CURE missed and CURE fixed 27 bugs that {\tool} missed,
 while both can fix the same 126 bugs. In BigFix dataset, the number of
-unique bugs that were fixed by {\tool} but missed by CURE is almost
-double the one that were fixed by CURE but missed by {\tool} (89
+unique bugs that were fixed by {\tool} but missed by CURE is 178\%
+more than the ones that were fixed by CURE but missed by {\tool} (89
 versus 50).
 
 CURE did not fix correctly the example in Figure~\ref{example_3}. It
-fixed the line 6 into \code{return (} \code{Math.} \code{abs(}
+fixed the line 6 into \code{return (} \code{Math.abs(}
 \code{keyTuple.} \code{hashCode())} \code{/} \code{totalReducers);}.
 That is, it just replaced the operator \code{\%} with \code{/}.
 Compared to CoCoNuT, CURE also represents source code as a sequence of
 tokens, thus, is not well-suited to learn the structural changes for
-the fix in this example. CURE is code-aware, however, similar to
-CoCoNuT, it still encodes the code-aware features from the context
+the fix in this example. CURE is code-aware,
+%however, similar to CoCoNuT, it still encodes
+and extracts the code-aware features from the context and feeds them
 into a single model. {\tool} treats context learning with the CCL
 model separately from transformation learning with the CTL model.
+The dual learning helps propagate the impact of both models on each other.
 
 \subsubsection{\bf Comparison with DLFix}
 
@@ -309,14 +332,15 @@ were fixed by DLFix and missed by {\tool}.
 
 DLFix also did not fix correctly the buggy code in
 Figure~\ref{example_3}. It fixed the line 6 into \code{return (}
-\code{Math.} \code{abs(} \code{keyTuple.} \code{hashCode())} \code{\%}
+\code{Math.abs(} \code{keyTuple.} \code{hashCode())} \code{\%}
 \code{curIndex);}. Despite that DLFix learns tree-structured code
 transformations with separate models for context learning and
 transformation learning, it follows a cascading architecture between
-two models for such learning. Thus, the incorrect learning of context
-might affect the learning of transformations. In {\tool}, context
-learning and transformation learning are treated as a dual task
-to propagate the impact on each other to help improve APR.
+the two models for APR. Thus, the incorrect learning of context might
+affect the learning of transformations. In this example,
+\code{curIndex} was incorrectly used in the fix. In {\tool}, context
+learning and transformation learning are treated as a dual task to
+propagate the impact on each other.
 
 
 %{\color{blue}{1. SequenceR, CoCoNut, CURE all using sequence structure to do the code fixing. However, it is hard for them to learn the structure changes in this example. DLFix learns the structure changes, but it does not learn it as well as CDFix.

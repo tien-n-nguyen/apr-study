@@ -150,25 +150,33 @@ The bug-fixing changes in APR often depend on the surrounding code
 context. Despite their successes, the state-of-the-art DL-based APR
 approaches still have limitations in the integration of code contexts
 in learning bug fixes. The limitations lead to the ineffectiveness of
-those DL-based approaches in learning to auto-fix {\em
-context-dependent bugs}. In this work, we conjecture that correct
-learning of contexts can benefit the learning of code transformations
-and vice versa in auto-fixing context-dependent bugs. We introduce
-{\tool}, a context-aware dual learning APR model, which dedicates one
-model to learn the bug-fixing code transformations (CTL) and another
-one to learn the corresponding surrounding code contexts
-(CCL). Instead of cascading the two models, we train them
-simultaneously with soft-sharing their parameters via a cross-stitch
-unit to exploit the duality between CCL and CTL.
+those DL-based approaches in learning to auto-fix context-dependent
+bugs. In this work, we conjecture that correct learning of contexts
+can benefit the learning of code transformations and vice versa in
+APR.
+%auto-fixing context-dependent bugs.
+We introduce {\tool}, a context-aware dual learning APR model, which
+dedicates one model to learn the bug-fixing code transformations (CTL)
+and another one to learn the corresponding surrounding code contexts
+(CCL) for the transformations. Instead of cascading the two models, we
+train them simultaneously with soft-sharing their parameters via a
+cross-stitch unit to exploit the duality between CCL and CTL.
 
 We conducted several experiments to evaluate {\tool} on three
 different datasets: Defects4J~\cite{defects4j} (395 bugs),
-Bugs.jar~\cite{saha2018bugs} (1,158 bugs), and
-BigFix~\cite{yioopsla19} (+4.9M methods and 1.8M buggy ones).  
+Bugs.jar~\cite{saha2018bugs} (1,158 bugs), and BigFix~\cite{yioopsla19} (+4.9M methods and 1.8M buggy ones).  
 We compared {\tool} against several state-of-the-art DL-based APR
-tools. Our results show that {\tool} is able to fix 16.7\%--194.7\% more bugs than the compared DL-based baseline
-models on Defects4J, in which several of them are context-dependent bugs. 
-%{\tool} detected {\bf XX} unique bugs that all the other DL-based APR models missed.
+tools. Our results show that {\tool} can fix {\bf 16.7\%},{\bf
+12.1\%}, and {\bf 14.6\%} more bugs than the best-performance DL-based
+baseline model with only the top-1 patches in Defects4J, Bugs.jar, and
+BigFix, respectively. In Defects4J, it improves over the baseline
+models from {\bf 16.7\%--194.7\%}. In Bugs.jar and BigFix, it fixes
+{\bf 26.4\%} and {\bf 27.7\%} of the total fixed bugs that were missed
+by the best DL-based baseline.
+
+%, in which several of them are context-dependent bugs. {\tool}
+%It detected {\bf XX} unique bugs that all the other DL-based APR models missed.
+
 
 %Importantly, {\tool} is automated and data-driven, and does not
 %require bug-fixing patterns.
@@ -212,7 +220,7 @@ models on Defects4J, in which several of them are context-dependent bugs.
 \input{sections/experiment}
 \input{sections/results}
 \input{sections/Threats}
-%\input{sections/Discussion}
+\input{sections/limitations}
 \input{sections/related}
 \input{sections/Conclusion}
 %\input{sections/key-ideas}

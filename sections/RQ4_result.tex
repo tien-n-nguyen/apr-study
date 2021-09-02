@@ -1,9 +1,9 @@
-\subsection{\bf RQ4. Impact of Dual-learning}
+\subsection{\bf RQ4. Impact of Dual Learning}
 
 
 
 \begin{table}[t]
-  \caption{RQ4.Impact Analysis Results of Dual Learning using BigFix Dataset.}
+  \caption{RQ4.Impact Analysis Results of Dual Learning on Performance using BigFix Dataset.}
   \vspace{-6pt}
 	{\small
 		\begin{center}
@@ -27,8 +27,9 @@ Table~\ref{fig:rq4_results} shows the result on the impact of our dual
 learning architecture on the overall {\tool}'s bug-fixing performance.
 As seen, the top-$K$ values of the \code{Transformation-only} model
 are 52.3\%, 44.7\% and 42.3\% lower than those of {\tool} in Top-1,
-Top-5, and Top-10, respectively. This result shows that 1) the context learning model in {\tool} has good impact on the overall performance, 
-and 2) the dual learning enables such impact from context learning to
+Top-5, and Top-10, respectively. This result shows that 1) the context
+learning model in {\tool} has good impact on the overall performance,
+and 2) the dual learning enables the impact from context learning to
 transformation learning to achieve high performance in APR.
 
 Moreover, the top-$K$ values of the \code{cascading} model are 21.5\%,

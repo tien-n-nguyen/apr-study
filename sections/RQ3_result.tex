@@ -47,11 +47,12 @@
 \end{table}
 }}
 
-To further study the comparison between {\tool} and the baseline
-models, we performed an overlapping analysis on the results.  In
-Table~\ref{RQ3_results}, each row section corresponds to the
-overlapping result between {\tool} and one baseline model
-in two datasets.
+%To further study the comparison between {\tool} and the baseline
+%models,
+For a comparative study, we performed an overlapping analysis on the
+results.  In Table~\ref{RQ3_results}, each row section corresponds to
+the overlapping result between {\tool} and one baseline in two
+datasets.
 
 \subsubsection{{\bf Comparison with CODIT}}
 
@@ -281,10 +282,10 @@ public int getPartition(PigNullableWritable wrappedKey, Writable value, int numP
 
 \subsubsection{\bf Comparison with CoCoNuT}
 
-As seen in Table~\ref{RQ3_results}, in Bugs\-.jar, {\tool} can fix 51
+As seen in Table~\ref{RQ3_results}, in Bugs\-.jar, {\tool} fixes 51
 bugs that CoCoNuT missed and CoCoNuT fixed only 20 bugs that {\tool}
-missed, while both can fix the same 120 bugs. Among the total
-number of bugs fixed by either tools in BigFix dataset, 29.7\% of them (96)
+missed, while both fix 120 bugs. Among the total
+number of bugs fixed by either tools in BigFix, 29.7\% of them (96)
 were fixed by {\tool} and missed by CoCoNuT, while only 16.1\% of them (44)
 were fixed by CoCoNuT and missed by {\tool}.
 

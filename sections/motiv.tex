@@ -149,12 +149,15 @@ to illustrate those limitations of the existing DL-based APR approaches.
 \subsection{Key Idea}
 \label{sec:key-idea}
 
-To address the above issue with the cascading architecture, we design
-{\tool}, a solution that treats the learning of contexts and that of
-bug-fixing code transformations as a dual-task learning. {\tool}
-consists of two models. The first one, the CCL model, is
-dedicated for learning code contexts, and the second one, the
-CTL model, is for learning bug-fixing code transformations.
+%To address the above issue with the cascading architecture,
+
+To advance DL-based APR, we {\em explicitly model the impact of
+  contexts to fixing transformation learning} and vice versa.
+We design {\tool} that treats the learning of contexts and
+that of code transformations as a dual-task. {\tool}
+consists of two models. The first one, the CCL model, is dedicated for
+learning code contexts, and the second one, the CTL model, is for
+learning bug-fixing code transformations.
 
 
 %To avoid the confounding effect in a naive solution of detecting buggy

@@ -150,31 +150,40 @@ change from \code{if (fd == null)} into \code{if (fd != null)}, then the
 preceding code more likely contains \code{fopen} than \code{fread}.
 Let us call such relation between two tasks as {\em duality}.
 
-We introduce {\tool}, a context-aware dual-learning APR model, which
-dedicates one model to learn the bug-fixing code transformations
-(CTL) and another one to learn the corresponding surrounding code
-contexts (CCL). Instead of cascading them, we train the two models
-simultaneously with soft-sharing their parameters to exploit this
-duality. Specifically, we use a model called {\em cross-stitch
-unit}~\cite{misra2016cross} that connects CTL and CCL. The
-sharing of representations between CCL and CTL is modeled by learning a linear combination of the input features from two models.
-Cross-stitch unit helps regularize both CCL and CTL by learning and
-enforcing shared representations by combining feature maps. This joint
-training enables the dual learning and propagates the impact of 
-context learning on transformation learning and vice~versa.
+We introduce {\tool}, a context-aware dual-learning APR approach, that
+{\em explicitly models the impact of context learning to fixing
+  transformation learning} and vice versa. We
+dedicates one model to learn
+%the bug-fixing
+code transformations (CTL) and another one to learn
+%the corresponding surrounding
+respective code contexts (CCL).
+%
+Instead of cascading them, we train the two models simultaneously with
+soft-sharing their parameters to exploit this duality. Specifically,
+we use a model called {\em cross-stitch unit}~\cite{misra2016cross}
+that connects CTL and CCL. The sharing of representations between CCL
+and CTL is modeled by learning a linear combination of the input
+features from two models.  Cross-stitch unit helps regularize both CCL
+and CTL by learning and enforcing shared representations by combining
+feature maps. This joint training enables the dual learning and
+propagates the impact of context learning on transformation learning
+and vice~versa.
 
-In {\tool}, source code is represented by the abstract syntax tree
+In {\tool}, source code is represented by abstract syntax tree
 (AST). For training, the input for the CCL model is the AST of a buggy
 method and that of the fixed method, and the input of the CTL model is
 the AST subtree of each of its buggy statements, and that of the
 respective fixed statement. For auto-fixing, a buggy statement to be
 fixed can be identified either by a developer or by a fault
-localization tool.  Then, {\tool} parses the buggy method including
+localization tool.  Then, we parse the buggy method including
 the buggy statement into AST. The AST subtree for the buggy statement
 is fed into the trained CTL model to produce the candidate patches. We
-design a novel beam search that considers the tree-structure of the
-AST to improve the efficiency. Finally, the candidate patches are
-ranked and validated via test cases.
+design a novel tree-oriented beam search
+%that considers the tree-structure of the
+%AST to improve the
+for efficiency. Finally, the candidate patches are ranked and
+validated via test cases.
 
 We conducted several experiments to evaluate {\tool} on three large
 datasets: Defects4J~\cite{defects4j} (395 bugs),

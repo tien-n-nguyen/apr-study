@@ -158,9 +158,11 @@ APR.
 We introduce {\tool}, a context-aware dual learning APR model, which
 dedicates one model to learn the bug-fixing code transformations (CTL)
 and another one to learn the corresponding surrounding code contexts
-(CCL) for the transformations. Instead of cascading the two models, we
-train them simultaneously with soft-sharing their parameters via a
-cross-stitch unit to exploit the duality between CCL and CTL.
+(CCL) for the transformations. Instead of cascading them, we
+train them simultaneously with soft-sharing parameters via a
+cross-stitch unit to explicitly model the impacts of contexts on
+fixing learning and vice versa.
+%exploit the duality between CCL and CTL.
 
 We conducted several experiments to evaluate {\tool} on three
 different datasets: Defects4J~\cite{defects4j} (395 bugs),

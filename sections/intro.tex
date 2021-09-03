@@ -40,7 +40,7 @@ buggy code. They derive the candidate fixes and rank them according to
 their
 likelihoods~\cite{long2016automatic,long2017automatic,saha2017elixir}.
 With the revolutionary advances in deep learning (DL), software
-engineering researchers have leverage them to automatically derive the
+engineering researchers have leveraged them to automatically derive the
 fixing changes to a given buggy code. Some DL-based approaches learn
 the fix from prior {\em similar bug fixes and/or
   patterns}~\cite{gupta2017deepfix,white2019sorting,white2016deep}.
@@ -157,8 +157,7 @@ contexts (CCL). Instead of cascading them, we train the two models
 simultaneously with soft-sharing their parameters to exploit this
 duality. Specifically, we use a model called {\em cross-stitch
 unit}~\cite{misra2016cross} that connects CTL and CCL. The
-sharing of representations between CCL and CTL is modeled by the
-learning a linear combination of the input features from two models.
+sharing of representations between CCL and CTL is modeled by learning a linear combination of the input features from two models.
 Cross-stitch unit helps regularize both CCL and CTL by learning and
 enforcing shared representations by combining feature maps. This joint
 training enables the dual learning and propagates the impact of 

@@ -1,1 +1,110 @@
 \section{Related Work}
+We summarize the related studies on automated program repair.
+
+{\bf Fixing pattern based APRs.} 
+%In the earlier stage, the automated program repair (APR) approaches aimed to automatically derive
+%{\em the fixes for similar code} cloned from one place to
+%another~\cite{icse10}, or similar code due to porting or
+%branching~\cite{ray-fse12}. 
+%
+Toward addressing the more general
+defects, several researchers have explored the {\em search-based
+	approaches}~\cite{le2011genprog,qi2014strength,LeGoues-icse12,martinez2016astor}
+in which a search strategy is performed in the space of potential
+solutions produced by several operators mutating the buggy
+code. Then, test cases and/or program verification are applied to
+select the better candidate fixes~\cite{smith2015cure}. 
+%
+In contrast to the search-based approaches, 
+the automatic or semi-automatic approaches of {\em mining and learning fixing patterns} from prior bug
+fixes~\cite{le2016history, kim2013automatic,nguyen2013semfix,liu2019avatar,tbar-issta19} have been proposed, such as synthesizing a patch using symbolic execution and
+constraint solving--SemFix~\cite{nguyen2013semfix},  
+learning models from existing submitted patches~\cite{long2016automatic,long2017automatic,le2016history}, synthesizing
+patches using method call related patterns--ELIXIR~\cite{saha2017elixir}, mining code change operations (e.g., Insert If- Statement) from the patches in code change histories--CapGen~\cite{wen2018context}, SimFix~\cite{jiang2018shaping} and
+FixMiner~\cite{koyuncu2018fixminer}, exploring fix patterns of static analysis violations--Avatar~\cite{liu2019avatar}. Tbar~\cite{tbar-issta19} is a template-based APR tool with the collected fix patterns.
+Hercules~\cite{saha2019harnessing} targets at the multi-hunk bugs that may require applying a substantially similar patch to different locations. 
+Getafix~\cite{bader2019getafix} learns fix patterns from past fixes and auto-fixes the warnings from static analyzers. 
+Our {\tool} is a data-driven and deep learning based approach and different from the above pattern-based tools. 
+
+
+
+%Prophet learns a patch ranking model using machine learning algorithm based on existing patches.  
+%Genesis~\cite{long2017automatic} can automatically infer patch generation transformed from developers' submitted patches for automated program repair. 
+%HDRepair~\cite{le2016history} was proposed to repair bugs by mining closed frequent bug fix patterns from graph-based representations of real bug fixes.
+%ELIXIR~\cite{saha2017elixir} uses method call related templates from PAR with local variables, fields, or constants, to construct more expressive repair-expressions that go into synthesizing patches. 
+
+%CapGen~\cite{wen2018context}, SimFix~\cite{jiang2018shaping}, FixMiner~\cite{koyuncu2018fixminer} are based on the frequently occurred code change operations (e.g., Insert If- Statement) that are from the patches in code change histories.
+%Avatar~\cite{liu2019avatar} exploits fix patterns of static analysis violations as ingredients for patch generation.
+
+
+%\textbf{Fix Pattern Mining and Learning based APR.}  Another direction
+%of APR approaches tend to automatically mine fix patterns or
+%templates.  For example, SemFix~\cite{nguyen2013semfix} instead uses
+%symbolic execution and constraint solving to synthesize a patch by
+%replacing only the right-hand side of assignments or branch
+%predicates.  Long and Rinard also proposed a patch generation system,
+%Prophet~\cite{long2016automatic}, that learns code correctness models
+%from a set of successful human patches. Prophet learns a patch ranking
+%model using machine learning algorithm based on existing patches.
+%They further proposed a new system, Genesis~\cite{long2017automatic},
+%which can automatically infer patch generation transforms from
+%developer submitted patches for automated program repair.  Motivated
+%by PAR~\cite{kim2013automatic}, more effective automated program
+%repair systems have been explored. HDRepair~\cite{le2016history} was
+%proposed to repair bugs by mining closed frequent bug fix patterns
+%from graph-based representations of real bug fixes.  Nevertheless, its
+%fix patterns, except the fix templates from PAR, still limits the code
+%change actions at abstract syntax tree (AST) node level, but are not
+%specific for some types of bugs.  ELIXIR~\cite{saha2017elixir}
+%aggressively uses method call related templates from PAR with local
+%variables, fields, or constants, to construct more expressive
+%repair-expressions that go into synthesizing patches.  More recently,
+%CapGen~\cite{wen2018context}, SimFix~\cite{jiang2018shaping},
+%FixMiner~\cite{koyuncu2018fixminer} are further proposed to fix bugs
+%automatically based on the frequently occurred code change operations
+%(e.g., Insert If- Statement) that are extracted from the patches in
+%developer change histories.  Avatar~\cite{liu2019avatar} exploits fix
+%patterns of static analysis violations as ingredients for patch
+%generation So far however, pattern-based APR approaches focus on
+%leveraging patches that developer applied to semantic bugs.
+
+{\em Deep Learning-based APR approaches}. Recently, deep learning (DL)
+has been applied to APR for directly generating patches. 
+ The first group of DL-based APR approaches leverage the capability of DL models
+in {\em learning similar source code for similar fixes}, such as DeepRepair~\cite{white2016deep} and DeepFix~\cite{gupta2017deepfix}. 
+%DeepRepair leverages learned code similarities, captured with recursive
+%auto-encoders~\cite{white2016deep}, to select the repair ingredients
+%from code fragments that are similar to the buggy code.
+%DeepFix~\cite{gupta2017deepfix} learns the syntax rules and is
+%evaluated on syntax errors.
+%uses deep learning to directly generate patches. The precision of this approach depends on the neutral network learned from the training
+%set. However, so far this approach is only evaluated
+%on syntactic errors.
+Some other approaches apply neural machine translation (NMT) onto APR: translating the buggy code to its fixed version, such as Ratchet~\cite{hata2018learning} and Tufano {\em et al.}~\cite{tufano2018empirical}, SequenceR~\cite{chen2018sequencer}, Tufano {\em et al.}~\cite{tufano2019learning}. However, the above early work using NMT for APR did not perform well on the benchmark dataset Defects4J compared with the well-known pattern-based tools. 
+
+Recently, DLFix~\cite{li2020dlfix}
+
+%CODIT~\cite{chakrabortycodit} learns code edits with encoding code structures in
+%an NMT model to recommend fixes. 
+%The comparison with these NMT-based APR approaches is provided in the introduction. 
+%Recently, Tufano {\em	et al.}~\cite{tufano2019learning} learn code changes using sequence-to-sequence NMT with simple code abstractions and keyword replacing. Despite of treating the APR as code transformation learning problem, their approach takes entire method as the context for a bug. Thus, it has too much noise, leading to lower effectiveness than {\tool}. In other words, the treatment of context from {\tool} helps improve over their model.
+
+
+%DeepRepair~\cite{white2019sorting} is an early attempt to integrate machine learning in a program repair loop. DeepRepair leverages learned code similarities, captured with recursive autoencoders~\cite{white2016deep}, to select repair ingredients from code fragments that are similar to the buggy code.
+
+%SequenceR~\cite{chen2018sequencer} is another Neural Machine Translation (NMT)-based system to learn source code changes based on a seq2seq model and copy mechanism~\cite{see2017get}. DeepRepair uses machine learning to select interesting code, SEQUENCER uses machine
+%learning to generate the actual patch. However, as reported by SequenceR, it can only find 14 correct patches. Another approach using NMT, CODIT~\cite{chakrabortycodit}, has been proposed to learn code edits and recommend possible edits. However, CODIT uses tree-based NMT. Although CODIT is not designed for APR, it is tested on Defects4J. As reported, CODIT can suggest 16 correct patches. Compared with our results on the benchmark dataset Defects4J, DLFix can find xx patches.
+
+%Hata et al.~\cite{hata2018learning} proposes, Ratchet, a patch
+%generation system using the basic attention-based Encoder and Decoder
+%machine translation model.
+%Similar to Ratchet, Tufano et al.~\cite{tufano2018empirical} use the
+%basic encoder-decoder machine translation model and code abstraction
+%to generate patches. Furthermore, Tufano et
+%al.~\cite{tufano2019learning} propose a deep learning based approach
+%for learning code changes using the techniques including code
+%abstraction, keywords replacing and neural machine translation
+%model. They claim that their approach can be applied to APR. Through
+%empirical comparisons, our approach DLFix outperforms them.
+
+%Compared with the above studies using deep learning, our approach is mainly different in the following ways: (1) we develop a new two-layer Tree-based NMT model that is different from any existing NMT model; (2) we do not just learn the context from the changed lines, but also the code surrounding a fix, which makes our model more powerful on learning; and (3) we combine program analysis techniques, such as alpha-renaming and verifying program semantics.

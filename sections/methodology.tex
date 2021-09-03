@@ -59,7 +59,7 @@ dual learning for context learning and code transformation learning as
 in {\tool}. It uses ensemble learning on the combination of
 convolutional neural networks and a context-aware machine translation.
 
-{\bf DLFix~\cite{icse20}: } is a two-tier DL-based model that
+{\bf DLFix~\cite{li2020dlfix}: } is a two-tier DL-based model that
 treats APR as code transformation learning from the prior bug fixes
 and the surrounding code contexts. It follows a cascading architecture
 between two models of context learning and transformation learning.
@@ -82,7 +82,7 @@ training dataset and evaluated on Defects4J dataset.
 We used the correct fixing locations for the models to perform fixing
 and used test cases for validation steps.  We set a 5-hour limit for
 the validation step for all approaches as in previous
-work~\cite{icse20,tbar-issta19}.
+work~\cite{li2020dlfix,tbar-issta19}.
 
 
 \underline{Parameter tuning.} We tuned the baselines with the
@@ -101,7 +101,7 @@ representation and its output (i.e., 150, 200, 250, 300).
 
 \underline{Baselines.} We compare {\tool} with the following state-of-the-art DL-based APR baseline models:
 
-{\bf SequenceR~\cite{chen2018sequencer}, CoCoNuT~\cite{lutellier2020coconut}, DLFix~\cite{icse20}, CURE~\cite{cure-icse21}:} as explained in RQ1.
+{\bf SequenceR~\cite{chen2018sequencer}, CoCoNuT~\cite{lutellier2020coconut}, DLFix~\cite{li2020dlfix}, CURE~\cite{cure-icse21}:} as explained in RQ1.
 
 {\bf CODIT~\cite{chakrabortycodit}:} is the DL-based APR approach using
 sequence-to-sequence machine translation model with the abstractions on tree

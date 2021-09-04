@@ -40,8 +40,10 @@ might face the combinatorial explosion when considering a potential
 large number of nodes in the output subtree $T_i$ at each time step
 $i$.
 
-Because the beam search component aims to produce the subtree to be
-used as the input of the decoder at the next time step $i+1$
+Because the beam search component aims to produce the subtree
+in which some of its nodes will be used in the tree-based convolutional
+window as the input of the decoder at the next time step $i+1$
+%to be used as the input of the decoder at the next time step $i+1$
 (Figure~\ref{fig:patch-gen}), it must work in accordance with the
 TreeCaps component. TreeCaps computes the vector from bottom up (i.e.,
 the vectors for children nodes are computed before the one for their

@@ -8,7 +8,8 @@
 Figure~\ref{overview-training} displays the general architecture of
 {\tool}'s training process. The input of this process is the
 source code of a buggy method and one of its buggy statements, and the
-respective fixed source code. If a method has multiple buggy
+respective fixed source code. 
+If a method has multiple buggy
 statements, we treat one buggy statement and that enclosing method at
 a time as a training instance. The output includes the trained
 tree-based code context learning model (CCL model to learn the
@@ -19,10 +20,11 @@ process has two main steps:
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=3.4in]{graphs/overview-training.png}
+	\includegraphics[width=3.4in]{graphs/new_overview.png}
         \vspace{-15pt}
 	\caption{{\tool}: Training Process}
 	\label{overview-training}
+	\vspace{-10pt}
 \end{figure}
 
 \vspace{3pt}

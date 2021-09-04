@@ -1629,17 +1629,36 @@ numpages = {27},
 keywords = {Code transform, Patch generation, Automated program repair}
 }
 
-@inproceedings{hercules-icse19,
-author = {Saha, Seemanta and Saha, Ripon K. and Prasad, Mukul R.},
-title = {Harnessing Evolution for Multi-Hunk Program Repair},
-year = {2019},
-publisher = {IEEE Press},
-doi = {10.1109/ICSE.2019.00020},
-url = {https://doi.org/10.1145/3360588}
-booktitle = {Proceedings of the 41st International Conference on Software Engineering},
-pages = {13–24},
-numpages = {12},
-series = {ICSE ’19}
+@inproceedings{10.1109/ICSE.2019.00020,
+	author = {Saha, Seemanta and Saha, Ripon K. and Prasad, Mukul R.},
+	title = {Harnessing Evolution for Multi-Hunk Program Repair},
+	year = {2019},
+	publisher = {IEEE Press},
+	url = {https://doi.org/10.1109/ICSE.2019.00020},
+	doi = {10.1109/ICSE.2019.00020},
+	abstract = {Despite significant advances in automatic program repair (APR) techniques over the
+	past decade, practical deployment remains an elusive goal. One of the important challenges
+	in this regard is the general inability of current APR techniques to produce patches
+	that require edits in multiple locations, i.e., multi-hunk patches. In this work,
+	we present a novel APR technique that generalizes single-hunk repair techniques to
+	include an important class of multi-hunk bugs, namely bugs that may require applying
+	a substantially similar patch at a number of locations. We term such sets of repair
+	locations as evolutionary siblings - similar looking code, instantiated in similar
+	contexts, that are expected to undergo similar changes. At the heart of our proposed
+	method is an analysis to accurately identify a set of evolutionary siblings, for a
+	given bug. This analysis leverages three distinct sources of information, namely the
+	test-suite spectrum, a novel code similarity analysis, and the revision history of
+	the project. The discovered siblings are then simultaneously repaired in a similar
+	fashion. We instantiate this technique in a tool called Hercules and demonstrate that
+	it is able to correctly fix 46 bugs in the Defects4J dataset, the highest of any individual
+	APR technique to date. This includes 15 multi-hunk bugs and overall 11 bugs which
+	have not been fixed by any other technique so far.},
+	booktitle = {Proceedings of the 41st International Conference on Software Engineering},
+	pages = {13–24},
+	numpages = {12},
+	keywords = {automatic program repair, code similarity, multi-hunk patches},
+	location = {Montreal, Quebec, Canada},
+	series = {ICSE '19}
 }
 
 @article{hercules2,

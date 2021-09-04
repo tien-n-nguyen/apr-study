@@ -89,12 +89,12 @@ work~\cite{icse20,tbar-issta19}.
 parameters that mentioned in their papers. We tuned \tool with the
 following parameters: {\em epoch}, {\em batch size}, {\em learning
   rate}, {\em embedding length}, the {\em max number of children nodes
-  $P$}, {\em the max children node depth} $Q$, and {\em the beam
-  search size $n$}. Our model was tuned with the following key
+  $P$}, and {\em the max children node depth} $Q$. Our model was tuned with the following key
 hyper-parameters to obtain the best performance: (1) Epoch size (i.e.,
 100, 200, 300); (2) Batch size (i.e., 64, 128, 256); (3) Learning rate
 (i.e., 0.001, 0.003, 0.005, 0.010); (4) Vector length of word
-representation and its output (i.e., 150, 200, 250, 300).
+representation and its output (i.e., 150, 200, 250, 300); (5) max number of children nodes
+$P$ (i.e. 4, 5, 6); (6) max children node depth $Q$ (i.e. 3, 4, 5).
 
 {\bf RQ2. Comparison with State-of-the-art DL-based APR Approaches on
   Large Datasets.}

@@ -91,15 +91,18 @@ contexts~\cite{icse20}. \underline{Fourth}, some other DL-based
 approaches have separate representations for
 contexts~\cite{chen2018sequencer,icse20,cure-icse21,lutellier2020coconut}.
 They extract features in the surrounding context to be fed into a DL
-model to learn to fix. \underline{Fifth}, a recent trend is to
-dedicate a separate model for context learning and another for
-transformation learning~\cite{icse20}. In DLFix~\cite{icse20}, the
-first layer is a tree-based RNN model that learns the contexts of bug
-fixes and its result is used as an additional weighting input for the
-second layer designed to learn the bug-fixing code
-transformations. However, the cascading architecture from the two
-layers create a confounding effect from the inaccuracy of the learning
-of the context to the learning of the bug-fixing transformations.
+model to learn to fix. \underline{Fifth}, a recent trend shows that
+dedicating a separate model for context learning improves DL-based APR
+performance~\cite{icse20}.
+%is to dedicate a separate model for context learning and another for
+%transformation learning~\cite{icse20}.
+In DLFix~\cite{icse20}, the first layer is a tree-based RNN model that
+learns the contexts of bug fixes and its result is used as an
+additional weighting input for the second layer designed to learn the
+bug-fixing code transformations. However, the cascading architecture
+from the two layers create a confounding effect from the inaccuracy of
+the learning of the context to the learning of the bug-fixing
+transformations.
 
 %the DL-based APR approaches that leverage {\em machine translation or
 %  transformers}~\cite{chakrabortycodit,hata2018learning,tufano2018empirical,see2017get}
@@ -151,13 +154,10 @@ preceding code more likely contains \code{fopen} than \code{fread}.
 Let us call such relation between two tasks as {\em duality}.
 
 We introduce {\tool}, a context-aware dual-learning APR approach, that
-{\em explicitly models the impact of context learning to fixing
-  transformation learning} and vice versa. We
-dedicates one model to learn
-%the bug-fixing
-code transformations (CTL) and another one to learn
-%the corresponding surrounding
-respective code contexts (CCL).
+{\bf {\em explicitly models the impact of context learning to code
+  transformation learning}} and vice versa. We dedicates one model to
+learn code transformations (CTL) and another one to learn respective
+code contexts (CCL).
 %
 Instead of cascading them, we train the two models simultaneously with
 soft-sharing their parameters to exploit this duality. Specifically,

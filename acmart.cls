@@ -37,7 +37,7 @@
 %%   Right brace   \}     Tilde         \~}
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{acmart}
-[2021/05/01 v1.78 Typesetting articles for the Association for Computing Machinery]
+[2021/09/24 v1.80 Typesetting articles for the Association for Computing Machinery]
 \def\@classname{acmart}
 \InputIfFileExists{acmart-preload-hook.tex}{%
   \ClassWarning{\@classname}{%
@@ -939,7 +939,9 @@
   CIE,%
   CSUR,%
   DGOV,%
+  DLT,%
   DTRAP,%
+  FAC,%
   HEALTH,%
   IMWUT,%
   JACM,%
@@ -1011,10 +1013,18 @@
   \def\@journalName{Digital Government: Research and Practice}%
   \def\@journalNameShort{Digit. Gov. Res. Pract.}%
   \def\@permissionCodeOne{2639-0175}%
+\or % DLT
+  \def\@journalName{Distributed Ledger Technologies: Research and Practice}%
+  \def\@journalNameShort{Distrib. Ledger Technol.}%
+  \def\@permissionCodeOne{2769-6472}%
 \or % DTRAP
   \def\@journalName{Digital Threats: Research and Practice}%
   \def\@journalNameShort{Digit. Threat. Res. Pract.}%
   \def\@permissionCodeOne{2576-5337}%
+\or % FAC
+  \def\@journalName{Formal Aspects of Computing}%
+  \def\@journalNameShort{Form. Asp. Comput.}%
+  \def\@permissionCodeOne{0934-5043}%
 \or % HEALTH
   \def\@journalName{ACM Transactions on Computing for Healthcare}%
   \def\@journalNameShort{ACM Trans. Comput. Healthcare}%
@@ -1094,14 +1104,20 @@
   \def\@permissionCodeOne{2375-4699}%
 \or % TAP
   \def\@journalName{ACM Transactions on Applied Perception}%
+  \def\@journalNameShort{ACM Trans. Appl. Percept.}%
+  \def\@permissionCodeOne{1544-3558}%
 \or % TCPS
   \def\@journalName{ACM Transactions on Cyber-Physical Systems}%
+  \def\@journalNameShort{ACM Trans. Cyber-Phys. Syst.}%
+  \def\@permissionCodeOne{2378-962X}%
 \or % TDS
   \def\@journalName{ACM/IMS Transactions on Data Science}%
   \def\@journalNameShort{ACM/IMS Trans. Data Sci.}%
   \def\@permissionCodeOne{2577-3224}%
 \or % TEAC
   \def\@journalName{ACM Transactions on Economics and Computation}%
+  \def\@journalNameShort{ACM Trans. Econ. Comput.}%
+  \def\@permissionCodeOne{2167-8375}%
 \or % TECS
   \def\@journalName{ACM Transactions on Embedded Computing Systems}%
   \def\@journalNameShort{ACM Trans. Embedd. Comput. Syst.}%
@@ -3061,6 +3077,14 @@
        arXiv:#2%
     \fi
   \fi}
+\def\theindex{\@restonecoltrue\if@twocolumn\@restonecolfalse\fi
+  \columnseprule\z@ \columnsep 35\p@
+  \@indextitlestyle
+  \let\item\@idxitem
+  \parindent\z@  \parskip\z@\@plus.3\p@\relax
+  \raggedright
+  \hyphenpenalty\@M
+  \footnotesize}
 \let\@vspace@orig=\@vspace
 \let\@vspacer@orig=\@vspacer
 \apptocmd{\@vspace}{\ClassWarning{\@classname}{\string\vspace\space should

@@ -3,10 +3,11 @@
 %Fixing software defects is one of the crucial maintenance
 %activities. Thus,
 
-Detecting and fixing software defects is one of the most crucial
-activities in software development. Several researchers have
-developed the approaches to automate that process. The approaches that
-help developers automatically fix a software defect in a program is
+%Detecting and fixing software defects is one of the most crucial
+%activities in software development.
+Several researchers have developed the approaches to automate the
+process of fixing software defects. The approaches that help
+developers automatically fix a software defect in a program is
 referred to as {\em automated program repair} (APR). The APR
 approaches can be broadly classified in the following categories
 according to their techniques:
@@ -40,9 +41,9 @@ buggy code. They derive the candidate fixes and rank them according to
 their
 likelihoods~\cite{long2016automatic,long2017automatic,saha2017elixir}.
 With the revolutionary advances in deep learning (DL), software
-engineering researchers have leveraged them to automatically derive the
-fixing changes to a given buggy code. Some DL-based approaches learn
-the fix from prior {\em similar bug fixes and/or
+engineering researchers have leveraged them to automatically derive
+the fixing changes to a given buggy code. Some DL-based approaches
+learn the fix from prior {\em similar bug fixes and/or
   patterns}~\cite{gupta2017deepfix,white2019sorting,white2016deep}.
 Other DL-based approaches treat APR as {\em machine translation} from
 a buggy version to a correct one using DL models including
@@ -54,10 +55,10 @@ to a correct one accordingly to the surrounding {\em context} of the
 transformations~\cite{chen2018sequencer,icse20,cure-icse21,lutellier2020coconut}. Those
 recent DL-based APR approaches have showed that {\em learning
   bug-fixing changes needs to be dependent on the surrounding {\bf
-    code context}}. For example, a null check is needed after a call
-to read data from a socket with \code{BufferedReader.readline} to make
-sure a successful data retrieval. Those context-aware APR models have
-achieved better performance in automated program
+    code context}}. For example, a {\em null check} is needed after a
+call to read data from a socket with \code{BufferedReader.readline} to
+make sure a successful data retrieval. Those context-aware APR models
+have achieved better performance in automated program
 repair~\cite{icse20,lutellier2020coconut,cure-icse21}.
 %tufano2019learning,chakrabortycodit}.
 

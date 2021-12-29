@@ -56,7 +56,7 @@ to implicitly learn the {\em transformation rules} from a buggy code
 to a correct one accordingly to the surrounding {\em context} of the
 transformations~\cite{chen2018sequencer,icse20,cure-icse21,lutellier2020coconut}.
 Those approaches show that {\em learning bug-fixing changes needs to
-  be dependent on {\bf code context}}. For example, in
+  be dependent on {\em code context}}. For example, in
 C~code, if the preceding context contains \code{fopen} as in
 \code{FILE *fd = fopen (fname, ``rb'');}, the succeeding
 bug-fixing code is more likely to be \code{if (fd != null)} or
@@ -111,10 +111,10 @@ first layer is a tree-based RNN model that learns the contexts of bug
 fixes (CCL) and its result is used as an additional weighting input
 for the second layer designed to learn the bug-fixing code
 transformations (CTL). However, the cascading architecture from CCL
-$\rightarrow$ CTL creates a confounding effect from the inaccuracy of
+$\rightarrow$ CTL creates a {\em confounding effect} from the inaccuracy of
 the learning of the context to the learning of the bug-fixing
-transformations. Moreover, the equally important impact from CTL to
-CCL is not considered. Such impact from the direction of CTL
+transformations. Moreover, {\em the equally important impact from CTL to
+CCL is not considered}. Such impact from the direction of CTL
 $\rightarrow$ CCL, could help the model correctly learn the context,
 leading to better code-transformation learning for context-dependent
 bugs. In the previous example, if the bug fix is a change from
@@ -188,21 +188,22 @@ context more likely contains \code{fopen(...)} than \code{fread(...)}.
 %  transformations and vice versa in automated program repair}
 
 We introduce {\tool}, a context-aware dual-task learning APR approach,
-that {\bf {\em explicitly models the mutual impact of context learning
-    and code transformation learning}} and vice versa. We train the
-two models simultaneously with soft-sharing their parameters to
-exploit the duality of CCL and CTL. Specifically, we use a model
-called {\em cross-stitch unit}~\cite{misra2016cross} that connects CTL
-and CCL. The sharing of representations between CCL and CTL is modeled
-by learning a linear combination of the input features from two
+that {\em explicitly models the mutual impact of context learning and
+  code transformation learning in both directions}. We train the two
+models simultaneously with soft-sharing parameters to exploit the
+duality of CCL and CTL. Specifically, we use a model called {\em
+  cross-stitch unit}~\cite{misra2016cross} that connects CTL and
+CCL. The sharing of representations between CCL and CTL is modeled by
+learning a linear combination of the input features from two
 models. Cross-stitch unit helps regularize both CCL and CTL by
 learning and enforcing shared representations by combining feature
 maps. This joint training enables the dual-task learning to propagate
 the impact of CCL and CTL and vice~versa. With the dual-task learning
 solution, {\tool} has two key departure points to address the
-limitations of the existing DL-based APR approaches: 1) it models both
-directions of the mutual impacts of CCL and CTL; 2) it overcomes the
-confounding effect in the existing cascading architecture.
+limitations of the existing DL-based APR approaches: {\bf 1) it models
+  both directions of the mutual impacts of CCL and CTL; 2) it
+  overcomes the confounding effect in the existing cascading
+  architecture}.
 
 In {\tool}, for training, the input for the CCL model is the Abstract
 Syntax Tree (AST) of a buggy method and that of the fixed method, and
@@ -242,10 +243,12 @@ respectively. The contributions of this paper are listed as follows:
 
 {\bf A. A Novel Dual-Task Learning DL-based APR Model:}
 
-1) Leveraging dual-task learning to propagate the mutual impacts
-of context learning and transformation learning in both directions.
+1) First APR approach {\em leveraging dual-task learning to propagate
+  the mutual impacts of context learning and transformation learning
+  in both directions} to improve APR performance.
 
-2) Dual-task learning avoids confounding inaccuracies.
+2) Advancing DL-based APR approaches with dual-task learning
+to avoid confounding inaccuracies from cascading architecture.
 
 %A context-aware APR approach that leverages dual learning {\em to
 %  propagate the impact between context learning and bug-fixing code
@@ -261,11 +264,18 @@ of context learning and transformation learning in both directions.
 %improve APR performance.
 
 {\bf B. Empirical Results:} (Code and data are
-published~\cite{CDFix2022}).  {\bf Advancing DL-based APR approaches
-  with dual-task learning for CCL and CTL}: we evaluated {\tool} against the
-DL-based models to show that it can fix more bugs than
-those approaches.
+published~\cite{CDFix2022}).
+%{\bf Advancing DL-based APR approaches with dual-task learning for CCL
+%  and CTL}:
+%Extensive experiments were performed to evaluate different aspects
+%of {\tool} and comparison.
+%We evaluated {\tool} against the DL-based models to show that it can
+%fix more bugs than those approaches.
+Experiments show {\tool}'s improvements over prior
+DL-based APRs.
 
+%to evaluate {\tool} and show it improves
+%APR performance over the existing DL-based approaches.
 
 %{\bf B. Empirical Results:} (Code and data are published~\cite{CDFix2022}).
 %{\bf Improving over all the DL-based APR approaches}: we evaluated

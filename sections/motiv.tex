@@ -41,7 +41,7 @@
     }
 	\end{lstlisting}
         \vspace{-15pt}
-        \caption{Bug-Fixing Change Depends on Context}
+        \caption{Mutual Impact between Context and Fixing Change}
         \vspace{-8pt}
         \label{fig:motiv}
 \end{figure}
@@ -75,28 +75,34 @@ variable is incorrect (\code{if (dataset != null)}). The result is
 returned only when the dataset (line 7) is empty. Thus, it was fixed
 into \code{if (dataset == null)}.
 
-\noindent {\bf Observation [Bug-Fixing Change Depends on Context]}. We
-can see that the bug-fixing change from line 8 to line 9 (\code{if
-  (dataset != null)} $\rightarrow$ \code{if (dataset == null)})
-depends on the surrounding code context. On line 7, the dataset is
-retrieved via \code{getDataset}. According to the logic of the
-program, the result is returned when \code{dataset} is \code{null}.
-Thus, the incorrect checking was fixed into line 9. That is, that fix
-makes sense in the context of the appearance of \code{getDataset} as
-well as the other code such as \code{getIndexOf},
-\code{LegendItemCollection}, and the succeeding code
-(\code{dataset.getRowCount}, \code{return result}, etc.).
+\noindent {\bf Observation 1 [Fixing Change Depends on
+    Context]}. As seen, the bug-fixing change from line 8 to
+line 9 (\code{if (dataset != null)} $\rightarrow$ \code{if (dataset ==
+  null)}) depends on the surrounding code context. On line 7, the
+dataset is retrieved via \code{getDataset}. According to the logic of
+the program, the result is returned when \code{dataset} is
+\code{null}.  Thus, the incorrect checking was fixed into line 9. That
+is, that fix (rather than \code{if (dataset == 0)}) makes sense in
+the context of \code{getDataset} as well as the other code such as
+\code{getIndexOf}, \code{LegendItemCollection}, and the succeeding
+code (\code{dataset.getRowCount}, \code{return result}, etc.).
+
+\noindent {\bf Observation 2 [Context Depends on Fixing
+    Change]}. Because of the change (\code{if (dataset != null)}
+$\rightarrow$ \code{if (dataset == null)}), the key features in the
+context could likely be \code{getDataset} and \code{getIndexOf},
+rather than \code{this.plot == null} (line 3) or \code{return result;}
+(line 4).
 
 Despite their successes, the state-of-the-art DL-based APR approaches
 are still limited in integrating the contextual information.
 
-\underline{First}, for the DL-based approaches that learn the
-fixes from prior {\em similar bug fixes or
+\underline{First}, for the DL-based approaches that learn the fixes
+from prior {\em similar bug fixes or
   patterns}~\cite{gupta2017deepfix,white2019sorting,white2016deep},
 there might not be any fix similar to the one in
-Figure~\ref{fig:motiv}. In general, they focus on similar bug fixes
-with little or no consideration on whether a fix appears in certain
-context.
+Figure~\ref{fig:motiv}. They focus on similar bug fixes with little or
+no consideration on whether a fix appears in certain~context.
 
 \underline{Second}, some other DL-based APR approaches focus {\em only
   on learning the changes} to fix an AST subtree or a
@@ -125,27 +131,36 @@ contexts~\cite{chen2018sequencer,cure-icse21,lutellier2020coconut}.
 SequenceR~\cite{chen2018sequencer},
 CoCoNuT~\cite{lutellier2020coconut}, and CURE~\cite{cure-icse21}
 extract features in the surrounding context (e.g., lines 2--7, lines
-10--15) to be fed into a DL model to learn to fix. These approaches
-utilize only one DL model for learning the fixes using the features
-extracted from the contexts.
+10--15) to be fed into a DL model to learn to fix.
+%These approaches utilize only one DL model for learning the fixes
+%using the features extracted from the contexts.
 
 %\underline{Finally}, recent DL-based APR
 %approaches~\cite{icse20,cure-icse21} have leveraged the context to
 %help better fix a bug. They separately consider the surrounding code
 %as the context (e.g., lines 2--7, lines 10--15).
 
-\underline{Fifth}, DLFix~\cite{icse20} shows that dedicating a
-separate model for context learning can achieve better performance.
-DLFix has a two-tier model in which one tree-based LSTM model learns
-the context and another one learns the code transformation (from line
-8 to line 9). However, it cascades the first LSTM model to the second
-one in which the output of the model for contexts is used as a weight
-for the one for bug-fixing transformations. This cascading
-architecture creates a confounding effect from the inaccuracy of the
-learning of the context to the learning of the transformations.
-
+\underline{Fifth}, a recent trend shows that
+%DLFix~\cite{icse20} shows that
+dedicating a separate model for context learning can achieve better
+performance than using a single
+model~\cite{icse20}. DLFix~\cite{icse20} has two models in which one
+tree-based LSTM model learns the context and another one learns the
+code transformation (e.g., from line 8 to line 9). It cascades the
+first LSTM model to the second one in which the output of the model
+for contexts is used as a weight for the transformation learning one.
+Thus, DLFix~\cite{icse20} suffers two limitations: 1) it does not
+capture well both directions of the mutual impact between two types of
+learning (esp. from bug-fixing learning to context learning), 2) it
+creates confounding inaccuracies as explained.
+%
+%This cascading architecture creates a confounding effect from the
+%inaccuracy of the learning of the context to the learning of the
+%transformations.
 In Section~\ref{sec:overlap}, we will present our study and examples
-to illustrate those limitations of the existing DL-based APR approaches.
+to illustrate this.
+
+%those limitations of the existing DL-based APR approaches.
 
 \subsection{Key Idea}
 \label{sec:key-idea}

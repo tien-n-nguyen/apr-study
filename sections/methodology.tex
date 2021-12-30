@@ -30,8 +30,9 @@ and a single Nvidia A100 GPU.
 
 \subsubsection{Evaluation Metrics}
 
-We use three evaluation metrics to evaluate the performance of \tool
-and the baseline models.
+We use the following three metrics:
+
+%to evaluate the performance of \tool and the baseline models.
 
 {\bf 1. Correct Patches/Plausible Patches:} Correct patches are the
 fixes that exactly match or have the same semantic meaning as the
@@ -51,14 +52,13 @@ that exactly match with actual fixes.
 {\bf 3. Top-$K$:} is the percentage of total bugs in which a correct
 patch for a bug is in the ranked list of top-$K$ candidate patches.
 
-\subsubsection{Evaluation Methodology.}
+\subsubsection{Evaluation Methodology.\\}
 %We use the following settings for different RQs:
 
-{\bf RQ1. Comparison with the state-of-the-art DL-based APR Approaches on
-  Defects4J Dataset.}
-
-\underline{Baselines.} We compare {\tool} with the following
-state-of-the-art deep learning (DL)-based APR baseline models:
+{\bf RQ1. Comparison with DL-based APR Approaches on Defects4J.}
+%\underline{Baselines.}
+We compare {\tool} with the following
+DL-based baselines:
 
 %{\it Hercules \cite{hercules-icse19}: } is a novel APR technique that generalizes single-hunk repair to encompass a specific but significant class of multi-hunk repair problems.
 
@@ -75,17 +75,29 @@ and its context separately.
 It uses ensemble learning on the combination of convolutional neural
 networks and a context-aware machine translation.
 
-{\bf DLFix~\cite{icse20}: } is a two-tier DL-based model that
-treats APR as code transformation learning from the prior bug fixes
-and the surrounding code contexts. It follows a cascading architecture
-between two models of context learning and transformation learning.
+{\bf DLFix~\cite{icse20}:} DLFix has key differences with {\tool}.
+First, CCL and CTL are different. DLFix uses code summarization to
+collapse the buggy and fixed subtrees, and uses the new trees with
+summarized nodes to train CCL. Second, CCL connects to CTL in a
+cascading manner in which the vector for the summarized node is used
+as a weight representing the impact from CCL to CTL. The weighting
+vector is used in a cross-product with all the vectors for the nodes
+in the buggy and fixed subtrees to train the CTL model.
 
-{\bf CURE~\cite{cure-icse21}: } is a machine-translation-based program repair
-technique using GPT~\cite{radford2018improving} that by design parses, models, and searches source code, as
-opposed to natural language text, to fix bugs automatically. It treats
-context separately from the buggy statements as in CoCoNuT. It does
-not have the dual learning for context learning and code
-transformation learning as in {\tool}.
+%is a two-tier DL-based model that treats APR as code transformation
+%learning from the prior bug fixes and the surrounding code
+%contexts. It follows a cascading architecture between two models of
+%context learning and transformation learning.
+
+{\bf CURE~\cite{cure-icse21}: } is a machine-translation-based program
+repair technique using GPT~\cite{radford2018improving} that parses,
+models, and searches source code, as opposed to natural language text,
+to fix bugs automatically. It treats context separately from the buggy
+statements.
+%as in CoCoNuT.
+
+%It does not have the dual learning for context learning and code
+%transformation learning as in {\tool}.
 
 
 %Tien
@@ -95,10 +107,33 @@ transformation learning as in {\tool}.
 For all approaches under study in this RQ, we used the BigFix as the
 training dataset and evaluated on Defects4J dataset. 
 %For each bug in Defects4J, we used the remaining bugs in Defects4J as the developing dataset to fine-tune the model, and used the fine-tuned model to predict the fix for the bug. 
-We used the correct fixing locations for the models to perform fixing
-and used test cases for validation steps.  We set a 5-hour limit for
-the validation step for all approaches as in previous
-work~\cite{icse20,tbar-issta19}.
+We use two additional steps for all approaches in comparison:
+
+(1) Fault localization (FL): Conceptually, any FL
+tools can be used to produce an ordered list of suspicious
+statements that require fixes. We chose Ochiai
+algorithm~\cite{abreu2006evaluation, pearson2017evaluating}, which has
+been widely used in
+APR~\cite{jiang2018shaping,xiong2017precise,koyuncu2018fixminer,xin2017leveraging,wen2018context,liu2018lsrepair}.
+After Ochiai localizes a buggy line, all of the AST nodes including
+intermediate ones that are labeled by the parser with that buggy line
+are collected into a buggy subtree.
+
+(2) Patch Validation: Once {\tool} generates a ranked list of
+candidate patches, we use a validation
+technique~\cite{saha2017elixir,jiang2018shaping} to validate each
+candidate.
+%Once a candidate patch pases all available test cases, {\tool} stops
+%and reports the candidate patch for manual investigation. We report
+%the patches that are exactly matched or semantically equivalent to
+%the ground-truth fixes in Defects4J.
+We set a 5-hour limit for the validation step for all approaches as in
+previous work~\cite{icse20,tbar-issta19}.
+
+We also used the correct fixing locations for the models to perform
+fixing in our comparative study.
+%and used test cases for validation steps.
+
 
 
 \underline{Parameter tuning.} We tuned the baselines with the

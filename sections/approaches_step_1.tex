@@ -12,25 +12,28 @@ build the vector representations (embeddings).
 
 \subsection{AST Building and Pairing of Subtrees}
 
-First, for a buggy method $M$, we use Java JDT~\cite{JDT} to parse the
-code to produce the AST for $M$. We also identify the subtree $T_s$
-corresponding to each buggy statement $s$. If there are multiple buggy
-statements in $M$, we generate multiple AST subtrees for them.  We use
-each of the buggy statements together with $M$ to train the context
-learning and code transformation models.
+First, for a buggy method $M$, we
+%use Java JDT~\cite{JDT} to
+parse the code to produce the AST for $M$. We also identify the
+subtree $T_s$ corresponding to each buggy statement $s$. If there are
+multiple buggy statements in $M$, we generate multiple AST subtrees
+for them.  We use each buggy statement together with $M$
+as a training instance for CCL and CTL.
+%to train the context learning and code transformation models.
 
-Second, to train the context learning model (CCL), we need the
-two ASTs for the buggy method $M$ and the corresponding fixed version
-of $M$. This is straightforward to collect them in the training
-dataset and build the ASTs before and after the fix.  However, as
-shown in Figure~\ref{overview-training}, to train the tree-based code
-transformation learning model (CTL), we need to identify the
-respective fixed subtree for the subtree $T_s$ of a buggy
-statement under study. To do so, we use a tree differencing
-tool, named CPatMiner~\cite{nguyen2019graph}, to derive the fixing
-changes. If a subtree corresponds to a statement, let us call it {\em
-  S-subtree}. From the result of CPatMiner, we use the following rules
-to {\em pair a buggy subtree with the corresponding fixed subtree}:
+Second, to train CCL, we take a buggy method $M$ and the corresponding
+fixed version of $M$, and parse them to build the two ASTs.
+%
+%we need the two ASTs for the buggy method $M$ and the corresponding
+%fixed version of $M$. It is straightforward to collect them in the
+%training dataset and build the ASTs before and after the fix.
+However, to train CTL, as shown in Figure~\ref{overview-training}, we
+need to identify the respective fixed subtree for the subtree $T_s$ of
+a buggy statement. To do so, we use the tree differencing tool,
+CPatMiner~\cite{nguyen2019graph}, to derive the fixing changes. If a
+subtree corresponds to a statement, let us call it {\em
+  S-subtree}. From CPatMiner's result, we use the following rules to
+{\em pair a buggy subtree with the corresponding fixed subtree}:
 
 1. A buggy subtree ($S$-subtree) is a subtree with
 \code{update} or \code{delete}.
@@ -67,7 +70,7 @@ depth-first-search traversal to obtain a sequence of tokens. For the
 case of an AST subtree, we consider the sequence of tokens of a
 $S$-subtree as a sentence. For the case of the AST of the method, we
 consider the sequence of tokens for the method as a sentence. We then
-use a word embedding technique, named GloVe~\cite{pennington2014glove}
+use the word embedding technique GloVe~\cite{pennington2014glove}
 to run on those sentences to build a vector representation for each
 token, i.e., for each AST node in the method's AST or in the AST
 subtree. We used GloVe because it can capture well the co-occurrences

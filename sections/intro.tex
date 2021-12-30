@@ -242,15 +242,20 @@ respectively. The contributions of this paper are listed as follows:
 %on Defects4J. {\tool} helps confirm that further research on building
 %advanced DL to improve APR is promising and valuable.
 
-{\bf A. A Novel Dual-Task Learning DL-based APR Model:}
+%{\bf A. A Novel Dual-Task Learning DL-based APR Model:}
 
-1) {\em Leveraging dual-task learning to propagate
-  the mutual impacts of context learning and transformation learning
-  in both directions}.
-%to improve APR performance.
+1) Leveraging dual-task learning to propagate the {\bf mutual impacts}
+  in both directions of context and transformation learning.
 
-2) Advancing DL-based APR approaches with dual-task learning
-to avoid confounding inaccuracies from cascading architecture.
+2) {\bf Adapting/Modifying cross-stitch unit} for dual-task learning to work
+with AST representations in source code.
+
+3) A novel {\bf tree-oriented beam search} for candidate generation.
+
+4) Dual-task architecture avoiding
+%Advancing DL-based APR approaches with dual-task learning
+confounding inaccuracies.
+%from cascading architecture.
 
 %A context-aware APR approach that leverages dual learning {\em to
 %  propagate the impact between context learning and bug-fixing code
@@ -265,8 +270,7 @@ to avoid confounding inaccuracies from cascading architecture.
 %learning bug-fixing code transformations and learning code contexts to
 %improve APR performance.
 
-{\bf B. Empirical Results:} (Code and data are
-published~\cite{CDFix2022}).
+5) Empirical Results: (Code and data are published~\cite{CDFix2022}).
 %{\bf Advancing DL-based APR approaches with dual-task learning for CCL
 %  and CTL}:
 %Extensive experiments were performed to evaluate different aspects

@@ -66,7 +66,7 @@
 %            }
 %        }
 
-Let us start with a real-world example to motivate our approach.
+%Let us start with a real-world example to motivate our approach.
 Figure~\ref{fig:motiv} shows a real bug from the project \code{Chart}
 in the Defects4J dataset. The bug occurred at line 8 in which the
 condition for stopping the updating process on the \code{result}
@@ -171,8 +171,10 @@ to illustrate this.
 To advance DL-based APR, we {\bf {\em explicitly model both directions
     of the mutual impact between context learning and transformation
     learning}}. We design {\tool} that treats context learning and
-transformation learning as a dual task with code context learning
-model (CCL) and code transformation learning (CTL).
+transformation learning as a dual task between CCL and CTL.
+
+%with code context learning model (CCL) and code transformation
+%learning (CTL).
 
 %{\tool} consists of two models. The first model, CCL, is dedicated to
 %learn \underline{c}ode \underline{c}ontexts, and the second model,
@@ -209,13 +211,15 @@ Therefore, in {\tool}, we joinly train CTL for context learning and
 CCL for transformation learning with soft-sharing of parameters to
 exploit their relation.
 
-Specifically, {\bf {\em we use a cross-stitch unit~\cite{misra2016cross} to
-  connect CTL and CCL}}. The sharing of representations between them is
+Specifically, {\bf {\em we have adapted/modified the cross-stitch
+    unit \cite{misra2016cross} to work with AST representations}} to
+connect CTL and CCL. The sharing of representations between them is
 modeled by the learning a linear combination of the input features
 from two models. Cross-stitch unit helps regularize both CCL and CTL
 by learning and enforcing shared representations by combining feature
-maps. This joint training {\em propagates the mutual impact} of context
-learning and transformation learning. {\em The cross-stitching also helps
-avoid confounding inaccuracies} in the cascading architecture.
+maps. This joint training {\em propagates the mutual impact} of
+context learning and transformation learning. {\em The use of
+  cross-stitch unit also helps avoid confounding inaccuracies} in the
+cascading architecture.
 
 %and vice versa, to improve APR performance.

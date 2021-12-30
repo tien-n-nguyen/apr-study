@@ -1,33 +1,33 @@
 \section{Patch Generation}
 \label{sec:patch-gen}
 
-Figure~\ref{overview-fixing} shows the overview of the fixing process.
-While the steps of parsing and tree-based representation learning are
-the same as in the training process, the step of applying the trained
-CCL and CTL models to produce the candidate patches is
-different. Let us detail that step, which is illustrated in
-Figure~\ref{fig:patch-gen}.
+Figure~\ref{overview-fixing} outlines the fixing process. While the
+steps of parsing and tree-based representation learning are the same
+as in training, the step of applying the trained CCL and
+CTL models to produce the candidate patches is different. Let us
+detail that step (Figure~\ref{fig:patch-gen}).
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=3.2in]{graphs/beam-search.png}
+	\includegraphics[width=2.9in]{graphs/beam-search.png}
+        \vspace{-9pt}
 	\caption{Patch Generation via Tree-Structured Beam Search}
 	\label{fig:patch-gen}
 \end{figure}
 
-As explained earlier in Figure~\ref{fig:dual-learning}, the output of the
-cross-stitch unit connects to the attention layer, which in turn
-connects to the decoder. The decoder has four main components: 1) the
-embedding component to encode the input at a time step into the
-subtree whose nodes are vectors; 2) the
-TreeCaps~\cite{bui2021treecaps} component to summarize the vectors in
-a subtree into a vector; 3) the output layer; and 4) the beam search
-component, which takes the output at the output layer and produces a
-candidate patch (at the current time step $i$) in terms of the output
-AST subtree $T_i$ with the concrete source code for the AST
-nodes. While the embedding component, TreeCaps, and the output layer
-are straightforward, we need to explain the adaptation we have made in
-the beam search component.
+%As explained earlier in Figure~\ref{fig:dual-learning},
+The output of the cross-stitch unit connects to the attention layer,
+which in turn connects to the decoder. The decoder has four main
+components (Figure~\ref{fig:patch-gen}): 1) the embedding
+component to encode the input at a time step into the subtree whose
+nodes are vectors; 2) the TreeCaps~\cite{bui2021treecaps} component to
+summarize the vectors in a subtree into a vector; 3) the output layer;
+and 4) the beam search component, which takes the output at the output
+layer and produces a candidate patch (at the current time step $i$) in
+terms of the output AST subtree $T_i$ with the concrete source code
+for the AST nodes. While the embedding component, TreeCaps, and the
+output layer are straightforward, we need to explain the adaptation we
+have made in the beam search component.
 
 Beam search is an optimization strategy to keep only the top-$K$ best
 solution for the output subtree $T_i$ at a time step $i$ to help
@@ -71,11 +71,10 @@ containing all the valid names in the scope, the syntax-checking
 filter to remove the candidates with syntax errors, and the name
 validation filter to check the validity of the variables, methods, and
 classes.
-
-Afterward, \tool runs the corresponding test cases for the current
-bug. If there is any test case failed, \tool attempts the next
-candidate. If all test cases pass, we regards the candidate as
-correct.
+Afterward, we run the corresponding test cases for the current
+bug. If there is any test case failed, {\tool} attempts the next
+candidate.
+%If all test cases pass, we regards the candidate as correct.
 
 %The first problem is that when transferring the predicted fixing to
 %the real tokens, beam search uses the GloVe embedding

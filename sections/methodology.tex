@@ -188,13 +188,18 @@ model without patch validation on those two datasets.
 
 %We ran the baselines and \tool on two big datasets in this RQ, including Bugs.jar and BigFix.
 
-In this RQ2, as running a model on each dataset, we randomly splitted
-it into 80\%/10\%/10\% for training, tuning (validation), and
-testing. We used the same splitting scheme for all models.
+In RQ2, as running each model, we randomly splitted a dataset
+into 80\%/10\%/10\% for training, tuning (validation), and testing.
 
+%We used the same splitting scheme for all models.
 
-\underline{Parameter tuning.} We tuned the baselines with the
-parameters mentioned in their papers and tuned {\tool} as in RQ1.
+In RQ2, we did not use a fault localization tool because Bugs.jar and
+BigFix do not have test cases. We used correct fixing locations.
+
+\underline{Parameter tuning:} the same as in RQ1.
+
+%We tuned the baselines with the
+%parameters mentioned in their papers and tuned {\tool} as in RQ1.
 
 %in the same manner as in RQ1 with autoML \cite{NNI}.
 

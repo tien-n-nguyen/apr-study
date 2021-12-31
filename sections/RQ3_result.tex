@@ -49,10 +49,10 @@
 
 %To further study the comparison between {\tool} and the baseline
 %models,
-For a comparative study, we performed an overlapping analysis on the
-results.  In Table~\ref{RQ3_results}, each row section corresponds to
-the overlapping result between {\tool} and one baseline in two
-datasets.
+%For a comparative study, we performed an overlapping analysis on the
+%results.
+In Table~\ref{RQ3_results}, each row section corresponds to the
+overlapping result between {\tool} and one baseline in two datasets.
 
 \subsubsection{{\bf Comparison with CODIT}}
 
@@ -70,15 +70,14 @@ Figure~\ref{example_codit} shows an example that was correctly fixed
 by {\tool}, but missed by CODIT. The correct fix is at line 4 by
 {\tool}: \code{else} \code{if} \code{(op} \code{instanceof}
 \code{ExpressionOperator)}.  However, CODIT fixed it into \code{else}
-\code{if(} \code{op)}.
-%This is an example that CODIT missed.
-CODIT performs patch generation via translation of the buggy AST
-sub-tree. It analyzes the buggy sub-tree that covers all the edited
-nodes {\em without considering the surrounding context} in the method.
-Thus, it did not fix this bug correctly. In this case, {\tool} could
-leverage the surrounding context at line 7 with
-`\code{currentOp} \code{instanceof} \code{ExpressionOperator}' to
-generate the correct patch at line 4.
+\code{if(} \code{op)}. CODIT performs patch generation via
+translation of the buggy AST sub-tree. It analyzes the buggy sub-tree
+that covers all the edited nodes {\em without considering the
+  surrounding context} in the method.  Thus, it did not fix this bug
+correctly. In this case, {\tool} could leverage the surrounding
+context at line 7 with `\code{currentOp} \code{instanceof}
+\code{ExpressionOperator}' to generate the correct patch at line 4.
+
 
 %{\color{blue}{1. CODIT only do the prediction and token generation on the buggy sub-tree that covers all edited nodes without considering the other information in the same method. So it cannot catch the information about the variable $ExpressionOperator$ in the method.
 %2. Fixing results: \textit{CODIT: else if( op )$ \{$} CDFIX: \textit{else if( op instanceof ExpressionOperator ) $\{$}}}
@@ -125,6 +124,38 @@ public void visit(LOProject project) throws VisitorException {
 
 
 
+
+
+As seen in Table~\ref{RQ3_results}, in Bugs.jar, {\tool} can fix 101
+bugs (58.8\%) that Tufano'19 missed and Tufano'19 fixed only 5 bugs
+(6.2\%) that {\tool} missed, while both can fix the same 71 bugs.
+%Among the total number of bugs fixed by both tools in Bugs.jar
+%dataset, 53.4\% of them were fixed by {\tool} and missed by CODIT,
+%while only 6\% of them were fixed by CODIT and missed by {\tool}.
+In BigFix dataset, while {\tool} can fix 237 bugs that Tufano'19
+missed, it missed only 4 bugs that Tufano'19 can fix.
+
+Figure~\ref{example_tufano19} shows an example that was fixed by
+{\tool}, but missed by Tufano'19. Tufano'19 uses a {\em
+  machine translation approach on the entire buggy method}
+\code{readFromMemory}.  Because {\em in training, the model did not
+distinguish the buggy statement from the surrounding context (did not
+make a clear boundary between them)}, during fixing, the noise from the
+irrelevant statements in the method could cause it {\em predict an
+  incorrect statement to be fixed}. In this example, Tufano'19
+incorrectly identified line 2 as a buggy statement, and fixed it into
+\code{if(} \code{mMemoryPtr.size} \code{()} \code{==} \code{0)}
+\code{return} \code{null;}. The buggy line 4 was correctly fixed into
+line 5 by {\tool}. By distinguishing the context from the fixing
+changes, {\tool} could learn the type \code{List} of \code{mContents}
+from lines 2 and 3 (in which the method \code{size()} is called on
+\code{mContents}).
+
+%{\color{blue}{1. Tufano 19' learns and makes prediction only on the method level. In this case, it may fix the wrong position.
+%2. Fixing results:
+%Tufano 19': \textit{if (mMemoryPtr.size() == 0) return null;} (this fix at line 2)
+%CDFIX: \textit{return ((List<Tuple>)mContents).get(mMemoryPtr++);}}}
+
 \begin{figure}[t]
 	\centering
 	\lstset{
@@ -161,38 +192,6 @@ private Tuple readFromMemory() {
 	\caption{Comparison with Tufano19': An Example}
 	\label{example_tufano19}
 \end{figure}
-
-As seen in Table~\ref{RQ3_results}, in Bugs.jar, {\tool} can fix 101
-bugs (58.8\%) that Tufano'19 missed and Tufano'19 fixed only 5 bugs
-(6.2\%) that {\tool} missed, while both can fix the same 71 bugs.
-%Among the total number of bugs fixed by both tools in Bugs.jar
-%dataset, 53.4\% of them were fixed by {\tool} and missed by CODIT,
-%while only 6\% of them were fixed by CODIT and missed by {\tool}.
-In BigFix dataset, while {\tool} can fix 237 bugs that Tufano'19
-missed, it missed only 4 bugs that Tufano'19 can fix.
-
-Figure~\ref{example_tufano19} shows an example that was fixed by
-{\tool}, but missed by Tufano'19. Tufano'19 uses a {\em
-  machine translation approach on the entire buggy method}
-\code{readFromMemory}.  Because {\em in training, the model did not
-distinguish the buggy statement from the surrounding context (did not
-make a clear boundary between them)}, during fixing, the noise from the
-irrelevant statements in the method could cause it {\em predict an
-  incorrect statement to be fixed}. In this example, Tufano'19
-incorrectly identified line 2 as a buggy statement, and fixed it into
-\code{if(} \code{mMemoryPtr.size} \code{()} \code{==} \code{0)}
-\code{return} \code{null;}. The buggy line 4 was correctly fixed into
-line 5 by {\tool}. By distinguishing the context from the fixing
-changes, {\tool} could learn the type \code{List} of \code{mContents}
-from lines 2 and 3 in which the method \code{size()} is called on
-\code{mContents}.
-
-%{\color{blue}{1. Tufano 19' learns and makes prediction only on the method level. In this case, it may fix the wrong position.
-%2. Fixing results:
-%Tufano 19': \textit{if (mMemoryPtr.size() == 0) return null;} (this fix at line 2)
-%CDFIX: \textit{return ((List<Tuple>)mContents).get(mMemoryPtr++);}}}
-
-
 %=============================================================
 
 \subsubsection{\bf Comparison with SequenceR}
@@ -221,7 +220,7 @@ considers the statement as the sequence of tokens, and it fixed
 by replacing the token \code{hashCode} with the token
 \code{get}. That is, it incorrectly fixed the line 6 into
 \code{return} \code{(Math.abs(} \code{keyTuple.} \code{get())}
-\code{\%} \code{totalReducers);}. Thus, its sequence representations
+\code{\%} \code{totalReducers);}. Thus, its sequence representation
 is not well-suited for structural changes.
 
 %SequenceR: \textit{return (Math.abs( keyTuple.get()) \% totalReducers);}
@@ -252,18 +251,18 @@ public int getPartition(PigNullableWritable wrappedKey, Writable value, int numP
   // if reducerMap does not contain the key, default hash based partitioning
   if (indexes == null) {
 (*@{\color{red}{-\quad return (Math.abs(keyTuple.hashCode()) \% totalReducers);	}}@*)
-(*@{\color{cyan}{+\quad return (Math.abs(keyTuple.hashCode() \% totalReducers)); // correct fix by {\tool}}}@*)
+(*@{\color{cyan}{+\quad return (Math.abs(keyTuple.hashCode() \% totalReducers));//cor. fix by {\tool}}}@*)
   }
   ....
 }
 // SequenceR's incorrect fix at line 6:
 // (*@{\color{orange}return (Math.abs( keyTuple. get()) \% totalReducers);}@*)
 // CoCoNuT's incorrect fix at line 6:
-// (*@{\color{orange}return ( Math.abs( keyTuple. hashCode());}@*)
+// (*@{\color{orange}return (Math.abs( keyTuple. hashCode());}@*)
 // CURE's incorrect fix at line 6:
-// (*@{\color{orange}return ( Math.abs( keyTuple. hashCode()) / totalReducers);}@*)
+// (*@{\color{orange}return (Math.abs( keyTuple. hashCode()) / totalReducers);}@*)
 // DLFix's incorrect fix at line 6:
-// (*@{\color{orange}return ( Math.abs( keyTuple. hashCode()) \% curIndex);}@*)
+// (*@{\color{orange}return (Math.abs( keyTuple. hashCode()) \% curIndex);}@*)
 	\end{lstlisting}
         \vspace{-15pt}
 	\caption{Comparison with the Context-aware, DL-based APR baselines: SequenceR, CoCoNuT, CURE, and DLFix}
@@ -273,7 +272,7 @@ public int getPartition(PigNullableWritable wrappedKey, Writable value, int numP
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=3.3in]{graphs/example_3.png}
+	\includegraphics[width=3.3in]{graphs/example_3_v2.png}
         \vspace{-9pt}
 	\caption{AST Structural Changes for the Fix in Figure~\ref{example_3}}
 	\label{tree-change}
@@ -290,15 +289,19 @@ were fixed by {\tool} and missed by CoCoNuT, while only 16.1\% of them (44)
 were fixed by CoCoNuT and missed by {\tool}.
 
 CoCoNuT did not fix correctly the code in Figure~\ref{example_3}.  It
-fixed line 6 into \code{return (} \code{Math.abs(} \code{keyTuple.}
-\code{hashCode());}. First, CoCoNuT represents the source code by a
-sequence of tokens, which is not well-suited for this structural
-change in this example. Second, despite considering the context,
+fixed~line 6 into \code{return (}\code{Math.abs(} \code{keyTuple.}
+\code{hashCode());}. First, CoCoNuT represents source code by a
+sequence of tokens, which is {\em not well-suited for this structural
+change}. Second, despite considering the context,
 CoCoNuT extracts from the surrounding code the features and feeds them
-in a single model for learning to fix. {\tool} dedicates a model for
-context learning separately from the model for code transformation
-learning. In this example, {\tool} is able to learn the structural
-changes in the AST (Figure~\ref{tree-change}).
+in a single model for learning to fix.
+%
+It was shown that dedicating a model for context learning separately
+from the transformation learning model can improve APR~\cite{icse20}.
+%{\tool} dedicates a model for context learning separately from the
+%model for code transformation learning.
+With CCL and CTL, {\tool} can learn the structural changes in the AST
+(Figure~\ref{tree-change}).
 
 \subsubsection{\bf Comparison with CURE}
 
@@ -310,17 +313,19 @@ more than the ones that were fixed by CURE but missed by {\tool} (89
 versus 50).
 
 CURE did not fix correctly the example in Figure~\ref{example_3}. It
-fixed the line 6 into \code{return (} \code{Math.abs(}
+fixed~line 6 into \code{return (}\code{Math.abs(}
 \code{keyTuple.} \code{hashCode())} \code{/} \code{totalReducers);}.
 That is, it just replaced the operator \code{\%} with \code{/}.
 Compared to CoCoNuT, CURE also represents source code as a sequence of
-tokens, thus, is not well-suited to learn the structural changes for
+tokens, thus, is {\em not well-suited to learn the structural changes} for
 the fix in this example. CURE is code-aware,
 %however, similar to CoCoNuT, it still encodes
 and extracts the code-aware features from the context and feeds them
-into a single model. {\tool} treats context learning with the CCL
-model separately from transformation learning with the CTL model.
-The dual learning helps propagate the impact of both models on each other.
+into a single model.
+%{\tool} treats context learning with the CCL model separately from
+%transformation learning with the CTL model.
+Dual-task learning helps propagate the impact of CCL and CTL
+models on each other.
 
 \subsubsection{\bf Comparison with DLFix}
 
@@ -332,16 +337,17 @@ were fixed by {\tool} and missed by DLFix, while only 14.2\% of them
 were fixed by DLFix and missed by {\tool}.
 
 DLFix also did not fix correctly the buggy code in
-Figure~\ref{example_3}. It fixed the line 6 into \code{return (}
-\code{Math.abs(} \code{keyTuple.} \code{hashCode())} \code{\%}
-\code{curIndex);}. Despite that DLFix learns tree-structured code
-transformations with separate models for context learning and
-transformation learning, it follows a cascading architecture between
-the two models for APR. Thus, the incorrect learning of context might
-affect the learning of transformations. In this example,
-\code{curIndex} was incorrectly used in the fix. In {\tool}, context
-learning and transformation learning are treated as a dual task to
-propagate the impact on each other.
+Figure~\ref{example_3}. It fixed the line 6 into \code{return
+  (}\code{Math.abs(} \code{keyTuple.} \code{hashCode())} \code{\%}
+\code{curIndex);}. Despite that DLFix has separate tree-based models
+(handling structural changes) for context learning and transformation
+learning, it follows a cascading architecture between the two
+models. Thus, the incorrect learning of context might affect
+transformation learning. In this example, \code{curIndex} was
+incorrectly used in the fix.
+
+%In {\tool}, context learning and transformation learning are treated
+%as a dual task to propagate the impact on each other.
 
 
 %{\color{blue}{1. SequenceR, CoCoNut, CURE all using sequence structure to do the code fixing. However, it is hard for them to learn the structure changes in this example. DLFix learns the structure changes, but it does not learn it as well as CDFix.

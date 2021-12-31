@@ -20,14 +20,39 @@ Moreover, CDFix fixed 12 bugs that the best baseline CURE missed; and
 CURE fixed 4 bugs that CDFix missed. CDFix fixed 3 bugs that all the
 DL-based baselines missed.
 
+Table~\ref{RQ1_defects4J_with_FL} shows the comparative result on
+Defects4J with an FL tool. As seen, with the FL tool, the performance
+of all models decreases due to the confounding inaccuracy. However,
+{\tool} can still fix more bugs than any baseline. It
+automatically fixes {\bf XX} bugs, i.e., {\bf XXX.X\% (i.e., XX), XX\%
+  (i.e., XX), XX.X\% (i.e., XX), and XX.X\% (i.e., X)} more bugs than
+the baselines SequenceR, DLFix, CoCoNuT, and CURE,
+respectively. Furthermore, {\tool} generates the most plausible
+patches (i.e., {\bf XX}) among all the models.
+%indicating that {\tool} has a better patch generation
+%capability. Moreover, {\tool}
+It also has a higher percentage of the generated plausible patches to
+be correct than all the baselines.
+%However, {\tool} can fix 194\% more bugs and 6 times more plausible
+%patches than SequenceR.
+Moreover, CDFix fixed {\bf XX} bugs that the best baseline CURE
+missed; and CURE fixed {\bf XX} bugs that CDFix missed. CDFix fixed
+{\bf XX} bugs that all the DL-based baselines missed.
 
+Note that the numbers for DLFix are different from those
+reported in DLFix paper~\cite{icse20}. The reason is that DLFix's
+authors had filtered from the datasets the multiple-line bugs due to
+DLFix's limited capabability. We used the full datasets with all the
+bugs.
 
+%Tien
+%The reason for the difference between the results for DLFix in this paper and those reported in DLFix’s paper_[18] is that in DLFix’s experiment, the authors filtered from the datasets to keep only the single-line bugs for the comparison with other baselines. In CDFix, we used the full datasets with multiple-line bugs. Thus, the results reported in this paper are lower. The same reason is for other baselines.
 
 
 
 %{\footnotesize{
 \begin{table}[t]
-  \caption{RQ1. Comparison Results with DL-based APR Approaches on Defect4J.}
+  \caption{RQ1. Comparison Results with DL-based APR Approaches on Defects4J \underline {without Fault Localization}.}
   \vspace{-6pt}
   {\small
 			\begin{center}
@@ -59,7 +84,33 @@ DL-based baselines missed.
 %}}
 
 
-
+\begin{table}[t]
+  \caption{RQ1. Comparison Results with DL-based APR Approaches on Defects4J \underline {with Fault Localization}.}
+  \vspace{-6pt}
+  {\small
+			\begin{center}
+				\renewcommand{\arraystretch}{1}
+				\begin{tabular}{p{0.9cm}<{\centering}|p{1.4cm}<{\centering}|p{1cm}<{\centering}|p{1cm}<{\centering}|p{1cm}<{\centering}|p{1cm}<{\centering}}
+					
+					\hline
+					&\textbf{SequenceR}&\textbf{DLFix}& \textbf{Coconut}&\textbf{CURE}&\textbf{\tool}\\
+					\hline
+					Chart  & x/x   & x/xx  & x/xx  & x/xx   & x/xx\\
+					Closure& x/x   & x/xx  & x/xx  & x/xx   & xx/xx\\
+					Lang   & x/x   & x/xx  & x/xx  & x/xx   & x/xx\\
+					Math    & x/xx  & xx/xx & xx/xx & xx/xx  & xx/xx\\
+					Mockito & x/x   & x/x   & x/x   & x/x    & x/x\\
+					Time    & x/x   & x/x   & x/x   & x/x    & x/x\\
+					\hline
+					Total   & xx/xx & xx/xx & xx/xx & xx/xx  & xx/xx\\
+					\hline
+					P(\%)  & xx.x  & xx.x  & xx.x  & xx.x   & xx.x\\
+					\hline
+				\end{tabular}
+				\label{RQ1_defects4J_with_FL}
+			\end{center}
+                }
+		\end{table}
 
 
 

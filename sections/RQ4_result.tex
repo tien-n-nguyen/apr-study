@@ -23,25 +23,58 @@
 	}
 \end{table}
 
-Table~\ref{fig:rq4_results} shows the result on the impact of our dual
-learning architecture on the overall {\tool}'s bug-fixing performance.
-As seen, the top-$K$ values of the \code{Transformation-only} model
-are 52.3\%, 44.7\% and 42.3\% lower than those of {\tool} in Top-1,
-Top-5, and Top-10, respectively. This result shows that 1) the context
-learning model in {\tool} has good impact on the overall performance,
-and 2) the dual learning enables the impact from context learning to
-transformation learning to achieve high performance in APR.
+Table~\ref{fig:rq4_results} shows the comparison among {\tool} and its
+variants. As seen, the top-$K$ values of the
+\code{Transformation-only} model are 52.3\%, 44.7\% and 42.3\% lower
+than those of {\tool} in Top-1, Top-5, and Top-10, respectively. This
+shows that context learning plays an important role in {\tool} and
+dual-task learning helps propagate the positive impact from CCL to
+CTL.
+
+%result on the impact of our dual learning architecture on the overall
+%{\tool}'s bug-fixing performance.  As seen, the top-$K$ values of the
+%\code{Transformation-only} model are 52.3\%, 44.7\% and 42.3\% lower
+%than those of {\tool} in Top-1, Top-5, and Top-10, respectively. This
+%result shows that 1) the context learning model in {\tool} has good
+%impact on the overall performance, and 2) the dual learning enables
+%the impact from context learning to transformation learning to achieve
+%high performance in APR.
 
 Moreover, the top-$K$ values of the \code{cascading} model are 21.5\%,
 18.6\%, and 14.9\% lower than those of {\tool} in Top-1, Top-5, and
-Top-10, respectively. This result shows that 1) the cascading
+Top-10, respectively. This result shows that the cascading
 architecture between context learning (CCL) and transformation
-learning (CTL) is not effective as the dual-learning architecture as
-in {\tool}, and 2) dual learning between CCL and CTL is effective and
-helps improve APR performance. This result also explains the reason
-for the higher performance of {\tool} over the state-of-the-art APR
-approach in DLFix~\cite{icse20}, which has a cascading architecture of
-context learning and transformation learning.
+learning (CTL) is not as effective as the dual-task learning
+in {\tool}.
+
+We performed overlapping analysis between the results
+from {\tool} and the cascading model. {\tool} fixes {\bf XX} bugs that
+the cascading model missed and the cascading model fixed only {\bf XX}
+bugs that {\tool} missed, while both models fix the same {\bf XXX}
+bugs. This result shows that {\tool} can fix more unique bugs
+that the cascading model missed than the other way.
+
+In a further study, we analyzed {\bf XX} bugs that {\tool} was able
+to fix and were missed by the cascading model. We found {\bf XX} bugs
+in which {\em the outputs of CCL in the cascading model match with the
+  fixed contexts in the oracle}. In contrast, we found {\bf XX} bugs
+in which {\em the outputs of CCL in {\tool} (dual-task learning
+  architecture) match with the fixed contexts} in the oracle. This
+result indicates that the key source of {\tool}'s improvement in its
+fixing capability for the cases that the cascading model missed comes
+from the correctness of the context learning model.
+
+
+
+%Tien
+%This result shows that 1) the cascading architecture between context
+%learning (CCL) and transformation learning (CTL) is not effective as
+%the dual-learning architecture as in {\tool}, and 2) dual learning
+%between CCL and CTL is effective and helps improve APR
+%performance. This result also explains the reason for the higher
+%performance of {\tool} over the state-of-the-art APR approach in
+%DLFix~\cite{icse20}, which has a cascading architecture of context
+%learning and transformation learning.
 
 
 %Table~\ref{fig:rq4_results} presents the results of contributions of dual-learning in CDFix. The results show that Only-transformation-model reduces 52.3\%, 44.7\% and 42.3\% of {\tool} using Top-1, Top-5, and Top-10, respectively, which indicates that context-learning model is important to our {\tool}.

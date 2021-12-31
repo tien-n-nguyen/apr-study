@@ -119,7 +119,7 @@ After Ochiai localizes a buggy line, all of the AST nodes including
 intermediate ones that are labeled by the parser with that buggy line
 are collected into a buggy subtree.
 
-(2) Patch Validation: Once {\tool} generates a ranked list of
+(2) Patch validation: Once {\tool} generates a ranked list of
 candidate patches, we use a validation
 technique~\cite{saha2017elixir,jiang2018shaping} to validate each
 candidate.
@@ -131,50 +131,54 @@ We set a 5-hour limit for the validation step for all approaches as in
 previous work~\cite{icse20,tbar-issta19}.
 
 We also used the correct fixing locations for the models to perform
-fixing in our comparative study.
+fixing in our study (i.e., without fault localization).
 %and used test cases for validation steps.
 
 
 
 \underline{Parameter tuning.} We tuned the baselines with the
-parameters that mentioned in their papers. We tuned \tool with the
-following parameters: {\em epoch}, {\em batch size}, {\em learning
-  rate}, {\em embedding length}, the {\em max number of children nodes
-  $P$}, and {\em the max children node depth} $Q$. Our model was tuned with the following key
-hyper-parameters to obtain the best performance: (1) Epoch size (i.e.,
-100, 200, 300); (2) Batch size (i.e., 64, 128, 256); (3) Learning rate
-(i.e., 0.001, 0.003, 0.005, 0.010); (4) Vector length of word
-representation and its output (i.e., 150, 200, 250, 300); (5) max number of children nodes
+parameters that mentioned in their papers. We tuned \tool with autoML
+\cite{NNI} for the following parameters: {\em epoch}, {\em batch
+  size}, {\em learning rate}, {\em embedding length}, the {\em max
+  number of children nodes $P$}, and {\em the max children node depth}
+$Q$. Our model was tuned with the following key hyper-parameters to
+obtain the best performance: (1) Epoch size (i.e., 100, 200, 300); (2)
+Batch size (i.e., 64, 128, 256); (3) Learning rate (i.e., 0.001,
+0.003, 0.005, 0.010); (4) Vector length of word representation and its
+output (i.e., 150, 200, 250, 300); (5) max number of children nodes
 $P$ (i.e. 4, 5, 6); (6) max children node depth $Q$ (i.e. 3, 4, 5).
 
-{\bf RQ2. Comparison with State-of-the-art DL-based APR Approaches on
-  Large Datasets.}
-
-\underline{Baselines.} We compare {\tool} with the following
-state-of-the-art DL-based APR baseline models: {\bf
-  SequenceR~\cite{chen2018sequencer},
+{\bf RQ2. Comparison with DL-based APR Approaches on
+  Large Datasets.} We compare {\tool} with the following baselines:
+%\underline{Baselines.} We compare {\tool} with the following
+%state-of-the-art DL-based APR baseline models:
+{\bf Sequen\-ceR~\cite{chen2018sequencer},
   CoCoNuT~\cite{lutellier2020coconut}, DLFix~\cite{icse20},
-  CURE~\cite{cure-icse21}:} as explained in RQ1.
+  CURE~\cite{cure-icse21}:} as in RQ1.
 
-{\bf CODIT~\cite{chakrabortycodit}:} is the DL-based APR approach using
-sequence-to-sequence machine translation model with the abstractions on tree
-structures to learn the code transformations for bug fixing.
+{\bf CODIT~\cite{chakrabortycodit}:} is a DL-based APR approach
+using sequence-to-sequence machine translation model with the
+abstractions on tree structures to learn the code transformations for
+bug fixing.
 
-{\bf Tufano'19~\cite{tufano2019learning}:} is also a DL-based approach
+{\bf Tufano'19~\cite{tufano2019learning}:} is a DL-based approach
 aiming to learn code changes by adopting neural machine translation
 with code abstractions and filtering via program analysis.
 
 We did not compare with CODIT~\cite{chakrabortycodit} and
-Tufano'19~\cite{tufano2019learning} in RQ1 on Defects4J dataset,
-because they do not have the validation step in their approaches to
-run on Defects4J. It is unfair if we compared them with the other
-approaches having the validation step.
+Tufano'19~\cite{tufano2019learning} in RQ1, because they do not have
+the validation step in their approaches to run on Defects4J. It is
+unfair if we compare them with the other approaches having the
+validation step. However, we compared {\tool} with them in RQ2
+since the two datasets Bugs.jar and BigFix do not have the
+test cases for the bugs. Thus, we ran the fixing step of each
+model without patch validation on those two datasets.
 
-We compared {\tool} with those two baselines in this experiment for
-RQ2 running on two large datasets, in which we directly ran the fixing
-step without the validation. The two large datasets do not contain the
-corresponding test cases for the bugs. Thus, we ran a model
-without the validation step on these two datasets.
+%We compared {\tool} with those two baselines in this experiment for
+%RQ2 running on two large datasets, in which we directly ran the fixing
+%step without the validation. The two large datasets do not contain the
+%corresponding test cases for the bugs. Thus, we ran a model
+%without the validation step on these two datasets.
 
 %The two new baselines in this RQ, including Tufano 19\' and CODIT are not designed for the Defects4J dataset, and there is not validation step in these two approaches. Therefore, comparing these two approaches to other baselines and \tool with the validation step is not fair. So we did not compare these two approaches as baselines in RQ1.
 
@@ -185,39 +189,55 @@ without the validation step on these two datasets.
 %We ran the baselines and \tool on two big datasets in this RQ, including Bugs.jar and BigFix.
 
 In this RQ2, as running a model on each dataset, we randomly splitted
-it into 80\%/10\%/10\% for training, developing, and testing. We used
-the same slitting scheme for all models.
+it into 80\%/10\%/10\% for training, tuning (validation), and
+testing. We used the same splitting scheme for all models.
 
 
 \underline{Parameter tuning.} We tuned the baselines with the
-parameters mentioned in their papers and tuned {\tool} in the same
-manner as in RQ1 with autoML \cite{NNI}.
+parameters mentioned in their papers and tuned {\tool} as in RQ1.
 
-{\bf RQ3. Overlapping Analysis.} To further study the comparative
-result between a baseline model $M$ and {\tool}, we analyzed and
-counted the number of bugs that were fixed by {\tool} and were missed
-by $M$, the number of bugs that were fixed by $M$ and were missed
-by {\tool}, and the number of bugs that were fixed by both.
+%in the same manner as in RQ1 with autoML \cite{NNI}.
+
+{\bf RQ3. Overlapping Analysis.} For a baseline model $M$ and {\tool},
+we analyzed the number of bugs that were fixed by {\tool}
+and missed by $M$, the number of bugs that were fixed by $M$ and
+missed by {\tool}, and the number of bugs that were fixed by
+both.
 
 
 {\bf RQ4. Impact Analysis of Dual Learning on Performance.}
+%underline{Baselines.} To study the contributions of dual-learning in
+%{\tool},
+We compare {\tool} with two of its variants:
 
-\underline{Baselines.} To study the contributions of dual-learning in
-{\tool}, we built two variants:
-
-(1) \textbf{Transformation-only model:} In this variant, the
-context learning model is removed from {\tool} and only the bug-fixing
-code transformation learning model is kept. The result allows us to
-understand the contributions of the context learning model (CCL).
+(1) \textbf{Transformation-only model:} In this variant,
+CCL was removed from {\tool} and only CTL was kept. The result
+allows us to access the contribution of context learning.
+%the context learning model is removed from {\tool} and only the
+%bug-fixing code transformation learning model is kept. The result
+%allows us to understand the contributions of the context learning
+%model (CCL).
 
 %for training in step 2 of \tool.
 
 (2) \textbf{Cascading model:} We also built another variant model in
-which we removed the cross-stitch unit for dual learning, and we
-connected the context learning model (CCL) to the transformation
-learning model (CTL) in a cascading manner as in DLFix~\cite{icse20}
-(the context learning result is added as an additional input of the
-transformation learning model).
+which we removed the cross-stitch unit for dual-task learning. CCL is
+connected to CTL in a cascading manner.
+%in which the output of CCL corresponding to a buggy subtree is
+%directly used as the input of CTL.
+Note: this cascading model differs from DLFix~\cite{icse20} (explained
+in RQ1). First, CCL and CTL are different from those in DLFix, which
+uses a code summarization technique. Second, in the cascading model,
+the output of CCL corresponding to a buggy subtree is directly used as
+the input of CTL. In DLFix~\cite{icse20}, the summarized vector is
+used in a cross-product to represent the impact from CCL to CTL.
+
+%. In Cascading_Model (Figure_5), part of the CCL output corresponding
+%to the buggy subtree is used directly as input to CTL.
+%We connected the context learning model (CCL) to the transformation
+%learning model (CTL) in a cascading manner as in DLFix~\cite{icse20}
+%(the context learning result is added as an additional input of the
+%transformation learning model).
 
 %the other naive model, the
 %two-tier model, as the baseline. As for the two-tier model, we removed
@@ -232,5 +252,5 @@ experiments for the other RQs. We run all models on BigFix.
 
 {\bf RQ5. Evaluation on C/C++ Projects.}  To evaluate {\tool} on C/C++
 code, we ran it on the C/C++ benchmark
-Codeflaws~\cite{tan2017codeflaws} with 3902 bugs. 
+Codeflaws~\cite{tan2017codeflaws} with 3,902 bugs. 
 We used the same process and setting as in RQ2.

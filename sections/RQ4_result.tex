@@ -63,9 +63,19 @@ in which {\em the outputs of CCL in {\tool} (dual-task learning
 result indicates that the key source of {\tool}'s improvement in its
 fixing capability for the cases that the cascading model missed comes
 from the dual-task learning, which makes the context learning more
-correct, leading to more correct bug-fixing. In other words,
-dual-task learning helps the propagation of the mutual impact between
-context learning and transformation learning, leading to the improvement in APR.
+correct, leading to more correct bug-fixing. In other words, dual-task
+learning helps the propagation of the mutual impact between context
+learning and transformation learning, leading to the improvement in
+APR.
+
+Although DLFix differs from the cascading model in the CCL and CTL
+components as well as in the ways that they connect, they share the
+same principle of cascading the model for context learning to the one
+for transformation learning. Thus, the above result could serve as a
+good explanation on the reason {\tool} improves over
+DLFix~\cite{icse20}: the dual-task learning makes the context learning
+more accurate, and as a result, more correct bug-fixing and vice
+versa.
 
 %the correctness of the context learning model.
 

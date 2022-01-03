@@ -5,7 +5,7 @@
 \begin{table}[t]
   \caption{RQ4.Impact Analysis Results of Dual Learning on Performance using BigFix Dataset.}
   \vspace{-6pt}
-	{\small
+	{\footnotesize
 		\begin{center}
 			\renewcommand{\arraystretch}{1}
 			\begin{tabular}{p{1cm}<{\centering}|p{2.7cm}<{\centering}|p{1.7cm}<{\centering}|p{1cm}<{\centering}}
@@ -54,19 +54,37 @@ bugs that {\tool} missed, while both models fix the same {\bf XXX}
 bugs. This result shows that {\tool} can fix more unique bugs
 that the cascading model missed than the other way.
 
+In another study, we analyzed the set T1 of {\bf XX} bugs in which the
+{\em outputs of the context learning model in the cascading model are
+  incorrect} compared to the oracle. We also analyzed the set T2 of
+the {\bf XX} bugs in which {\em the outputs of the context learning
+  model in CDFix with dual-task learning are correct} compared to the
+oracle. Among the overlapping bugs between T1 and T2, we reported {\bf
+  XX} bugs that {\tool} was able to fix, and {\bf XX} bugs that the
+cascading model fixed.  This result indicates that the correct context
+learning (caused by dual-task learning) leads to more correct bug
+fixing.
+
 In a further study, we analyzed {\bf XX} bugs that {\tool} was able to
 fix and were missed by the cascading model. We found {\bf XX} bugs in
 which {\em the outputs of CCL in the cascading model match with the
   fixed contexts in the oracle}. In contrast, we found {\bf XX} bugs
-in which {\em the outputs of CCL in {\tool} (dual-task learning
-  architecture) match with the fixed contexts} in the oracle. This
-result indicates that the key source of {\tool}'s improvement in its
-fixing capability for the cases that the cascading model missed comes
-from the dual-task learning, which makes the context learning more
-correct, leading to more correct bug-fixing. In other words, dual-task
-learning helps the propagation of the mutual impact between context
-learning and transformation learning, leading to the improvement in
-APR.
+in which {\em the outputs of CCL in {\tool} (with dual-task learning)
+  match with the fixed contexts} in the oracle. This result indicates
+that a source of the inaccuracy in the cascading model is the
+inaccuracy of context learning. This also shows that the improvement
+of {\tool} comes from dual-task learning, which makes the context
+learning more correct, leading to more correct bug-fixing.
+
+%improvement in its fixing capability for the cases that the cascading
+%model missed comes from the dual-task learning, which makes the
+%context learning more correct, leading to more correct bug-fixing.
+
+%In other words, dual-task learning helps the propagation of the mutual
+%impact between context learning and transformation learning, leading
+%to the improvement in APR.
+
+
 
 Although DLFix differs from the cascading model in the CCL and CTL
 components as well as in the ways that they connect, they share the

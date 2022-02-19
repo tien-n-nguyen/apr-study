@@ -5,7 +5,7 @@ than any DL-based baselines}. {\tool}
 automatically fixes 56 bugs and it fixes {\bf 194.7\% (i.e., 37), 40\%
 (i.e., 16), 27.3\% (i.e., 12), and 16.7\% (i.e., 8)} more bugs than the
 baseline models SequenceR, DLFix, CoCoNuT, and CURE,
-respectively. Furthermore, {\tool} generates {\em the most plausible
+respectively. {\color{red}{if add CURE*, this is not true}} Furthermore, {\tool} generates {\em the most plausible
 patches (i.e., 96)} passing all test cases than any other baselines,
 indicating that {\tool} has a better patch generation
 capability. Moreover, {\tool} has a {\em higher percentage of the generated
@@ -24,10 +24,10 @@ Table~\ref{RQ1_defects4J_with_FL} shows the comparative result on
 Defects4J with an FL tool. As seen, with the FL tool, the performance
 of all models decreases due to the confounding inaccuracy. However,
 {\tool} can still fix more bugs than any baseline. It
-automatically fixes {\bf XX} bugs, i.e., {\bf XXX.X\% (i.e., XX), XX\%
-  (i.e., XX), XX.X\% (i.e., XX), and XX.X\% (i.e., X)} more bugs than
+automatically fixes {\bf 44} bugs, i.e., {\bf 193.3\% (i.e., 29), 46.7\%
+  (i.e., 14), 33.3\% (i.e., 11), and 22.2\% (i.e., 8)} more bugs than
 the baselines SequenceR, DLFix, CoCoNuT, and CURE,
-respectively. Furthermore, {\tool} generates the most plausible
+respectively. {\color{red}{if add CURE*, this is not true}} Furthermore, {\tool} generates the most plausible
 patches (i.e., {\bf XX}) among all the models.
 %indicating that {\tool} has a better patch generation
 %capability. Moreover, {\tool}
@@ -35,9 +35,9 @@ It also has a higher percentage of the generated plausible patches to
 be correct than all the baselines.
 %However, {\tool} can fix 194\% more bugs and 6 times more plausible
 %patches than SequenceR.
-Moreover, CDFix fixed {\bf XX} bugs that the {\em best baseline} CURE
-missed; and CURE fixed {\bf XX} bugs that CDFix missed. CDFix fixed
-{\bf XX} bugs that all the DL-based baselines missed.
+Moreover, CDFix fixed {\bf 9} bugs that the {\em best baseline} CURE
+missed; and CURE fixed {\bf 3} bugs that CDFix missed. CDFix fixed
+{\bf 2} bugs that all the DL-based baselines missed.
 
 Note that the numbers for DLFix are different from those
 reported in DLFix paper~\cite{icse20}. The reason is that DLFix's
@@ -57,26 +57,27 @@ bugs.
   {\small
 			\begin{center}
 				\renewcommand{\arraystretch}{1}
-				\begin{tabular}{p{0.9cm}<{\centering}|p{1.4cm}<{\centering}|p{1cm}<{\centering}|p{1cm}<{\centering}|p{1cm}<{\centering}|p{1cm}<{\centering}}
+				\begin{tabular}{p{0.8cm}<{\centering}|p{1.2cm}<{\centering}|p{0.9cm}<{\centering}|p{1cm}<{\centering}|p{0.8cm}<{\centering}|p{0.8cm}<{\centering}|p{0.8cm}<{\centering}}
 					
 					\hline
-					&\textbf{SequenceR}&\textbf{DLFix}& \textbf{Coconut}&\textbf{CURE}&\textbf{\tool}\\
+					&\textbf{SequenceR}&\textbf{DLFix}& \textbf{Coconut}&\textbf{CURE}&\textbf{CURE*}&\textbf{\tool}\\
 					\hline
-					Chart  & 4/5   & 7/13  & 8/13  & 7/12   & 9/12\\
-					Closure& 5/7   & 7/12  & 7/18  & 9/27   & 12/24\\
-					Lang   & 2/2   & 6/15  & 6/16  & 7/12   & 9/16\\
-					Math    & 8/11  & 18/28 & 20/31 & 21/33  & 22/34\\
-					Mockito & 0/0   & 1/1   & 2/3   & 2/3    & 2/4\\
-					Time    & 0/0   & 1/3   & 2/4   & 3/5    & 3/6\\
+					Chart  & 4/5   & 7/13  & 8/17  & 7/18  & 9/20  & 9/18\\
+					Closure& 5/7   & 7/12  & 7/14  & 9/21 & 11/19  & 12/18\\
+					Lang   & 2/2   & 6/15  & 6/16  & 7/12 & 8/18  & 9/16\\
+					Math    & 8/11  & 18/28 & 20/31 & 21/33 & 21/35 & 22/34\\
+					Mockito & 0/0   & 1/1   & 2/3   & 2/3  &2/4  & 2/4\\
+					Time    & 0/0   & 1/3   & 2/4   & 3/5  &3/7  & 3/6\\
 					\hline
-					Total   & 19/25 & 40/72 & 44/85 & 48/92  & 56/96\\
+					Total   & 19/25 & 40/72 & 44/85 & 48/92 & 54/103 & 56/96\\
 					\hline
-					P(\%)  & 76.0  & 55.6  & 51.8  & 52.2   & 58.3\\
+					P(\%)  & 76.0  & 55.6  & 51.8  & 52.2  &  53.4 & 58.3\\
 					\hline
 				\end{tabular}
 			{\footnotesize{
 				Note: P is the probability of the generated plausible patches to be correct.\\
 				In the cells, x/y: x means the number of correct fixes and y means the number of candidate patches that can pass all test cases. For example, for \tool, 96 candidate patches can pass all test cases. However, 56 out of 96 are the correct fixes compared with the fixes by developers in the ground truth.}}
+			{\color{red}{CURE: the cure approach with 5 hours limitation per bug which is the same setting as our \tool. CURE*: the cure approach with their own setting that validating the top 5,000 candidate patches per bug}}
 				\label{RQ1_defect4j}
 			\end{center}
                 }
@@ -90,21 +91,21 @@ bugs.
   {\small
 			\begin{center}
 				\renewcommand{\arraystretch}{1}
-				\begin{tabular}{p{0.9cm}<{\centering}|p{1.4cm}<{\centering}|p{1cm}<{\centering}|p{1cm}<{\centering}|p{1cm}<{\centering}|p{1cm}<{\centering}}
+				\begin{tabular}{p{0.8cm}<{\centering}|p{1.2cm}<{\centering}|p{0.9cm}<{\centering}|p{1cm}<{\centering}|p{0.8cm}<{\centering}|p{0.8cm}<{\centering}|p{0.8cm}<{\centering}}
 					
 					\hline
-					&\textbf{SequenceR}&\textbf{DLFix}& \textbf{Coconut}&\textbf{CURE}&\textbf{\tool}\\
+					&\textbf{SequenceR}&\textbf{DLFix}& \textbf{Coconut}&\textbf{CURE}&\textbf{CURE*}&\textbf{\tool}\\
 					\hline
-					Chart  & x/x   & x/xx  & x/xx  & x/xx   & x/xx\\
-					Closure& x/x   & x/xx  & x/xx  & x/xx   & xx/xx\\
-					Lang   & x/x   & x/xx  & x/xx  & x/xx   & x/xx\\
-					Math    & x/xx  & xx/xx & xx/xx & xx/xx  & xx/xx\\
-					Mockito & x/x   & x/x   & x/x   & x/x    & x/x\\
-					Time    & x/x   & x/x   & x/x   & x/x    & x/x\\
+					Chart  & 3/3   & 5/12  & 6/11  & 6/13  & 6/15 & 7/16\\
+					Closure& 4/5   & 6/10  & 6/9   & 6/10  & 7/14 & 9/15\\
+					Lang   & 2/2   & 5/12  & 5/13  & 5/14  & 6/14  & 7/13\\
+					Math    & 6/9  & 12/18 & 13/21 & 16/23 & 17/30 & 18/27\\
+					Mockito & 0/0   & 1/1   & 2/2   & 2/2  & 2/3  & 2/3\\
+					Time    & 0/0   & 1/2   & 1/1   & 1/2  & 2/3  & 1/3\\
 					\hline
-					Total   & xx/xx & xx/xx & xx/xx & xx/xx  & xx/xx\\
+					Total   & 15/19 & 30/55 & 33/57 & 36/71 & 40/79 & 44/77\\
 					\hline
-					P(\%)  & xx.x  & xx.x  & xx.x  & xx.x   & xx.x\\
+					P(\%)  & 68.4  & 54.5  & 57.9  & 50.7  & 50.6  & 57.1\\
 					\hline
 				\end{tabular}
 				\label{RQ1_defects4J_with_FL}

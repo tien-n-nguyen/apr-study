@@ -134,9 +134,10 @@ candidate.
 We set a 5-hour limit for the validation step for all approaches as in
 previous work~\cite{icse20,tbar-issta19}.
 %Tien
-For CURE~\cite{cure-icse21}, we also ran it on its original setting
-with unlimited time, with beam search (beam size of 1,000). It
-generates 1,000 candidates and the top 5,000 of them are validated.
+For CURE~\cite{cure-icse21}, we also ran patch validation in its
+setting on its resulting patches with no time limit. Using beam search
+(beam size of 1,000), CURE generates 1,000 candidates and the top
+5,000 of them are validated.
 
 %I add the CURE* which is the same setting as their original paper. The
 %setting is that using beam search, the beam size is 1000, generates
@@ -149,16 +150,18 @@ fixing in our study (i.e., without fault localization).
 
 
 \underline{Parameter tuning.} We tuned the baselines with the
-parameters that mentioned in their papers. We tuned \tool with autoML
-\cite{NNI} for the following parameters: {\em epoch}, {\em batch
-  size}, {\em learning rate}, {\em embedding length}, the {\em max
-  number of children nodes $P$}, and {\em the max children node depth}
-$Q$. Our model was tuned with the following key hyper-parameters to
-obtain the best performance: (1) Epoch size (i.e., 100, 200, 300); (2)
-Batch size (i.e., 64, 128, 256); (3) Learning rate (i.e., 0.001,
-0.003, 0.005, 0.010); (4) Vector length of word representation and its
-output (i.e., 150, 200, 250, 300); (5) max number of children nodes
-$P$ (i.e. 4, 5, 6); (6) max children node depth $Q$ (i.e. 3, 4, 5).
+parameters in their papers.
+%for the following parameters: {\em epoch}, {\em batch
+%  size}, {\em learning rate}, {\em embedding length}, the {\em max
+%  number of children nodes $P$}, and {\em the max children node depth}
+%$Q$.
+We tuned {\tool} with autoML~\cite{NNI} for the following key
+hyper-parameters to have the best performance: (1) Epoch size (100,
+200, 300); (2) Batch size (64, 128, 256); (3) Learning rate (0.001,
+0.003, 0.005, 0.010); (4) Vector length of word embeddings and its
+output (150, 200, 250, 300); (5) The maximum number $P$ of children
+nodes (4, 5, 6); (6) The maximum depth $Q$ of children nodes (3, 4,
+5).
 
 {\bf RQ2. Comparison with DL-based APR Approaches on
   Large Datasets.} We compare {\tool} with the following baselines:
@@ -181,10 +184,15 @@ We did not compare with CODIT~\cite{chakrabortycodit} and
 Tufano'19~\cite{tufano2019learning} in RQ1, because they do not have
 the validation step in their approaches to run on Defects4J. It is
 unfair if we compare them with the other approaches having the
-validation step. However, we compared {\tool} with them in RQ2
-since the two datasets Bugs.jar and BigFix do not have the
-test cases for the bugs. Thus, we ran the fixing step of each
-model without patch validation on those two datasets.
+validation step. However, we compared {\tool} with them in RQ2 since
+we ran the fixing step of all models without patch validation on
+Bugs.jar and BigFix. The reason is that the two datasets do not have
+test cases for patch validation.
+%Tien
+%However, we compared {\tool} with them in RQ2 since the two datasets
+%Bugs.jar and BigFix do not have the test cases for validation. Thus,
+%we ran the fixing step of all models without patch validation on those
+%two datasets.
 
 %We compared {\tool} with those two baselines in this experiment for
 %RQ2 running on two large datasets, in which we directly ran the fixing
@@ -200,13 +208,15 @@ model without patch validation on those two datasets.
 
 %We ran the baselines and \tool on two big datasets in this RQ, including Bugs.jar and BigFix.
 
+In RQ2, we did not use fault localization either because Bugs.jar and
+BigFix do not have test cases. We used correct fixing locations.
+
 In RQ2, as running each model, we randomly splitted a dataset
 into 80\%/10\%/10\% for training, tuning (validation), and testing.
 
 %We used the same splitting scheme for all models.
 
-In RQ2, we did not use a fault localization tool because Bugs.jar and
-BigFix do not have test cases. We used correct fixing locations.
+
 
 \underline{Parameter tuning:} the same as in RQ1.
 
@@ -222,14 +232,15 @@ missed by {\tool}, and the number of bugs that were fixed by
 both.
 
 
-{\bf RQ4. Impact Analysis of Dual Learning on Performance.}
-%underline{Baselines.} To study the contributions of dual-learning in
+{\bf RQ4. Impact Analysis of Dual-Task Learning on Performance.}
+%underline{Baselines.}
+%To study the contributions of dual-learning in
 %{\tool},
 We compare {\tool} with two of its variants:
 
-(1) \textbf{Transformation-only model:} In this variant,
-CCL was removed from {\tool} and only CTL was kept. The result
-allows us to access the contribution of context learning.
+(1) \textbf{Transformation-only model:} In this variant, CCL (context)
+was removed from {\tool} and only CTL (transformation) was kept. The
+result helps evaluate the contribution of context learning.
 %the context learning model is removed from {\tool} and only the
 %bug-fixing code transformation learning model is kept. The result
 %allows us to understand the contributions of the context learning
@@ -242,12 +253,13 @@ which we removed the cross-stitch unit for dual-task learning. CCL is
 connected to CTL in a cascading manner.
 %in which the output of CCL corresponding to a buggy subtree is
 %directly used as the input of CTL.
-Note: this cascading model differs from DLFix~\cite{icse20} (explained
+Note: this cascading variant differs from DLFix~\cite{icse20} (explained
 in RQ1). First, CCL and CTL are different from those in DLFix, which
-uses a code summarization technique. Second, in the cascading model,
+uses a code summarization technique. Second, in this cascading variant,
 the output of CCL corresponding to a buggy subtree is directly used as
 the input of CTL. In DLFix~\cite{icse20}, the summarized vector is
-used in a cross-product to represent the impact from CCL to CTL.
+used as a weight in a cross-product to represent the impact from CCL
+to CTL.
 
 %. In Cascading_Model (Figure_5), part of the CCL output corresponding
 %to the buggy subtree is used directly as input to CTL.

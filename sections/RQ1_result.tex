@@ -1,60 +1,5 @@
 \subsection{\bf RQ1. Comparison Results with DL-based APR Approaches on Defects4J Dataset}
 
-Table~\ref{RQ1_defect4j} shows that {\em {\tool} can auto-fix more bugs
-than any DL-based baselines}. {\tool}
-automatically fixes 56 bugs and it fixes {\bf 194.7\% (i.e., 37), 40\%
-(i.e., 16), 27.3\% (i.e., 12), and 16.7\% (i.e., 8)} more bugs than the
-baseline models SequenceR, DLFix, CoCoNuT, and CURE,
-respectively.
-%{\color{red}{if add CURE*, this is not true}}
-Furthermore, {\tool} generates {\em the most plausible
-patches (i.e., 96)} passing all test cases than any other baselines,
-indicating that {\tool} has a better patch generation
-capability. Moreover, {\tool} has a {\em higher percentage of the generated
-plausible patches to be correct than all the baselines}, except
-SequenceR. However, {\tool} can fix 194\% more bugs and 6 times more
-plausible patches than SequenceR.
-%
- %and CURE fixed 4 bugs that {\tool} missed. 
-% {\tool} fixed 12 unique bugs that CURE cannot fix and 3 unique bugs
-% that were missed by all other baselines.
-Moreover, CDFix fixed 12 bugs that the {\em best baseline} CURE
-missed; and CURE fixed 4 bugs that CDFix missed. CDFix fixed 3 bugs
-that all the DL-based baselines missed.
-
-Table~\ref{RQ1_defects4J_with_FL} shows the comparative result on
-Defects4J with an FL tool. As seen, with the FL tool, the performance
-of all models decreases due to the confounding inaccuracy. However,
-{\tool} can still fix more bugs than any baseline. It
-automatically fixes {\bf 44} bugs, i.e., {\bf 193.3\% (i.e., 29), 46.7\%
-  (i.e., 14), 33.3\% (i.e., 11), and 22.2\% (i.e., 8)} more bugs than
-the baselines SequenceR, DLFix, CoCoNuT, and CURE,
-respectively.
-%{\color{red}{if add CURE*, this is not true}}
-Furthermore, {\tool} generates the most plausible patches (i.e., {\bf
-  XX}) among all the models.
-%indicating that {\tool} has a better patch generation
-%capability. Moreover, {\tool}
-It also has a higher percentage of the generated plausible patches to
-be correct than all the baselines.
-%However, {\tool} can fix 194\% more bugs and 6 times more plausible
-%patches than SequenceR.
-Moreover, CDFix fixed {\bf 9} bugs that the {\em best baseline} CURE
-missed; and CURE fixed {\bf 3} bugs that CDFix missed. CDFix fixed
-{\bf 2} bugs that all the DL-based baselines missed.
-
-Note that the numbers for DLFix are different from those
-reported in DLFix paper~\cite{icse20}. The reason is that DLFix's
-authors had filtered from the datasets the multiple-line bugs due to
-DLFix's limited capabability. We used the full datasets with all the
-bugs.
-
-%Tien
-%The reason for the difference between the results for DLFix in this paper and those reported in DLFix’s paper_[18] is that in DLFix’s experiment, the authors filtered from the datasets to keep only the single-line bugs for the comparison with other baselines. In CDFix, we used the full datasets with multiple-line bugs. Thus, the results reported in this paper are lower. The same reason is for other baselines.
-
-
-
-%{\footnotesize{
 \begin{table}[t]
   \caption{RQ1. Comparison Results with DL-based APR Approaches on Defects4J \underline {without Fault Localization}.}
   \vspace{-6pt}
@@ -64,7 +9,7 @@ bugs.
 				\begin{tabular}{p{0.8cm}<{\centering}|p{1.2cm}<{\centering}|p{0.9cm}<{\centering}|p{1cm}<{\centering}|p{0.8cm}<{\centering}|p{0.8cm}<{\centering}|p{0.8cm}<{\centering}}
 					
 					\hline
-					&\textbf{SequenceR}&\textbf{DLFix}& \textbf{Coconut}&\textbf{CURE}&\textbf{CURE*}&\textbf{\tool}\\
+					&\textbf{SequenceR}&\textbf{DLFix}& \textbf{CocoNut}&\textbf{CURE}&\textbf{CURE*}&\textbf{\tool}\\
 					\hline
 					Chart  & 4/5   & 7/13  & 8/17  & 7/18  & 9/20  & 9/18\\
 					Closure& 5/7   & 7/12  & 7/14  & 9/21 & 11/19  & 12/18\\
@@ -79,8 +24,7 @@ bugs.
 					\hline
 				\end{tabular}
 			{\footnotesize{
-				Note: P is the probability of the generated plausible patches to be correct.\\
-				In the cells, x/y: x means the number of correct fixes and y means the number of candidate patches that can pass all test cases.}}
+				Note: P is the probability of the generated plausible patches to be correct. In the cells, x/y: x means the number of correct fixes and y means the number of candidate patches that can pass all test cases. CURE: 5-hour limit of validation, CURE*: 5,000 candidates.}}
 
 %                               For example, for \tool, 96 candidate patches can pass all test cases, but only 56 of them match with developers' fixes.}}
 %                                However, 56 out of 96 are the correct fixes compared with the fixes by developers in the ground truth.}}
@@ -89,7 +33,72 @@ bugs.
 			\end{center}
                 }
 		\end{table}
+
+As seen in Table~\ref{RQ1_defect4j}, {\em {\tool} can auto-fix more
+  bugs than any DL-based baselines}. {\tool} auto-fixes 56 bugs and it
+fixes {\bf 194.7\% (37 bugs), 40\% (16), 27.3\% (12)}, {\bf 16.7\%
+  (8)}, and {\bf 3.7\% (2)} more bugs than the baseline models
+SequenceR, DLFix, CoCoNuT, CURE, and CURE* respectively. With the
+5-hour limit, {\tool} generates {\em the most correct and the most
+  plausible patches (i.e., 56 and 96)} than other baselines.
+
+{\tool} also has a {\em higher percentage of the generated plausible
+  patches to be correct than all the baselines}, except SequenceR with
+5-hour limit. However, {\tool} can fix 194\% more bugs and 6 times
+more plausible patches than SequenceR. With the time limit, {\tool}
+fixed 3 bugs that all the DL-based baselines missed.
+
+In comparison with CURE and CURE*, CURE* ranked 10,000 candidates and
+refined the ranking to pick and validate top 5,000 candidates. Despite
+costing more than double time (>10 hours of validation), CURE* fixed 2
+bugs less than {\tool}. With 5-hour limit, if CURE did not identify a
+plausible patch, on average, it validated 2,350
+candidates. Importantly, {\tool} fixes 16.7\% (8 bugs) more than CURE
+with the same 5-hour limit. Moreover, {\tool} fixed 12 bugs that CURE
+missed; and CURE fixed 4 bugs that {\tool}~missed.
+
+%{\footnotesize{
+
+
+
+Table~\ref{RQ1_defects4J_with_FL} shows the comparative result on
+Defects4J with an FL tool. As seen, with the FL tool, the performance
+of all models decreases due to the confounding inaccuracy. However,
+{\tool} can still fix more bugs than any baseline. It automatically
+fixes {\bf 44} bugs, i.e., {\bf 193.3\% (29 bugs), 46.7\% (14), 33.3\%
+  (11), 22.2\% (8)}, and {\bf 10\% (4)} more bugs than the baselines
+SequenceR, DLFix, CoCoNuT, CURE, and CURE*, respectively. With 5-hour
+limit, {\tool} fixed the most correct and the most plausible patches
+(i.e., 44 and 77). Moreover, with that limit, {\tool} fixed {\bf 9}
+bugs that CURE missed; and CURE fixed {\bf 3} bugs that {\tool}
+missed. {\tool} fixed {\bf 2} bugs that all the DL-based baselines
+missed. Compared with CURE*, CURE* costs more than double validation
+time, but fixed 4 bugs less than {\tool}.
+
+%Furthermore, {\tool} generates the most plausible patches (i.e., {\bf
+%  XX}) among all the models.  It also has a higher percentage of the
+%generated plausible patches to be correct than all the
+%baselines. Moreover, CDFix fixed {\bf 9} bugs that the {\em best
+%  baseline} CURE missed; and CURE fixed {\bf 3} bugs that CDFix
+%missed. CDFix fixed {\bf 2} bugs that all the DL-based baselines
+%missed.
+
+%
+%Note that the numbers for DLFix are different from those
+%reported in DLFix paper~\cite{icse20}. The reason is that DLFix's
+%authors had filtered from the datasets the multiple-line bugs due to
+%DLFix's limited capabability. We used the full datasets with all the
+%bugs.
+
+%Tien
+%The reason for the difference between the results for DLFix in this paper and those reported in DLFix’s paper_[18] is that in DLFix’s experiment, the authors filtered from the datasets to keep only the single-line bugs for the comparison with other baselines. In CDFix, we used the full datasets with multiple-line bugs. Thus, the results reported in this paper are lower. The same reason is for other baselines.
+
+
+
+
 %}}
+
+
 
 
 \begin{table}[t]
@@ -101,7 +110,7 @@ bugs.
 				\begin{tabular}{p{0.8cm}<{\centering}|p{1.2cm}<{\centering}|p{0.9cm}<{\centering}|p{1cm}<{\centering}|p{0.8cm}<{\centering}|p{0.8cm}<{\centering}|p{0.8cm}<{\centering}}
 					
 					\hline
-					&\textbf{SequenceR}&\textbf{DLFix}& \textbf{Coconut}&\textbf{CURE}&\textbf{CURE*}&\textbf{\tool}\\
+					&\textbf{SequenceR}&\textbf{DLFix}& \textbf{CocoNut}&\textbf{CURE}&\textbf{CURE*}&\textbf{\tool}\\
 					\hline
 					Chart  & 3/3   & 5/12  & 6/11  & 6/13  & 6/15 & 7/16\\
 					Closure& 4/5   & 6/10  & 6/9   & 6/10  & 7/14 & 9/15\\

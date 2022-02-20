@@ -5,7 +5,9 @@ than any DL-based baselines}. {\tool}
 automatically fixes 56 bugs and it fixes {\bf 194.7\% (i.e., 37), 40\%
 (i.e., 16), 27.3\% (i.e., 12), and 16.7\% (i.e., 8)} more bugs than the
 baseline models SequenceR, DLFix, CoCoNuT, and CURE,
-respectively. {\color{red}{if add CURE*, this is not true}} Furthermore, {\tool} generates {\em the most plausible
+respectively.
+%{\color{red}{if add CURE*, this is not true}}
+Furthermore, {\tool} generates {\em the most plausible
 patches (i.e., 96)} passing all test cases than any other baselines,
 indicating that {\tool} has a better patch generation
 capability. Moreover, {\tool} has a {\em higher percentage of the generated
@@ -27,8 +29,10 @@ of all models decreases due to the confounding inaccuracy. However,
 automatically fixes {\bf 44} bugs, i.e., {\bf 193.3\% (i.e., 29), 46.7\%
   (i.e., 14), 33.3\% (i.e., 11), and 22.2\% (i.e., 8)} more bugs than
 the baselines SequenceR, DLFix, CoCoNuT, and CURE,
-respectively. {\color{red}{if add CURE*, this is not true}} Furthermore, {\tool} generates the most plausible
-patches (i.e., {\bf XX}) among all the models.
+respectively.
+%{\color{red}{if add CURE*, this is not true}}
+Furthermore, {\tool} generates the most plausible patches (i.e., {\bf
+  XX}) among all the models.
 %indicating that {\tool} has a better patch generation
 %capability. Moreover, {\tool}
 It also has a higher percentage of the generated plausible patches to
@@ -76,8 +80,9 @@ bugs.
 				\end{tabular}
 			{\footnotesize{
 				Note: P is the probability of the generated plausible patches to be correct.\\
-				In the cells, x/y: x means the number of correct fixes and y means the number of candidate patches that can pass all test cases. For example, for \tool, 96 candidate patches can pass all test cases. However, 56 out of 96 are the correct fixes compared with the fixes by developers in the ground truth.}}
-			{\color{red}{CURE: the cure approach with 5 hours limitation per bug which is the same setting as our \tool. CURE*: the cure approach with their own setting that validating the top 5,000 candidate patches per bug}}
+				In the cells, x/y: x means the number of correct fixes and y means the number of candidate patches that can pass all test cases. For example, for \tool, 96 candidate patches can pass all test cases, but only 56 of them match with developers' fixes.}}
+%                                However, 56 out of 96 are the correct fixes compared with the fixes by developers in the ground truth.}}
+%			{\color{red}{CURE: the cure approach with 5 hours limitation per bug which is the same setting as our \tool. CURE*: the cure approach with their own setting that validating the top 5,000 candidate patches per bug}}
 				\label{RQ1_defect4j}
 			\end{center}
                 }

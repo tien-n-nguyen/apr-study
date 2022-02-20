@@ -133,6 +133,14 @@ candidate.
 %the ground-truth fixes in Defects4J.
 We set a 5-hour limit for the validation step for all approaches as in
 previous work~\cite{icse20,tbar-issta19}.
+%Tien
+For CURE~\cite{cure-icse21}, we also ran it on its original setting
+with unlimited time, with beam search (beam size of 1,000). It
+generates 1,000 candidates and the top 5,000 of them are validated.
+
+%I add the CURE* which is the same setting as their original paper. The
+%setting is that using beam search, the beam size is 1000, generates
+%10000 candidates, validate on top 5000.)
 
 We also used the correct fixing locations for the models to perform
 fixing in our study (i.e., without fault localization).

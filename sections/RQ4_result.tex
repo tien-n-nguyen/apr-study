@@ -48,30 +48,30 @@ learning (CTL) is not as effective as the dual-task learning
 in {\tool}.
 
 We performed overlapping analysis between the results
-from {\tool} and the cascading model. {\tool} fixes {\bf XX} bugs that
-the cascading model missed and the cascading model fixed only {\bf XX}
-bugs that {\tool} missed, while both models fix the same {\bf XXX}
+from {\tool} and the cascading model. {\tool} fixes {\bf 54} bugs that
+the cascading model missed and the cascading model fixed only {\bf 17}
+bugs that {\tool} missed, while both models fix the same {\bf 119}
 bugs. This result shows that {\tool} can fix more unique bugs
 that the cascading model missed than the other way.
 
-In another study, we analyzed the set T1 of {\bf XX} bugs in which the
+In another study, we analyzed the set T1 of {\bf 418} bugs in which the
 {\em outputs of the context learning model in the cascading model are
   incorrect} compared to the oracle. We also analyzed the set T2 of
-the {\bf XX} bugs in which {\em the outputs of the context learning
+the {\bf 789} bugs in which {\em the outputs of the context learning
   model in CDFix with dual-task learning are correct} compared to the
 oracle. The correct match is defined as $\geq$ 90\% matching of all AST
 nodes in the context, otherwise, it is incorrect match.
 %
-Among the overlapping bugs between T1 and T2, we reported {\bf XX}
-bugs that {\tool} was able to fix, and {\bf XX} bugs that the
+Among the overlapping bugs between T1 and T2, we reported {\bf 134}
+bugs that {\tool} was able to fix, and {\bf 89} bugs that the
 cascading model fixed.  This result indicates that {\bf the correct context
 learning (caused by dual-task learning) leads to more correct bug
 fixing}.
 
-We further analyzed {\bf XX} bugs that {\tool} fixed and were missed
-by the cascading model. Among them, we found {\bf XX} bugs in which
+We further analyzed {\bf 54} bugs that {\tool} fixed and were missed
+by the cascading model. Among them, we found {\bf 18} bugs in which
 {\em the outputs of CCL in the cascading model match with the fixed
-  contexts in the oracle}. In contrast, we found {\bf XX} bugs in
+  contexts in the oracle}. In contrast, we found {\bf 46} bugs in
 which {\em the outputs of CCL in {\tool} match with the fixed
   contexts}. This indicates that a source of the inaccuracy in the
 cascading model is the inaccuracy of context learning. This also shows

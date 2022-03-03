@@ -74,18 +74,19 @@ variable is incorrect (\code{if (dataset != null)}). The result is
 returned only when the dataset (line 7) is empty. Thus, it was fixed
 into \code{if (dataset == null)}.
 
-\noindent {\bf Observation 1 [Fixing Change Depends on
-    Context]}. As seen, the bug-fixing change from line 8 to
-line 9 (\code{if (dataset != null)} $\rightarrow$ \code{if (dataset ==
-  null)}) depends on the surrounding code context. On line 7, the
-dataset is retrieved via \code{getDataset}. According to the logic of
-the program, the result is returned when \code{dataset} is
-\code{null}.  Thus, the incorrect checking was fixed into line 9. That
-is, that fix (rather than \code{if (dataset == 0)}) makes sense in
-the context of \code{getDataset} as well as the other code such as
-\code{getIndexOf}, \code{LegendItemCollection}, and the succeeding
-code (\code{dataset.getRowCount}, \code{return result}, etc.).
+\noindent {\bf Observation 1 [Fixing Change Depends on Context]}. As
+seen, the bug-fixing change from line 8 to line 9 (\code{if (dataset
+  != null)} $\rightarrow$ \code{if (dataset == null)}) depends on the
+surrounding code context. On line 7, the dataset is retrieved via
+\code{getDataset}. According to the logic of the program, the result
+is returned when \code{dataset} is \code{null}.  Thus, the incorrect
+checking was fixed into line 9. That is, that fix (rather than
+\code{if (dataset == 0)}) makes sense in the context consisting of
+the preceding code (\code{getDataset}, \code{getIndexOf},
+\code{LegendItemCollection}, etc.), and the succeeding code
+(\code{dataset.getRowCount}, \code{return result}, etc.).
 
+\vspace{3pt}
 \noindent {\bf Observation 2 [Context Depends on Fixing
     Change]}. Because of the change (\code{if (dataset != null)}
 $\rightarrow$ \code{if (dataset == null)}), the key features in the
@@ -93,8 +94,8 @@ context could likely be \code{getDataset} and \code{getIndexOf},
 rather than \code{this.plot == null} (line 3) or \code{return result;}
 (line 4).
 
-Despite their successes, the state-of-the-art DL-based APR approaches
-are still limited in integrating the contextual information.
+Despite successes, the state-of-the-art, DL-based approaches are
+limited in integrating context learning and code-change learning.
 
 \underline{First}, for the DL-based approaches that learn the fixes
 from prior {\em similar bug fixes or
@@ -150,7 +151,7 @@ first LSTM model to the second one in which the output of the model
 for contexts is used as a weight for the transformation learning one.
 Thus, DLFix~\cite{icse20} suffers two limitations: 1) it does not
 capture well both directions of the mutual impact between two types of
-learning (esp. from bug-fixing learning to context learning), 2) it
+learning (esp. from code-change learning to context learning), 2) it
 creates confounding inaccuracies as explained.
 %
 %This cascading architecture creates a confounding effect from the
@@ -193,11 +194,11 @@ transformation learning as a dual task between CCL and CTL.
 
 Intuitively, the two models CCL and CTL are dependent on each
 other. The learning of the contexts can benefit the learning of
-bug-fixing transformations and vice versa. We refer to this relation
-as {\em duality}, which can provide some useful constraints for
-{\tool} to learn to fix context-dependent bugs. We conjecture that the
-join training of the two models can improve the performance of both
-models, if we can achieve the shared representations. For example, in
+bug-fixing code transformations and vice versa. We refer to this
+relation as {\em duality}, which can provide useful constraints for
+{\tool} to learn to fix {\em context-dependent bugs}. We conjecture
+that the join training of the two models can improve the performance
+of both, if we can achieve the shared representations. For example, in
 Figure~\ref{fig:motiv}, if the context is observed as containing
 \code{getDataset} at line 7, \code{getIndexOf} at line 6, and
 \code{return result} at line 10, the likelihood of the fixing change
@@ -206,10 +207,10 @@ at line 8 becoming \code{(dataset == null)} is more than that of
 data is empty, the result is returned. On the other hand, if the
 bug-fixing transformation is observed as \code{(dataset != null)}
 becoming \code{(dataset == null)}, it is likely to have an assignment
-\code{dataset = ...;} in the context preceding \code{(dataset != null)}.
-Therefore, in {\tool}, we joinly train CTL for context learning and
-CCL for transformation learning with soft-sharing of parameters to
-exploit their relation.
+\code{dataset = ...;} in the context preceding \code{(dataset !=
+  null)}.  Therefore, in {\tool}, we joinly train CTL for context
+learning and CCL for transformation learning with soft-sharing of
+parameters to exploit their relation.
 
 Specifically, {\bf {\em we have adapted/modified the cross-stitch
     unit \cite{misra2016cross} to work with AST representations}} to

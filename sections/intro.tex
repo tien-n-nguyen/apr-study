@@ -201,20 +201,32 @@ maps. This joint training enables the dual-task learning to propagate
 the impact of CCL and CTL and vice~versa. With the dual-task learning
 solution, {\tool} has two key departure points to address the
 limitations of the existing DL-based APR approaches
-(includ. DLFix~\cite{icse20}):~{\bf 1) Conceptually, it models
-  both directions of the mutual impacts of CCL and CTL; 2)
-  Architecturally, it overcomes the confounding effect in the existing
-  cascading architecture}.
+(includ. DLFix~\cite{icse20}):~{\bf 1) Conceptually, it models both
+  directions of the mutual impacts of CCL and CTL; 2) Architecturally,
+  it overcomes the confounding effect in the existing cascading
+  architecture}. Moreover, the internal structure of CCL and CTL, and
+their connections in {\tool} are advanced than those in DLFix (we will
+explain in Section~\ref{eval-methodology:sec}).
 
-In {\tool}, for training, the input for the CCL model is the Abstract
-Syntax Tree (AST) of a buggy method and that of the fixed method, and
-the input of the CTL model is the AST subtree of each of its buggy
+For training, the input of the CCL model is the Abstract
+Syntax Tree (AST) of a buggy method and that of the fixed one.
+The input of the CTL model is the AST subtree of each of its buggy
 statements, and that of the respective fixed statement. For
-auto-fixing, a buggy statement to be fixed is identified by a fault
-localization tool. Then, the AST subtree for the buggy statement is
-fed into the trained CTL model to produce the candidate patches. We
-design a novel tree-oriented beam search for efficiency. Finally, the
-candidate patches are ranked and validated via test cases.
+auto-fixing, a fault localization tool is used to identify the buggy
+statement(s). The AST subtree of the buggy statement is fed into the
+trained~CTL model~to produce the ranked candidate patches, which are
+validated via test cases. We design a tree-oriented beam search
+for efficiency.
+
+%In {\tool}, for training, the input for the CCL model is the Abstract
+%Syntax Tree (AST) of a buggy method and that of the fixed method, and
+%the input of the CTL model is the AST subtree of each of its buggy
+%statements, and that of the respective fixed statement. For
+%auto-fixing, a buggy statement to be fixed is identified by a fault
+%localization tool. Then, the AST subtree for the buggy statement is
+%fed into the trained CTL model to produce the candidate patches. We
+%design a novel tree-oriented beam search for efficiency. Finally, the
+%candidate patches are ranked and validated via test cases.
 
 We conducted several experiments to evaluate and compare {\tool} with
 the DL-based APR models on three large datasets:
@@ -244,18 +256,21 @@ respectively. The contributions of this paper are listed as follows:
 
 %{\bf A. A Novel Dual-Task Learning DL-based APR Model:}
 
-1) Leveraging dual-task learning to propagate the {\bf mutual impacts}
-  in both directions of context and transformation learning.
+%1) Leveraging dual-task learning to propagate the {\bf mutual impacts}
+%  in both directions of context and transformation learning.
+
+1) Leveraging dual-task learning i) to model {\bf mutual impacts}
+of CCL and CTL in both directions, ii) avoid confounding inaccuracies.
+
+
 
 2) {\bf Adapting/Modifying cross-stitch unit} for dual-task learning to work
 with AST representations in source code.
 
 3) A novel {\bf tree-oriented beam search} for candidate generation.
 
-4) Dual-task architecture avoiding
-%Advancing DL-based APR approaches with dual-task learning
-confounding inaccuracies.
-%from cascading architecture.
+%4) Dual-task architecture avoiding confounding inaccuracies.
+
 
 %A context-aware APR approach that leverages dual learning {\em to
 %  propagate the impact between context learning and bug-fixing code
@@ -270,7 +285,7 @@ confounding inaccuracies.
 %learning bug-fixing code transformations and learning code contexts to
 %improve APR performance.
 
-5) Empirical Results: (Code and data are published~\cite{CDFix2022}).
+4) Empirical Results: (Code and data are published~\cite{CDFix2022}).
 %{\bf Advancing DL-based APR approaches with dual-task learning for CCL
 %  and CTL}:
 %Extensive experiments were performed to evaluate different aspects

@@ -32,7 +32,7 @@ from the source code~\cite{liu2019avatar,tbar-issta19} and others
 learn them from prior bug-fixing
 changes~\cite{wen2018context,Simfix,koyuncu2018fixminer}.  The fixing
 patterns/templates could be mined automatically from the repositories
-or pre-defined via semi-automated
+or pre-defined via semi-automatic
 techniques~\cite{le2016history,nguyen2013semfix,liu2019avatar,tbar-issta19}.
 
 %Recent advances in
@@ -55,7 +55,7 @@ of treating APR as machine translation, other DL-based approaches aim
 to implicitly learn the {\em transformation rules} from a buggy code
 to a correct one accordingly to the surrounding {\em context} of the
 transformations~\cite{chen2018sequencer,icse20,cure-icse21,lutellier2020coconut}.
-Those approaches show that {\em learning bug-fixing changes needs to
+Those approaches show that {\em learning bug-fixing changes might 
   be dependent on {\em code context}}. For example, in
 C~code, if the preceding context contains \code{fopen} as in
 \code{FILE *fd = fopen (fname, ``rb'');}, the succeeding
@@ -73,8 +73,8 @@ APR~\cite{icse20,lutellier2020coconut,cure-icse21}.
 %tufano2019learning,chakrabortycodit}.
 
 Despite recognizing the importance of contexts in learning the fixes,
-the existing DL-based APR approaches still have limitations in
-integrating contextual information in the APR
+the existing DL-based APR approaches still have limitations in {\em
+  integrating context learning into code-change learning} in the APR
 process. \underline{First}, the DL-based APR approaches that learn
 from {\em bug-fixing patterns}~\cite{white2016deep,gupta2017deepfix}
 have focused on similar code and/or code changes with {\em little or
@@ -84,8 +84,8 @@ approaches aim to learn {\em only the code changes} for fixes, e.g.,
 from a buggy subtree in an Abstract Syntax Tree (AST) or a buggy
 statement to the correct subtree or correct
 statement~\cite{chakrabortycodit,see2017get}. In this treatment, too
-little or no context might not help a model learn the fixes that depend on a
-larger surrounding code.
+little or no context might not help a model learn the fixes that
+depend on a larger surrounding code.
 
 \underline{Third}, in contrast, other
 approaches~\cite{hata2018learning,tufano2019learning,tufano2018empirical}
@@ -97,7 +97,7 @@ translation-based approaches {\em do not distinguish clearly the
 surrounding context (e.g., the preceding or succeeding code). Due to
 the mixture of fixing changes and context, those translation models or
 transformers could pick the incorrect locations for fixing, because
-they might not learn what fixing changes are appropriate in specific
+they might not learn what fixing changes are appropriate in some specific
 contexts~\cite{icse20}. \underline{Fourth}, some other DL-based
 approaches have separate representations for
 contexts~\cite{chen2018sequencer,cure-icse21,lutellier2020coconut}.
@@ -187,26 +187,26 @@ context more likely contains \code{fopen(...)} than \code{fread(...)}.
 %{\bf Correct learning of contexts can benefit the learning of code
 %  transformations and vice versa in automated program repair}
 
-We introduce {\tool}, a context-aware dual-task learning APR approach,
-that {\em explicitly models the mutual impact of context learning and
-  code transformation learning in both directions}. We train the two
-models simultaneously with soft-sharing parameters to exploit the
-duality of CCL and CTL. Specifically, we use a model called {\em
-  cross-stitch unit}~\cite{misra2016cross} that connects CTL and
-CCL. The sharing of representations between CCL and CTL is modeled by
-learning a linear combination of the input features from two
+We introduce {\tool}, a context-aware, dual-task learning APR
+approach, that {\em explicitly models the mutual impact of context
+  learning and code transformation learning in both directions}. We
+train the two models simultaneously with soft-sharing parameters to
+exploit the duality of CCL and CTL. Specifically, we use a model
+called {\em cross-stitch unit}~\cite{misra2016cross} that connects CTL
+and CCL. The sharing of representations between CCL and CTL is modeled
+by learning a linear combination of the input features from two
 models. Cross-stitch unit helps regularize both CCL and CTL by
 learning and enforcing shared representations by combining feature
 maps. This joint training enables the dual-task learning to propagate
-the impact of CCL and CTL and vice~versa. With the dual-task learning
-solution, {\tool} has two key departure points to address the
-limitations of the existing DL-based APR approaches
-(includ. DLFix~\cite{icse20}):~{\bf 1) Conceptually, it models both
-  directions of the mutual impacts of CCL and CTL; 2) Architecturally,
-  it overcomes the confounding effect in the existing cascading
-  architecture}. Moreover, the internal structure of CCL and CTL, and
-their connections in {\tool} are advanced than those in DLFix (we will
-explain in Section~\ref{eval-methodology:sec}).
+the impact of CCL and CTL and vice~versa. With dual-task learning,
+{\tool} has two key departure points to address the limitations of the
+existing DL-based APR approaches (includ. DLFix~\cite{icse20}):~{\bf
+  1) Conceptually, it models both directions of the mutual impacts of
+  CCL and CTL; 2) Architecturally, it overcomes the confounding effect
+  in the existing cascading architecture}. Moreover, the internal
+structure of CCL and CTL, and their connections in {\tool} are more
+advanced than those in DLFix (we will explain in
+Section~\ref{eval-methodology:sec}).
 
 For training, the input of the CCL model is the Abstract
 Syntax Tree (AST) of a buggy method and that of the fixed one.
@@ -228,25 +228,23 @@ for efficiency.
 %design a novel tree-oriented beam search for efficiency. Finally, the
 %candidate patches are ranked and validated via test cases.
 
-We conducted several experiments to evaluate and compare {\tool} with
-the DL-based APR models on three large datasets:
-Defects4J~\cite{defects4j} (395 bugs), Bugs.jar~\cite{saha2018bugs}
-(1,158 bugs), and BigFix~\cite{yioopsla19} (+4.9M methods and 1.8M
-buggy ones).
-%We compared {\tool} against several state-of-the-art DL-based APR
-%approaches.
-Our results show that {\tool} can fix 12.1\% and 14.6\% more bugs than
-the best-performance DL-based model, CURE~\cite{cure-icse21}, using
-only the Top-1 patches, in the large datasets Bugs.jar and BigFix,
-respectively. Additionally, {\tool} fixed 89 and 45 unique bugs that
-CURE missed, while {\tool} missed only 50 and 27 bugs that were fixed
-by CURE in Bugs.jar and BigFix, respectively.  Furthermore, in
-Defects4J, {\tool} can fix 8 more bugs than the best-performance
-DL-based model, CURE~\cite{cure-icse21}. In Defects4J, {\tool} fixes
-194.7\%, 40\%, 27.3\%, and 16.7\% more bugs than the baselines:
-SequenceR~\cite{chen2018sequencer}, DLFix~\cite{icse20},
-CoCoNuT~\cite{lutellier2020coconut}, CURE~\cite{cure-icse21},
-respectively. The contributions of this paper are listed as follows:
+We conducted experiments to compare {\tool} with the DL-based APR
+models on three public datasets: Defects4J~\cite{defects4j} (395
+bugs), Bugs.jar~\cite{saha2018bugs} (1,158 bugs), and
+BigFix~\cite{yioopsla19} (+4.9M methods and 1.8M buggy ones). Our
+results show that {\tool} can fix 12.1\% and 14.6\% more bugs than the
+best DL-based baseline, CURE~\cite{cure-icse21}, using only Top-1
+patches, in Bugs.jar and BigFix, respectively. Additionally, {\tool}
+fixed 89 and 45 unique bugs that CURE missed, while {\tool} missed
+only 50 and 27 bugs that were fixed by CURE in Bugs.jar and BigFix. In
+Defects4J, {\tool} fixes 194.7\%, 40\%, 27.3\%, and 16.7\% more bugs
+than the baselines: SequenceR~\cite{chen2018sequencer},
+DLFix~\cite{icse20}, CoCoNuT~\cite{lutellier2020coconut},
+CURE~\cite{cure-icse21}, respectively. {\tool} fixed 8 more bugs than the
+best DL-based model, CURE~\cite{cure-icse21}. Even with the cut-off
+setting in CURE, which took 10\% more time than {\tool}, CURE fixed 4
+less bugs than {\tool}. The contributions of this paper include:
+%are listed as follows:
 
 %{\bf A. DL for APR:} {\tool} is the first DL APR that generates
 %comparable and complementary results with powerful pattern-based
@@ -264,8 +262,8 @@ of CCL and CTL in both directions, ii) avoid confounding inaccuracies.
 
 
 
-2) {\bf Adapting/Modifying cross-stitch unit} for dual-task learning to work
-with AST representations in source code.
+2) {\bf Adapting/Modifying the cross-stitch unit} for dual-task
+learning to work with AST representations in source code.
 
 3) A novel {\bf tree-oriented beam search} for candidate generation.
 

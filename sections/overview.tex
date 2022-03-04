@@ -46,17 +46,17 @@ in which each node is replaced by its embedding vector
 
 \vspace{3pt}
 \noindent {\bf Context-aware, Dual-Task Learning Automated Program
-  Repair.}  The goal of this step is to train both of the tree-based
-CCL and the tree-based CTL in a joint-training manner. The entire AST
+  Repair.}  The goal of this step is to train both the tree-based CCL
+and the tree-based CTL in a joint-training manner. The entire AST
 $T^{M}_b$ of the buggy method after vectorization (i.e., each node is
 a vector) is used at the input layer of CCL for training. The AST of
 the corresponding fixed method $T^{M}_f$ after vectorization is used
 at the output layer of the CCL model. Similarly, the AST subtree
 $T^{S}_b$ of the buggy statement after vectorization is used at the
-input layer of CTL, and the subtree $T^{S}_f$ of the fixed statement
-after vectorization is used at the output layer of the CTL model. Each
-of the CCL and CTL models is realized via an attention-based
-\code{seq2seq} model.
+input layer of CTL, and the subtree $T^{S}_f$ of the corresponding
+fixed statement after vectorization is used at the output layer of
+CTL. The CCL and CTL models are realized via attention-based
+\code{seq2seq} models.
 %Instead of cascading the two models CCL and CTL,
 We use the {\em cross-stitch unit}~\cite{misra2016cross} to train CCL
 and CTL simultaneously with soft-sharing the parameters to exploit
@@ -71,9 +71,9 @@ the trained CCL and CTL models.
 
 Figure~\ref{overview-fixing} illustrates the prediction process, i.e.,
 the automated fixing process. A common usage of our tool is that
-before using it, a developer could use a fault localization tool
-(FL) to detect a buggy statement that needs to be fixed. Then, the
-input for APR is the buggy statement in the enclosing method.
+a developer could first use a fault localization tool
+(FL) to detect the buggy statements that need to be fixed. Then, the
+input for {\tool} is a buggy statement in the enclosing method.
 %Another usage is that a developer can pinpoint the buggy statement and
 %invoke {\tool} for an auto-fixing suggestion.
 The fixing process shares the first step of Tree-based Representation

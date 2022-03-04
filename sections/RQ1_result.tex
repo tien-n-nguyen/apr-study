@@ -34,27 +34,39 @@
                 }
 		\end{table}
 
-As seen in Table~\ref{RQ1_defect4j}, {\em {\tool} auto-fixes more
-  bugs than DL-based baselines}. {\tool} auto-fixes 56 bugs and it
-fixes {\bf 194.7\% (37 bugs), 40\% (16), 27.3\% (12)}, {\bf 16.7\%
-  (8)}, and {\bf 3.7\% (2)} more bugs than the models
-SequenceR, DLFix, CoCoNuT, CURE, and CURE*, respectively.
+\subsubsection{{\bf Without Fault Localization}}
 
-With the 5-hour limit, {\tool} generates {\em the most correct and the
-  most plausible patches (i.e., 56 and 96)} than other baselines.
-{\tool} also has a {\em higher percentage of the generated plausible
-  patches to be correct than all the baselines}, except SequenceR with
-5-hour limit. However, {\tool} can fix 194\% more bugs and 6 times
-more plausible patches than SequenceR. With the time limit, {\tool}
-fixed 3 bugs that all the DL-based baselines missed.
+{\em {\tool} fixes more bugs than DL-based baselines}. {\tool}
+auto-fixes 56 bugs, i.e., 194.7\% (37 bugs), 40\% (16), 27.3\% (12),
+16.7\% (8), and 3.7\% (2) more bugs than Sequen\-ceR, DLFix, CoCoNuT,
+CURE, and CURE*, respectively (Table~\ref{RQ1_defect4j}).
 
-In comparison with CURE and CURE*, CURE* ranked 10,000 candidates and
-refined the ranking to pick and validate top 5,000 candidates. Despite
-taking more time of patch validation (about 5.5 hours on average),
-CURE* fixed 2 bugs less than {\tool}. However, with the same setting
-of 5-hour limit, {\tool} fixes 16.7\% (8 bugs) more than
-CURE. Moreover, {\tool} fixed 12 bugs that CURE missed; and CURE fixed
-only 4 bugs that {\tool}~missed.
+With the 5-hour limit, {\tool} generates {\em the most correct (56)
+  and the most plausible patches (96)} than other baselines.  {\tool}
+also has a {\em higher percentage of the generated plausible patches
+  to be correct than all the baselines}, except SequenceR.
+%with 5-hour limit.
+However, {\tool} can fix 194\% more bugs and 6 times more plausible
+patches than SequenceR.
+%With the time limit,
+{\tool} also fixed 3 bugs that all the DL-based baselines missed.
+
+
+CURE*, with the cut-off setting, ranked 10,000 candidates and refined
+the ranking to pick and validate top 5,000 candidates. Despite taking
+more time of patch validation (about 5.5 hours on average for
+validating those 5,000 candidates), CURE* fixed 2 bugs less than
+{\tool}. However, with the same setting of 5-hour limit, {\tool} fixes
+16.7\% (8 bugs) more than CURE. Moreover, {\tool} fixed 12 bugs that
+CURE missed; and CURE fixed only 4 bugs that {\tool} missed.
+
+%In comparison with CURE and CURE*, CURE* ranked 10,000 candidates and
+%refined the ranking to pick and validate top 5,000 candidates. Despite
+%taking more time of patch validation (about 5.5 hours), CURE* fixed 2
+%bugs less than {\tool}. However, with the same setting of 5-hour
+%limit, {\tool} fixes 16.7\% (8 bugs) more than CURE. Moreover, {\tool}
+%fixed 12 bugs that CURE missed; and CURE fixed only 4 bugs that
+%{\tool}~missed.
 
 %Despite costing more than double time (>10 hours of validation), CURE*
 %fixed 2 bugs less than {\tool}. With 5-hour limit, if CURE did not
@@ -63,10 +75,11 @@ only 4 bugs that {\tool}~missed.
 %with the same 5-hour limit. Moreover, {\tool} fixed 12 bugs that CURE
 %missed; and CURE fixed 4 bugs that {\tool}~missed.
 
+\vspace{-6pt}
+\subsubsection{{\bf With Fault Localization}}
 
-
-Table~\ref{RQ1_defects4J_with_FL} shows the comparative result on
-Defects4J with an FL tool. As seen, with the FL tool, the performance
+Table~\ref{RQ1_defects4J_with_FL} shows the comparison result on
+Defects4J with an FL tool. As seen, due to the FL tool, the performance
 of all models decreases due to the confounding inaccuracy. However,
 {\tool} can still fix more bugs than any baseline. It automatically
 fixes {\bf 44} bugs, i.e., {\bf 193.3\% (29 bugs), 46.7\% (14), 33.3\%

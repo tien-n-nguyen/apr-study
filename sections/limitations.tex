@@ -2,19 +2,21 @@
 \label{sec:limitations}
 
 
-{\tool} still has the following limitations. First, it does not
-determine the faulty statement to be fixed. As with existing work
-CURE~\cite{cure-icse21} and CoCoNuT~\cite{lutellier2020coconut}, a
-common usage of {\tool} is that a user uses a fault localization tool
-to detect a faulty statement or (s)he can pinpoint the faulty one and
-invoke {\tool} for an auto-fixing suggestion. Second, {\tool} cannot
+%{\tool} still has the following limitations.
+First, it does not determine the faulty statement to be fixed. As with
+some existing work~\cite{cure-icse21,lutellier2020coconut}, a common
+usage of {\tool} is that one uses a fault localization tool to
+detect a faulty statement or (s)he can pinpoint the faulty one and
+invoke {\tool} for auto-fixing. Second, it cannot
 produce a fix with an arbitrarily large size because its DL model does
-not learn well large tree structure changes. Third, {\tool} cannot fix
+not learn well large tree structure changes. Third, it cannot fix
 a bug with only insertions of new statements, and it does not work
 well with a fix with only deletions.
 %because it sets a limit with $P$ and $Q$ in the size of the fixed
 %subtree.
-Finally, {\tool} learns only the tree-based code transformations for
-APR. The changes in program semantics such as changes to PDGs, CFGs,
-etc. could help improve APR performance in our model.
+It cannot fix multi-statement bugs where the changes depend on one
+another. Finally, {\tool} learns only the tree-based code
+transformations for APR. The changes in program semantics such as
+changes to PDGs, CFGs, etc. could help improve APR performance in our
+model.
 

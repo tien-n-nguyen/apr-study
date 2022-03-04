@@ -27,8 +27,13 @@
 
 %Table~\ref{fig:rq4_results} shows the comparison among {\tool} and its variants.
 
-{\bf 1. {\tool} and \code{Transformation-only}
-  model}. In Table~\ref{fig:rq4_results}, the top-$K$ values
+%{\bf 1. {\tool} and \code{Transformation-only}
+%  model}.
+
+\subsubsection{{\bf {\tool} and \code{Transformation-only}
+  model}}
+
+In Table~\ref{fig:rq4_results}, the top-$K$ values
 of the \code{Transformation-only} model are 52.3\%, 44.7\% and 42.3\%
 lower than those of {\tool} in Top-1, Top-5, and Top-10 values,
 respectively. This result shows that {\em context learning}
@@ -46,8 +51,12 @@ contributes positively in {\tool}'s accuracy, and {\em dual-task
 %the impact from context learning to transformation learning to achieve
 %high performance in APR.
 
-{\bf 2. {\tool} and the \code{Cascading} model}. As seen
-in Table~\ref{fig:rq4_results}, the top-$K$ values of the
+%\vspace{3pt}
+%{\bf 2. {\tool} and the \code{Cascading} model}.
+
+\subsubsection{{\bf {\tool} and the \code{Cascading} model}}
+
+As seen in Table~\ref{fig:rq4_results}, the top-$K$ values of the
 \code{Cascading} model are 21.5\%, 18.6\%, and 14.9\% lower than those
 of {\tool} in Top-1, Top-5, and Top-10, respectively. This result
 shows that the {\em cascading architecture between context learning
@@ -101,14 +110,18 @@ also shows that {\bf {\em the improvement of {\tool} over the
 %impact between context learning and transformation learning, leading
 %to the improvement in APR.
 
-{\bf 3. The \code{Cascading} model and
-  DLFix~\cite{icse20}:} The \code{Cascading} model differs from
-DLFix~\cite{icse20}. First, CCL (context) and CTL (transformation) are
-different from those in DLFix, which uses code summarization. Second,
-in the \code{Cascading} model, the output of CCL corresponding to a
-buggy subtree is directly used as the input of CTL. In
-DLFix~\cite{icse20}, the summarized vector is used as a weight in a
-cross-product to represent the impact from CCL to CTL.
+%\vspace{3pt} {\bf 3. The \code{Cascading} model and
+%  DLFix~\cite{icse20}:}
+\vspace{-2pt}
+\subsubsection{{\bf The \code{Cascading} model and DLFix~\cite{icse20}}}
+
+The \code{Cascading} model differs from DLFix~\cite{icse20}. First,
+CCL (context) and CTL (transformation) are different from those in
+DLFix, which uses code summarization. Second, in the \code{Cascading}
+model, the output of CCL corresponding to a buggy subtree is directly
+used as the input of CTL. In DLFix~\cite{icse20}, the summarized
+vector is used as a weight in a cross-product to represent the impact
+from CCL to CTL.
 
 Although DLFix differs from the \code{Cascading} model in the CCL~and
 CTL components as well as in the ways that they connect, they~share

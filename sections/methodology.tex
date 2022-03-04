@@ -38,7 +38,7 @@ We use the following three metrics:
 fixes that exactly match or have the same semantic meaning as the
 developers' fixes in the oracle. For Defects4J (a small dataset), we
 manually checked semantic equivalence, however, for Bugs.jar and
-BigFix, we used the criteria of exact-matching with the actual
+BigFix, we used only the criteria of exact-matching with the actual
 fixes in the oracle.
 %
 Plausible patches are the fixes that pass all the test cases, but
@@ -81,7 +81,7 @@ First, CCL and CTL are different. DLFix uses code summarization to
 collapse the
 %buggy and fixed
 subtrees, and uses the new trees with summarized nodes to train
-CCL. Second, {\em CCL cascadingly connects to CTL} in which the
+CCL. Second, in DLFix, {\em CCL cascadingly connects to CTL} in which the
 vector for the summarized node is used as a {\em weight} representing the
 impact from CCL to CTL. The weight vector is used in a cross-product
 with all the vectors of the nodes in the subtrees to train CTL. In
@@ -136,9 +136,9 @@ We set a 5-hour limit for the validation step for all approaches as in
 previous work~\cite{icse20,tbar-issta19}.
 %Tien
 For CURE~\cite{cure-icse21}, we also ran patch validation in its
-setting on its resulting patches with no time limit. Using beam search
-(beam size of 1,000), CURE generates 1,000 candidates and the top
-5,000 of them are validated.
+original setting (i.e., cut-off at top patches with no time
+limit). Using beam search (beam size of 1,000), CURE generates 1,000
+candidates and the top 5,000 of them are validated.
 
 %I add the CURE* which is the same setting as their original paper. The
 %setting is that using beam search, the beam size is 1000, generates
@@ -170,7 +170,7 @@ nodes (4, 5, 6); (6) The maximum depth $Q$ of children nodes (3, 4,
 %state-of-the-art DL-based APR baseline models:
 {\bf Sequen\-ceR~\cite{chen2018sequencer},
   CoCoNuT~\cite{lutellier2020coconut}, DLFix~\cite{icse20},
-  CURE~\cite{cure-icse21}:} as in RQ1.
+  CURE~\cite{cure-icse21}}, and
 
 {\bf CODIT~\cite{chakrabortycodit}:} is a DL-based APR approach
 using sequence-to-sequence machine translation model with the
@@ -276,7 +276,7 @@ connected to CTL in a cascading manner.
 %repair is dependent on the output of the method-level program repair.
 
 In this RQ, we used the same process and parameter tuning as in the
-experiments for the other RQs. We run all models on BigFix.
+experiments for the other RQs. We ran all models on BigFix.
 
 %the baselines and \tool in this RQ. Therefore, the parameters that
 %eed to be tuned in both baselines are the same as the ones of \tool.

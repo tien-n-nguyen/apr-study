@@ -48,7 +48,7 @@ window as the input of the decoder at the next time step $i+1$
 TreeCaps component. TreeCaps computes the vector from bottom up (i.e.,
 the vectors for children nodes are computed before the one for their
 parent node). Therefore, our beam search component considers the order
-of the nodes in the AST subtree from the bottom up first, and the
+of the nodes in the AST subtree from the bottom-up order, and then the
 left-to-right order of the sibling nodes of the same parent node. For
 example, for the tree $V1$--$V5$ in Figure~\ref{overview-training},
 the beam search component will consider the order of the nodes as

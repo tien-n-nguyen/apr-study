@@ -79,16 +79,15 @@ We have modified cross-stitch unit to work with AST representations as
 follows (Figure~\ref{fig:dual-learning}). We use two separate
 attention-based \code{seq2seq} models for CCL and CTL.
 %The dual-task training is shown in Figure~\ref{fig:dual-learning}.
-We use TreeCaps~\cite{bui2021treecaps} with an attention layer in
-between of an encoder and a decoder. In a regular attention-based
+We use TreeCaps~\cite{bui2021treecaps} with an attention layer
+in-between of an encoder and a decoder. In a regular attention-based
 \code{seq2seq} model, the hidden state output from the encoder is
 directly connected to the attention layer. In {\tool}, we use a
 cross-stitch unit to accept as the input the hidden states from the
 outputs of the encoders of CCL and CTL. The outputs of the
 cross-stitch units are connected to the attention layers of both the
-models. This joint training enables propagating the mutual
-impact of context learning and transformation learning in both
-directions.
+models. This joint training enables propagating the mutual impact of
+context learning and transformation learning in both directions.
 
 \subsubsection*{\bf Formulation.}
 As we use TreeCaps~\cite{bui2021treecaps}, which is built on top of
@@ -137,7 +136,7 @@ outputs of the cross-stitch unit, which are in turn fed into the
 attention layers of both models. $X_C$ and $X_T$ contain the
 information learned from both context learning and transformation
 learning models, which helps achieve the main goal of dual-task learning
-to enhance the APR performance. From Formula~\ref{eq:3}, we have
+to enhance the APR performance. From Formula (\ref{eq:3}), we have
 \begin{equation}\label{eq:4}
 	X_C = \alpha_{CC}U_C + \alpha_{CT}U_T
 \end{equation}

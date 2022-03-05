@@ -5,13 +5,13 @@
 %{\tool} still has the following limitations.
 First, it does not determine the faulty statement to be fixed. As with
 some existing work~\cite{cure-icse21,lutellier2020coconut}, a common
-usage of {\tool} is that one uses a fault localization tool to
-detect a faulty statement or (s)he can pinpoint the faulty one and
-invoke {\tool} for auto-fixing. Second, it cannot
-produce a fix with an arbitrarily large size because its DL model does
-not learn well large tree structure changes. Third, it cannot fix
-a bug with only insertions of new statements, and it does not work
-well with a fix with only deletions.
+usage of {\tool} is that one uses a fault localization tool to detect
+a faulty statement or (s)he can pinpoint the faulty one and invoke
+{\tool} for auto-fixing. Second, it cannot produce a fix with an
+arbitrarily large size because its CTL model does not learn well large
+tree structure changes. Third, it cannot fix a bug with only
+insertions of new statements, and it does not work well with a fix
+with only deletions.
 %because it sets a limit with $P$ and $Q$ in the size of the fixed
 %subtree.
 It cannot fix multi-statement bugs where the changes depend on one

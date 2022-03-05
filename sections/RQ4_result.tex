@@ -11,7 +11,7 @@
 			\renewcommand{\arraystretch}{1}
 			\begin{tabular}{p{1cm}<{\centering}|p{3.2cm}<{\centering}|p{2cm}<{\centering}|p{1cm}<{\centering}}
 				\hline
-				Top-$K$ & Transformation-only Model & Cascading Model &  \tool \\			
+				Top-$K$ & \code{Transformation-only} Model & \code{Cascading Model} &  \tool \\			
 				\hline
 				Top-1   & 7.1\% & 11.7\% & 14.9\% \\ \hline
 				Top-5	& 8.9\% & 13.1\% & 16.1\% \\ \hline
@@ -33,13 +33,14 @@
 \subsubsection{{\bf {\tool} and \code{Transformation-only}
   model}}
 
-In Table~\ref{fig:rq4_results}, the top-$K$ values
-of the \code{Transformation-only} model are 52.3\%, 44.7\% and 42.3\%
-lower than those of {\tool} in Top-1, Top-5, and Top-10 values,
+In Table~\ref{fig:rq4_results}, the top-$K$ values of the
+\code{Transformation-only} model are 52.3\%, 44.7\% and 42.3\% lower
+than those of {\tool} in Top-1, Top-5, and Top-10 values,
 respectively. This result shows that {\em context learning}
 contributes positively in {\tool}'s accuracy, and {\em dual-task
-  learning helps propagate the mutual impact between CCL (context
-  learning) and CTL (transformation learning)} to improve accuracy.
+  learning helps propagate the positive impact between CCL (context
+  learning) and CTL (transformation learning)} on each other, leading
+to better fixing.
 
 
 %result on the impact of our dual learning architecture on the overall
@@ -75,7 +76,7 @@ fixed by the \code{Cascading} model but missed by {\tool}.
 
 
 
-In another study, we analyzed the set T1 of {\bf 418} bugs in which
+In another study, we analyzed the set T1 of the {\bf 418} bugs in which
 the {\em outputs of the context learning model in the \code{Cascading}
   model are incorrect} compared to the oracle. We also analyzed the
 set T2 of the {\bf 789} bugs in which {\em the outputs of the context
@@ -92,15 +93,22 @@ bugs that {\tool} correctly learns the context while the
 
 We further analyzed {\bf 54} bugs that {\tool} fixed and were missed
 by the \code{Cascading} model. Among them, we found {\bf 46} bugs in
-which {\em the outputs of context learning (CCL) in {\tool} match with the fixed contexts
-  in the oracle}. In contrast, we found {\bf 18} bugs in which {\em
-  the outputs of context learning (CCL) in the \code{Cascading} model match with the
-  fixed contexts}. This indicates that one source of the inaccuracy in
-the \code{Cascading} model is the inaccuracy of context learning. This
-also shows that {\bf {\em the improvement of {\tool} over the
-  \code{Cascading} model comes from dual-task learning, which makes
-  the context learning more correct, leading to more correct
-  bug-fixing}}.
+which {\em the outputs of context learning (CCL) in {\tool} match with
+  the fixed contexts in the oracle}. In contrast, we found {\bf 18}
+bugs in which {\em the outputs of context learning (CCL) in the
+  \code{Cascading} model match with the fixed contexts}. This
+indicates that {\em one source of the inaccuracy in the
+  \code{Cascading} model is the inaccuracy of context learning}. This
+means that {\bf {\em the better performance of {\tool} comes from
+    dual-task learning, which propagates positive impact of CCL and
+    CTL on each other, making both context learning and transformation
+    learning better and leading to more correct bug-fixing}}.
+
+%{\bf {\em the better performance of {\tool} over the \code{Cascading}
+%    model comes from dual-task learning, which makes the context
+%    learning more correct, leading to more correct bug-fixing}}.
+
+
 
 %improvement in its fixing capability for the cases that the cascading
 %model missed comes from the dual-task learning, which makes the

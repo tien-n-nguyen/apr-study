@@ -337,15 +337,17 @@ number of bugs fixed by both tools in BigFix dataset, 34.5\% of them
 were fixed by {\tool} and missed by DLFix, while only 14.2\% of them
 were fixed by DLFix and missed by {\tool}.
 
-DLFix also did not fix correctly the buggy code in
-Figure~\ref{example_3}. It fixed the line 6 into \code{return
+DLFix did not fix correctly the buggy code in
+Figure~\ref{example_3}. It fixed~the line 6 into \code{return
   (}\code{Math.abs(} \code{keyTuple.} \code{hashCode())} \code{\%}
 \code{curIndex);}. Despite that DLFix has separate tree-based models
-(handling structural changes) for context learning and transformation
-learning, it follows a cascading architecture between the two
-models. Thus, the incorrect learning of context might affect
-transformation learning. In this example, \code{curIndex} was
-incorrectly used in the fix.
+(handling structural changes) for CCL and CTL,
+%for context learning and transformation learning,
+it follows a cascading architecture~between them.
+%the two models.
+Thus, incorrect context learning affects transformation
+learning. In this example, \code{curIndex} was incorrectly used in the
+fix.
 
 %In {\tool}, context learning and transformation learning are treated
 %as a dual task to propagate the impact on each other.

@@ -79,18 +79,19 @@ CURE missed; and CURE fixed only 4 bugs that {\tool} missed.
 \subsubsection{{\bf With Fault Localization}}
 
 Table~\ref{RQ1_defects4J_with_FL} shows the comparison result on
-Defects4J with an FL tool. As seen, due to the FL tool, the performance
-of all models decreases due to the confounding inaccuracy. However,
-{\tool} can still fix more bugs than any baseline. It automatically
-fixes {\bf 44} bugs, i.e., {\bf 193.3\% (29 bugs), 46.7\% (14), 33.3\%
-  (11), 22.2\% (8)}, and {\bf 10\% (4)} more bugs than the baselines
-SequenceR, DLFix, CoCoNuT, CURE, and CURE*, respectively. With 5-hour
-limit, {\tool} fixed the most correct (44) and the most plausible (77)
-patches. Moreover, with that limit, {\tool} fixed 9 bugs that
-CURE missed; and CURE fixed only 3 bugs that {\tool}
-missed. {\tool} fixed 2 bugs that all the DL-based baselines
-missed. Compared with CURE*, {\tool} takes 10\% less time (0.5 hours
-on average), but fixed 4 more bugs than~CURE*.
+Defects4J with an FL tool. As seen, due to the FL tool, the
+performance of all models decreases due to the confounding
+inaccuracy. However, {\tool} can still fix more bugs than any
+baseline. It automatically fixes 44 bugs, i.e., 193.3\% (29 bugs),
+46.7\% (14), 33.3\% (11), 22.2\% (8), and 10\% (4) more bugs than the
+baselines SequenceR, DLFix, CoCoNuT, CURE, and CURE*,
+respectively. With 5-hour limit, {\tool} fixed the most correct (44)
+and the most plausible (77) patches. Moreover, with that limit,
+{\tool} fixed 9 bugs that CURE missed; and CURE fixed only 3 bugs that
+{\tool} missed. {\tool} fixed 2 bugs that all the DL-based baselines
+missed. Compared with CURE* with the cut-off setting, {\tool} takes
+10\% less time (0.5 hours less on average), but fixed 4 more bugs than
+CURE*.
 
 
 %^CURE* costs more than double validation

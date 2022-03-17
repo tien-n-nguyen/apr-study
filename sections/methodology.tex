@@ -114,7 +114,7 @@ training dataset and evaluated on Defects4J dataset}.
 %For each bug in Defects4J, we used the remaining bugs in Defects4J as the developing dataset to fine-tune the model, and used the fine-tuned model to predict the fix for the bug. 
 We use two additional steps for all approaches in comparison:
 
-(1) Fault localization (FL): Conceptually, any FL
+(1) {\em Fault localization (FL)}: Conceptually, any FL
 tools can be used to produce an ordered list of suspicious
 statements that require fixes. We chose Ochiai
 algorithm~\cite{abreu2006evaluation, pearson2017evaluating}, which has
@@ -124,7 +124,7 @@ After Ochiai localizes a buggy line, all of the AST nodes including
 intermediate ones that are labeled by the parser with that buggy line
 are collected into a buggy subtree.
 
-(2) Patch validation: Once {\tool} generates a ranked list of
+(2) {\em Patch validation}: Once {\tool} generates a ranked list of
 candidate patches, we use a validation
 technique~\cite{saha2017elixir,jiang2018shaping} to validate each
 candidate.
@@ -150,7 +150,7 @@ fixing in our study (i.e., without fault localization).
 
 
 
-\underline{Parameter tuning.} We tuned the baselines with the
+{\em Parameter tuning.} We tuned the baselines with the
 parameters in their papers.
 %for the following parameters: {\em epoch}, {\em batch
 %  size}, {\em learning rate}, {\em embedding length}, the {\em max
@@ -164,6 +164,7 @@ output (150, 200, 250, 300); (5) The maximum number $P$ of children
 nodes (4, 5, 6); (6) The maximum depth $Q$ of children nodes (3, 4,
 5).
 
+\vspace{2pt}
 {\bf RQ2. Comparison with DL-based APR Approaches on
   Large Datasets.} We compare {\tool} with the following baselines:
 %\underline{Baselines.} We compare {\tool} with the following
@@ -219,20 +220,21 @@ into 80\%/10\%/10\% for training, tuning (validation), and testing.
 
 
 
-\underline{Parameter tuning:} the same as in RQ1.
+{\em Parameter tuning:} the same as in RQ1.
 
 %We tuned the baselines with the
 %parameters mentioned in their papers and tuned {\tool} as in RQ1.
 
 %in the same manner as in RQ1 with autoML \cite{NNI}.
 
+\vspace{2pt}
 {\bf RQ3. Overlapping Analysis.} For a baseline model $M$ and {\tool},
 we analyzed the number of bugs that were fixed by {\tool}
 and missed by $M$, the number of bugs that were fixed by $M$ and
 missed by {\tool}, and the number of bugs that were fixed by
 both.
 
-
+\vspace{2pt}
 {\bf RQ4. Impact Analysis of Dual-Task Learning on Performance.}
 %underline{Baselines.}
 %To study the contributions of dual-learning in
@@ -280,6 +282,7 @@ experiments for the other RQs. We ran all models on BigFix.
 
 %the baselines and \tool in this RQ. Therefore, the parameters that
 %eed to be tuned in both baselines are the same as the ones of \tool.
+
 
 {\bf RQ5. Evaluation on C/C++ Projects.}  To evaluate {\tool} on C/C++
 code, we ran it on the C/C++ benchmark

@@ -209,12 +209,13 @@ code-transformation learning. We use a model called~{\em cross-stitch
 of representations between CCL and CTL is modeled by~learning a linear
 combination of the input features from two models. Cross-stitch unit
 helps regularize CCL and CTL by learning and enforcing shared
-representations via combining feature maps. This joint training enables
-the dual-task learning to~pro\-pagate the impact of CCL and CTL and vice
-versa. The impact from both directions helps both models learning
-better in its own task (better context learning leads to better
-transformation learning and vice versa), and finally leading to
-better generated patches, which are derived from the CTL's output.
+representations via combining feature maps.
+%This joint training enables
+The rationale for dual-task learning is to~pro\-pagate the impact of
+CCL and CTL and vice versa. {\em The impact from both directions helps both
+models learning better in its own task (better context learning leads
+to better transformation learning and vice versa), and finally leading
+to better generated patches}, which are derived from the CTL's output.
 
 %Tien
 %Talk about CTL is the main task

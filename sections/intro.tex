@@ -175,13 +175,14 @@ transformations.
 %{\bf Correct learning of contexts can benefit the learning of code
 %  transformations and vice versa in automated program repair}
 
-{\em Moreover, the equally important impact from CTL to CCL is not
-  considered. Such impact from the direction of CTL $\rightarrow$
-CCL, could help the model correctly learn the context, leading to
-better code-transformation learning for context-dependent bugs. In the
-previous example, if the bug fix is a change from \code{if (fd ==
-  null)} into \code{if (fd != null)}, the preceding context more
-likely contains \code{fopen(...)} than \code{fread(...)}.}
+%Tien removed this para
+%{\em Moreover, the equally important impact from CTL to CCL is not
+%  considered. Such impact from the direction of CTL $\rightarrow$
+%CCL, could help the model correctly learn the context, leading to
+%better code-transformation learning for context-dependent bugs. In the
+%previous example, if the bug fix is a change from \code{if (fd ==
+%  null)} into \code{if (fd != null)}, the preceding context more
+%likely contains \code{fopen(...)} than \code{fread(...)}.}
 
 We introduce {\tool}, a context-aware, dual-task learning APR
 approach, that improves APR via the {\em simultaneous tasks of context
@@ -203,15 +204,20 @@ fix is a change from \code{if (fd} \code{==} \code{null)} into
 more likely \code{fopen(...)} than \code{fread(...)}.
 
 We dedidate two models: CCL for context learning and CTL for
-code-transformation learning. We use a model called {\em cross-stitch
+code-transformation learning. We use a model called~{\em cross-stitch
   unit}~\cite{misra2016cross} that connects CTL and CCL. The sharing
-of representations between CCL and CTL is modeled by learning a linear
+of representations between CCL and CTL is modeled by~learning a linear
 combination of the input features from two models. Cross-stitch unit
-helps regularize both CCL and CTL by learning and enforcing shared
-representations by combining feature maps. This joint training enables
-the dual-task learning to propagate the impact of CCL and CTL and vice
+helps regularize CCL and CTL by learning and enforcing shared
+representations via combining feature maps. This joint training enables
+the dual-task learning to~pro\-pagate the impact of CCL and CTL and vice
 versa. The impact from both directions helps both models learning
-better for its own task, leading to better APR.
+better in its own task (better context learning leads to better
+transformation learning and vice versa), and finally leading to
+better generated patches, which are derived from the CTL's output.
+
+%Tien
+%Talk about CTL is the main task
 
 %{\em explicitly models the mutual impact of context learning and code
 %  transformation learning in both directions}.
@@ -227,24 +233,23 @@ better for its own task, leading to better APR.
 %This joint training enables the dual-task learning to propagate the
 %impact of CCL and CTL and vice~versa.
 With dual-task learning, {\tool} has two key departure points to
-address the limitations of the existing DL-based APR approaches:
-%(includ. DLFix~\cite{icse20}):
-{\bf 1) Conceptually, it models both directions of the mutual impacts
-  of CCL and CTL, leading to improve APR; 2) Architecturally, it
+address the limitations of the existing DL-based APR approaches: {\em
+  1) Conceptually, it models both directions of the mutual impacts of
+  CCL and CTL, leading to improve APR; 2) Architecturally, it
   overcomes the confounding effect in the existing cascading
   architecture}. Moreover, the internal structure of CCL and CTL, and
 their connections in {\tool} are more advanced than DLFix
 (Section~\ref{eval-methodology:sec}).
 
-For training, the input of the CCL model is the Abstract
-Syntax Tree (AST) of a buggy method and that of the fixed one.
+For training, the input of the CCL model is the Abstract Syntax Tree
+(AST) of a buggy method (as the context) and that of the fixed one.
 The input of the CTL model is the AST subtree of each of its buggy
-statements, and that of the respective fixed statement. For
+statements, and that of the fixed statement. For
 auto-fixing, a fault localization tool is used to identify the buggy
 statement(s). The AST subtree of the buggy statement is fed into the
 trained~CTL model~to produce the ranked candidate patches, which are
-validated via test cases. We design a tree-oriented beam search
-for efficiency.
+validated via test cases. We leverage a tree-oriented beam search for
+efficiency.
 
 %In {\tool}, for training, the input for the CCL model is the Abstract
 %Syntax Tree (AST) of a buggy method and that of the fixed method, and
@@ -257,21 +262,23 @@ for efficiency.
 %candidate patches are ranked and validated via test cases.
 
 We conducted experiments to compare {\tool} with the DL-based APR
-models on three public datasets: Defects4J~\cite{defects4j} (395
-bugs), Bugs.jar~\cite{saha2018bugs} (1,158 bugs), and
+models on three datasets: Defects4J~\cite{defects4j} (395~bugs),
+Bugs.jar~\cite{saha2018bugs} (1,158 bugs), and
 BigFix~\cite{yioopsla19} (+4.9M methods and 1.8M buggy ones). Our
-results show that {\tool} can fix 12.1\% and 14.6\% more bugs than the
+results show that {\tool} fixes 12.1\% and 14.6\% more bugs than the
 best DL-based baseline, CURE~\cite{cure-icse21}, using only Top-1
-patches, in Bugs.jar and BigFix, respectively. Additionally, {\tool}
-fixed 89 and 45 unique bugs that CURE missed, while {\tool} missed
-only 50 and 27 bugs that were fixed by CURE in Bugs.jar and BigFix. In
-Defects4J, {\tool} fixes 194.7\%, 40\%, 27.3\%, and 16.7\% more bugs
-than the baselines: SequenceR~\cite{chen2018sequencer},
+patches, in Bugs.jar and BigFix, respectively.
+%Additionally,
+{\tool} fixed 89 and 45 unique bugs that CURE missed, while {\tool}
+missed only 50 and 27 bugs that~were fixed by CURE in Bugs.jar and
+BigFix. In Defects4J, {\tool} fixes 194.7\%, 40\%, 27.3\%, and 16.7\%
+more bugs than the baselines: SequenceR~\cite{chen2018sequencer},
 DLFix~\cite{icse20}, CoCoNuT~\cite{lutellier2020coconut},
-CURE~\cite{cure-icse21}, respectively. {\tool} fixed 8 more bugs than the
-best DL-based model, CURE~\cite{cure-icse21}. Even with the cut-off
-setting in CURE, which took 10\% more time than {\tool}, CURE fixed 4
-less bugs than {\tool}. The contributions of this paper include:
+CURE~\cite{cure-icse21}, respectively. {\tool} fixed 8 more bugs
+than~the best DL model, CURE~\cite{cure-icse21}. Even with the
+cut-off setting in CURE (taking 10\% more time than {\tool}), CURE
+fixed 4 less bugs than {\tool}. The contributions of this paper
+include:
 %are listed as follows:
 
 %{\bf A. DL for APR:} {\tool} is the first DL APR that generates
@@ -285,15 +292,14 @@ less bugs than {\tool}. The contributions of this paper include:
 %1) Leveraging dual-task learning to propagate the {\bf mutual impacts}
 %  in both directions of context and transformation learning.
 
-1) Leveraging dual-task learning i) to model {\bf mutual impacts}
-of CCL and CTL in both directions, ii) avoid confounding inaccuracies.
+1) Leveraging dual-task learning i) to model mutual impacts of CCL and
+CTL in both directions, leading to better APR ii) avoid confounding
+inaccuracies in CCL $\rightarrow$ CTL.
 
-
-
-2) {\bf Adapting/Modifying the cross-stitch unit} for dual-task
+2) Adapting/Modifying the cross-stitch unit for dual-task
 learning to work with AST representations in source code.
 
-3) A novel {\bf tree-oriented beam search} for candidate generation.
+%3) A novel {\bf tree-oriented beam search} for candidate generation.
 
 %4) Dual-task architecture avoiding confounding inaccuracies.
 
@@ -311,7 +317,7 @@ learning to work with AST representations in source code.
 %learning bug-fixing code transformations and learning code contexts to
 %improve APR performance.
 
-4) Empirical Results: (Code and data are published~\cite{CDFix2022}).
+3) Empirical Results: 
 %{\bf Advancing DL-based APR approaches with dual-task learning for CCL
 %  and CTL}:
 %Extensive experiments were performed to evaluate different aspects
@@ -319,7 +325,7 @@ learning to work with AST representations in source code.
 %We evaluated {\tool} against the DL-based models to show that it can
 %fix more bugs than those approaches.
 Experiments show {\tool}'s improvements over prior
-DL-based APRs.
+DL-based APRs. Code and data are at~\cite{CDFix2022}.
 
 %to evaluate {\tool} and show it improves
 %APR performance over the existing DL-based approaches.

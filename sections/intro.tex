@@ -52,20 +52,21 @@ Other DL-based models treat APR as {\em machine translation} from a
 buggy code to a correct one using transformers and other
 models~\cite{chakrabortycodit,chen2018sequencer,hata2018learning,tufano2018empirical,see2017get}.
 %Instead of treating APR as machine translation,
-In addition, other DL-based approaches implicitly learn the
-{\em transformation rules} from a buggy code to a correct one
-accordingly to the surrounding {\em context} of the
+In addition, other DL-based approaches implicitly learn the {\em
+  transformation rules} from a buggy code to a correct one accordingly
+to the surrounding {\em context} of the
 transformations~\cite{chen2018sequencer,icse20,cure-icse21,lutellier2020coconut}.
 Those approaches show that {\em learning bug-fixing changes might be
-  dependent on {\em code context}}. For example, in C~code, if the
-preceding context contains \code{fopen} as in \code{FILE *fd = fopen
-  (fname, ``rb'');}, the succeeding bug-fixing code is more likely to
-be \code{if (fd != null)} or \code{if (fd == null)}. However, if the
-preceding context contains \code{fread} as in \code{n} \code{=}
-\code{fread(buffer,1,size,fd);}, the succeeding bug-fix is more likely
-to be \code{if (n} \code{!=} \code{size)} or \code{if (n} \code{==}
-\code{size)}, rather than a null check \code{if (n} \code{!=}
-\code{null)}. Those context-aware models have achieved better APR
+  dependent on {\em code context}}.
+%For example, in C~code, if the preceding context contains \code{fopen}
+%as in \code{FILE *fd = fopen (fname, ``rb'');}, the succeeding
+%bug-fixing code is more likely to be \code{if (fd != null)} or
+%\code{if (fd == null)}. However, if the preceding context contains
+%\code{fread} as in \code{n} \code{=} \code{fread(buffer,1,size,fd);},
+%the succeeding bug-fix is more likely to be \code{if (n} \code{!=}
+%\code{size)} or \code{if (n} \code{==} \code{size)}, rather than a
+%null check \code{if (n} \code{!=} \code{null)}.
+Those context-aware models have achieved better APR
 performance~\cite{icse20,lutellier2020coconut,cure-icse21}.
 
 %For example, a {\em null check} is needed after a call to read data
@@ -92,11 +93,11 @@ depend on a larger surrounding code.
 
 \underline{Third}, other
 approaches~\cite{hata2018learning,tufano2019learning,tufano2018empirical}
-follow the machine translation direction to take the entire buggy
+leveraged machine translation to take the entire buggy
 method and translate it to the correct one, while the fix might be
 only a small editing change to a single statement. Those
-translation-based approaches {\em do not distinguish clearly the
-  boundary} of the fixing change (e.g., to a buggy statement) and the
+translation-based approaches do not distinguish clearly the
+  boundary of the fixing change (e.g., to a buggy statement) and the
 surrounding context.
 %(e.g., the preceding or succeeding code).
 Due to the mixture of fixing changes and context, those translation
@@ -105,40 +106,23 @@ because they might not learn what fixing changes are appropriate in
 some specific contexts~\cite{icse20}. \underline{Fourth}, other
 DL-based approaches have separate representations for
 contexts~\cite{chen2018sequencer,cure-icse21,lutellier2020coconut}.
-They extract contextual features to be fed into a DL
+They extract contextual features to be fed into a single DL
 model to learn to fix.
 
 \underline{Fifth}, dedicating a separate model for context learning
-has recently been shown to improve over the DL-based APR approaches
-with a single DL model~\cite{icse20}. In DLFix~\cite{icse20}, the
-first layer is a tree-based RNN model that learns the contexts of bug
-fixes (CCL) and its result is used as an additional weighting input
-for the second layer designed to learn the bug-fixing code
-transformations (CTL). However, the cascading architecture from CCL
-$\rightarrow$ CTL creates a {\em confounding effect} from the inaccuracy of
-the learning of the context to the learning of the bug-fixing
-transformations. Moreover, {\em the equally important impact from CTL to
-CCL is not considered}. Such impact from the direction of CTL
-$\rightarrow$ CCL, could help the model correctly learn the context,
-leading to better code-transformation learning for context-dependent
-bugs. In the previous example, if the bug fix is a change from
-\code{if (fd == null)} into \code{if (fd != null)}, the preceding
-context more likely contains \code{fopen(...)} than \code{fread(...)}.
-
-%For example, in the EVP library (OpenSSL), \code{EVP$\_$VerifyInit},
-%\code{EVP$\_$VerifyUpdate}, and \code{EVP$\_$VerifyFinal} are called
-%in that order. The last function returns 3 values: 1 for correct
-%signature verification, 0 for incorrect verification, and -1 for a
-%failure in verification.  The last case has been overlooked by a few
-%systems, thus, their developers have often fixed the code from
-%\code{if (!EVP$\_$VerifyFinal(...))}  into \code{if
-%  (EVP$\_$VerifyFinal(...) <=0)}. When such fixing is encountered, the
-%boundary of the context is likely to be set so that it contains the
-%calls \code{EVP$\_$VerifyInit} and \code{EVP$\_$VerifyUpdate}.
+has recently been shown to improve over the DL-based approaches with a
+single DL model~\cite{icse20}. In DLFix~\cite{icse20}, the first layer
+is a tree-based RNN model that learns the contexts of bug fixes (CCL)
+and its result is used as an additional weighting input for the second
+layer designed to learn the bug-fixing code transformations
+(CTL). However, the cascading architecture from CCL $\rightarrow$ CTL
+creates a {\em confounding effect} from the inaccuracy of the learning
+of the context to the learning of the bug-fixing
+transformations.
 
 
 
-
+%===============================================
 %the DL-based APR approaches that leverage {\em machine translation or
 %  transformers}~\cite{chakrabortycodit,hata2018learning,tufano2018empirical,see2017get}
 %often take too little surrounding code as context to learn fixing
@@ -191,26 +175,66 @@ context more likely contains \code{fopen(...)} than \code{fread(...)}.
 %{\bf Correct learning of contexts can benefit the learning of code
 %  transformations and vice versa in automated program repair}
 
+{\em Moreover, the equally important impact from CTL to CCL is not
+  considered. Such impact from the direction of CTL $\rightarrow$
+CCL, could help the model correctly learn the context, leading to
+better code-transformation learning for context-dependent bugs. In the
+previous example, if the bug fix is a change from \code{if (fd ==
+  null)} into \code{if (fd != null)}, the preceding context more
+likely contains \code{fopen(...)} than \code{fread(...)}.}
+
 We introduce {\tool}, a context-aware, dual-task learning APR
-approach, that {\em explicitly models the mutual impact of context
-  learning and code transformation learning in both directions}. We
-train the two models simultaneously with soft-sharing parameters to
-exploit the duality of CCL and CTL. Specifically, we use a model
-called {\em cross-stitch unit}~\cite{misra2016cross} that connects CTL
-and CCL. The sharing of representations between CCL and CTL is modeled
-by learning a linear combination of the input features from two
-models. Cross-stitch unit helps regularize both CCL and CTL by
-learning and enforcing shared representations by combining feature
-maps. This joint training enables the dual-task learning to propagate
-the impact of CCL and CTL and vice~versa. With dual-task learning,
-{\tool} has two key departure points to address the limitations of the
-existing DL-based APR approaches (includ. DLFix~\cite{icse20}):~{\bf
-  1) Conceptually, it models both directions of the mutual impacts of
-  CCL and CTL; 2) Architecturally, it overcomes the confounding effect
-  in the existing cascading architecture}. Moreover, the internal
-structure of CCL and CTL, and their connections in {\tool} are more
-advanced than those in DLFix (we will explain in
-Section~\ref{eval-methodology:sec}).
+approach, that improves APR via the {\em simultaneous tasks of context
+  learning and code transformation learning}. Our idea is that to
+improve APR for context-dependent bugs, an approach needs to have {\em
+  both better context learning} (learning the correct contextual
+features for a bug fix) and {\em better code-transformation learning}
+(learning the correct modifications). For example, in C~code, if the
+preceding context contains \code{fopen} as in \code{FILE *fd = fopen
+  (fname, ``rb'');}, the succeeding bug-fixing code is likely 
+\code{if (fd} \code{!=} \code{null)} or \code{if (fd} \code{==}
+\code{null)}. However, if the preceding context contains \code{fread}
+as in \code{n} \code{=} \code{fread(buffer,1,size,fd);}, the
+succeeding fix is more likely \code{if (n} \code{!=}
+\code{size)} or \code{if (n} \code{==} \code{size)}, rather than a
+null check \code{if (n} \code{!=} \code{null)}. In contrast, if the
+fix is a change from \code{if (fd} \code{==} \code{null)} into
+\code{if (fd} \code{!=} \code{null)}, the key contextual features are
+more likely \code{fopen(...)} than \code{fread(...)}.
+
+We dedidate two models: CCL for context learning and CTL for
+code-transformation learning. We use a model called {\em cross-stitch
+  unit}~\cite{misra2016cross} that connects CTL and CCL. The sharing
+of representations between CCL and CTL is modeled by learning a linear
+combination of the input features from two models. Cross-stitch unit
+helps regularize both CCL and CTL by learning and enforcing shared
+representations by combining feature maps. This joint training enables
+the dual-task learning to propagate the impact of CCL and CTL and vice
+versa. The impact from both directions helps both models learning
+better for its own task, leading to better APR.
+
+%{\em explicitly models the mutual impact of context learning and code
+%  transformation learning in both directions}.
+%We train the two models simultaneously with soft-sharing parameters
+%to exploit the duality of CCL and CTL.
+%
+%Specifically, we use a model called {\em cross-stitch
+%  unit}~\cite{misra2016cross} that connects CTL and CCL. The sharing
+%of representations between CCL and CTL is modeled by learning a linear
+%combination of the input features from two models.  Cross-stitch unit
+%helps regularize both CCL and CTL by learning and enforcing shared
+%representations by combining feature maps.
+%This joint training enables the dual-task learning to propagate the
+%impact of CCL and CTL and vice~versa.
+With dual-task learning, {\tool} has two key departure points to
+address the limitations of the existing DL-based APR approaches:
+%(includ. DLFix~\cite{icse20}):
+{\bf 1) Conceptually, it models both directions of the mutual impacts
+  of CCL and CTL, leading to improve APR; 2) Architecturally, it
+  overcomes the confounding effect in the existing cascading
+  architecture}. Moreover, the internal structure of CCL and CTL, and
+their connections in {\tool} are more advanced than DLFix
+(Section~\ref{eval-methodology:sec}).
 
 For training, the input of the CCL model is the Abstract
 Syntax Tree (AST) of a buggy method and that of the fixed one.

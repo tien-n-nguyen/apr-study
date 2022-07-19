@@ -6,7 +6,7 @@
 %Detecting and fixing software defects is one of the most crucial
 %activities in software development.
 Several researchers have developed the approaches to automate the
-process of fixing software defects. The approaches that help
+bug-fixing task. The approaches that help
 developers automatically fix a software defect in a program is
 referred to as {\em automated program repair} (APR). The APR
 approaches can be broadly classified in the following categories
@@ -22,16 +22,16 @@ according to their techniques:
 In search-based
 approaches~\cite{LeGoues-icse12,le2011genprog,martinez2016astor,qi2014strength},
 the buggy code is first mutated via certain operators to produce the
-potential solution space. Then, a search strategy is designed to find
+potential~solution space. A search strategy is designed to find
 the fix in the solution space. Instead searching for a solution, the
-software mining-based APR models aim to learn the fixing patterns from
+software mining-based APR models learn the fixing patterns from
 the prior bug
 fixes~\cite{kim2013automatic,le2016history,liu2019avatar,tbar-issta19,nguyen2013semfix,
   icse10,ray-fse12}. Some mining-based approaches learn the patterns
 from the source code~\cite{liu2019avatar,tbar-issta19} and others
 learn them from prior bug-fixing
 changes~\cite{wen2018context,Simfix,koyuncu2018fixminer}.  The fixing
-patterns/templates could be mined automatically from the repositories
+patterns could be mined automatically from the repositories
 or pre-defined via semi-automatic
 techniques~\cite{le2016history,nguyen2013semfix,liu2019avatar,tbar-issta19}.
 
@@ -48,24 +48,25 @@ code~\cite{long2016automatic,long2017automatic,saha2017elixir}.
 Some Deep Learning (DL)-based approaches learn the fix from prior {\em
   similar bug fixes and/or
   patterns}~\cite{gupta2017deepfix,white2019sorting,white2016deep}.
-Other DL-based approaches treat APR as {\em machine translation} from
-a buggy version to a correct one using transformers and other
-models~\cite{chakrabortycodit,chen2018sequencer,hata2018learning,tufano2018empirical,see2017get}. Instead
-of treating APR as machine translation, other DL-based approaches aim
-to implicitly learn the {\em transformation rules} from a buggy code
-to a correct one accordingly to the surrounding {\em context} of the
+Other DL-based models treat APR as {\em machine translation} from a
+buggy code to a correct one using transformers and other
+models~\cite{chakrabortycodit,chen2018sequencer,hata2018learning,tufano2018empirical,see2017get}.
+%Instead of treating APR as machine translation,
+In addition, other DL-based approaches implicitly learn the
+{\em transformation rules} from a buggy code to a correct one
+accordingly to the surrounding {\em context} of the
 transformations~\cite{chen2018sequencer,icse20,cure-icse21,lutellier2020coconut}.
-Those approaches show that {\em learning bug-fixing changes might 
-  be dependent on {\em code context}}. For example, in
-C~code, if the preceding context contains \code{fopen} as in
-\code{FILE *fd = fopen (fname, ``rb'');}, the succeeding
-bug-fixing code is more likely to be \code{if (fd != null)} or
-\code{if (fd == null)}. However, if the preceding context contains
-\code{fread} as in \code{n = fread(buffer,1,size,fd);}, the
-succeeding bug-fix is more likely to be \code{if (n != size)} or
-\code{if (n == size)}, rather than a null check \code{if (n != null)}.
-Those context-aware models have achieved better performance in
-APR~\cite{icse20,lutellier2020coconut,cure-icse21}.
+Those approaches show that {\em learning bug-fixing changes might be
+  dependent on {\em code context}}. For example, in C~code, if the
+preceding context contains \code{fopen} as in \code{FILE *fd = fopen
+  (fname, ``rb'');}, the succeeding bug-fixing code is more likely to
+be \code{if (fd != null)} or \code{if (fd == null)}. However, if the
+preceding context contains \code{fread} as in \code{n} \code{=}
+\code{fread(buffer,1,size,fd);}, the succeeding bug-fix is more likely
+to be \code{if (n} \code{!=} \code{size)} or \code{if (n} \code{==}
+\code{size)}, rather than a null check \code{if (n} \code{!=}
+\code{null)}. Those context-aware models have achieved better APR
+performance~\cite{icse20,lutellier2020coconut,cure-icse21}.
 
 %For example, a {\em null check} is needed after a call to read data
 %from a socket with \code{BufferedReader.readline} to make sure a
@@ -81,27 +82,30 @@ have focused on similar code and/or code changes with {\em little or
   no consideration} on whether those code or fixing patterns appear in
 certain surrounding contexts. \underline{Second}, some DL-based APR
 approaches aim to learn {\em only the code changes} for fixes, e.g.,
-from a buggy subtree in an Abstract Syntax Tree (AST) or a buggy
-statement to the correct subtree or correct
-statement~\cite{chakrabortycodit,see2017get}. In this treatment, too
+from a buggy subtree in an Abstract Syntax Tree (AST)
+%or a buggy statement
+to the correct subtree
+%or correct statement
+\cite{chakrabortycodit,see2017get}. In this treatment, too
 little or no context might not help a model learn the fixes that
 depend on a larger surrounding code.
 
-\underline{Third}, in contrast, other
+\underline{Third}, other
 approaches~\cite{hata2018learning,tufano2019learning,tufano2018empirical}
 follow the machine translation direction to take the entire buggy
 method and translate it to the correct one, while the fix might be
 only a small editing change to a single statement. Those
 translation-based approaches {\em do not distinguish clearly the
   boundary} of the fixing change (e.g., to a buggy statement) and the
-surrounding context (e.g., the preceding or succeeding code). Due to
-the mixture of fixing changes and context, those translation models or
-transformers could pick the incorrect locations for fixing, because
-they might not learn what fixing changes are appropriate in some specific
-contexts~\cite{icse20}. \underline{Fourth}, some other DL-based
-approaches have separate representations for
+surrounding context.
+%(e.g., the preceding or succeeding code).
+Due to the mixture of fixing changes and context, those translation
+models or transformers could pick the incorrect locations for fixing,
+because they might not learn what fixing changes are appropriate in
+some specific contexts~\cite{icse20}. \underline{Fourth}, other
+DL-based approaches have separate representations for
 contexts~\cite{chen2018sequencer,cure-icse21,lutellier2020coconut}.
-They extract features in the surrounding context to be fed into a DL
+They extract contextual features to be fed into a DL
 model to learn to fix.
 
 \underline{Fifth}, dedicating a separate model for context learning

@@ -149,24 +149,25 @@
 \maketitle
 
 \begin{abstract}
-Recent advances in deep learning (DL) have helped improve the
-performance of the DL-based Automated Program Repair (APR) approaches.
-The bug-fixing code changes in APR often depend on the surrounding
-code context. Despite successes, the state-of-the-art DL-based APR
-approaches are still limited in {\em integrating context learning and
-code-transformation learning}, leading to their ineffectiveness in
-fixing {\em context-dependent bugs}. Moreover, in those approaches,
-the cascading architecture from a code context-learning model (CCL) to
-a code-transformation learning model (CTL) possibly leads to 
-confounding inaccuracies.
+%Recent advances in deep learning (DL) have helped improve the
+%performance of the DL-based Automated Program Repair (APR) approaches.
+The bug-fixing code changes in Automated Program Repair (APR) often
+depend on the code context. Despite successes, the
+state-of-the-art Deep Learning (DL)-based APR approaches are still
+limited in {\em integrating context learning and code-transformation
+  learning}, leading to their ineffectiveness in fixing {\em
+  context-dependent bugs}. Moreover, in those approaches, the
+cascading architecture from a code context-learning model (CCL) to a
+code-transformation learning model (CTL) possibly leads to confounding
+inaccuracies.
 %
 In this work, we introduce {\bf \tool}, a context-aware dual-task
 learning APR model, that explores the duality of those two dedicated
 models to explicitly propagate the mutual impacts of CCL and CTL onto
 one another. Instead of cascading CCL $\rightarrow$ CTL, we train them
 simultaneously with soft-sharing parameters via a cross-stitch unit
-for explicit propagation of the impacts to improve the accuracy of
-both tasks.
+for explicit propagation of impacts to improve both tasks, leading
+to better APR accuracy.
 
 We conducted several experiments to evaluate {\tool} on three
 different datasets: Defects4J~\cite{defects4j} (395 bugs),
@@ -175,10 +176,11 @@ BigFix~\cite{yioopsla19} (+4.9M methods and 1.8M buggy ones).  We
 compared {\tool} against several state-of-the-art DL-based APR
 tools. Our results show that {\tool} can fix 16.7\%, 12.1\%, and
 14.6\% more bugs than the best-performance DL-based baseline model
-with only the top-1 patches in Defects4J, Bugs.jar, and BigFix,
-respectively. In Defects4J, it improves over the baseline models from
-16.7\%--194.7\%. In Bugs.jar and BigFix, it fixes 26.4\% and 27.7\% of
-the total fixed bugs that were missed by the best DL-based baseline.
+with only top-1 patches in Defects4J, Bugs.jar, and BigFix,
+respectively. In Defects4J, it improves over the baselines
+from 16.7\%--194.7\%. In Bugs.jar and BigFix, it fixes 26.4\% and
+27.7\% of the total bugs that were missed by the best DL-based
+baseline.
 
 \end{abstract}
 

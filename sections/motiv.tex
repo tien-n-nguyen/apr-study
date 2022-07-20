@@ -177,8 +177,8 @@ to illustrate this.
 
 %To address the above issue with the cascading architecture,
 
-From the observations, our idea is that to improve APR for {\bf
-  context-dependent bugs}, we need {\em both better context learning}
+From the observations, our idea is that to improve APR in {\em
+  context-dependent fixes}, we need {\em both better context learning}
 (learning the correct contextual features for a bug fix) and {\em
   better code-transformation learning} (learning correct code
 changes). {\tool} treats this problem as a dual-task learning between
@@ -243,8 +243,8 @@ APR for context-dependent~bugs.
 
 %with soft-sharing of parameters to exploit their relation.
 
-{\bf {\em We have also adapted/modified the cross-stitch
-    unit \cite{misra2016cross} to work with AST representations}} to
+{\em We have also adapted/modified the cross-stitch
+    unit \cite{misra2016cross} to work with AST representations} to
 connect CTL and CCL. The sharing of representations between them is
 modeled by the learning a linear combination of the input features
 from two models. Cross-stitch unit helps regularize both CCL and CTL

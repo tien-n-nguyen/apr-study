@@ -83,9 +83,9 @@ as the input of the trained tree-based CTL model. The output of the
 trained CTL model is the fixed AST subtree, which is converted back
 into source code to form a candidate patch. We use a patch
 generation that uses beam search over the AST structure and works in
-accordance with the decoder as part of CTL in order to improve
+accordance with the decoder as part of CTL to improve
 efficiency. Finally, we adopt the patch validation process via test
-cases as in DLFix~\cite{icse20}.
+cases as in test-based APR~\cite{icse20}.
 
 %the candidate patches are validated and output.
 

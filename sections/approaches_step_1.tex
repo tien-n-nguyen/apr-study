@@ -10,6 +10,15 @@
 The goal of this step is to take the source code under study and to
 build the vector representations (embeddings).
 
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=3in]{graphs/cross-stitch}
+        \vspace{-3pt}
+	\caption{Cross-Stitch Unit for Joint Training~\cite{misra2016cross}}
+	\label{fig:cross-stitch}
+\end{figure}
+
+
 \subsection{AST Building and Pairing of Subtrees}
 
 First, for a buggy method $M$, we
@@ -27,7 +36,7 @@ fixed version of $M$, and parse them to build the two ASTs.
 %we need the two ASTs for the buggy method $M$ and the corresponding
 %fixed version of $M$. It is straightforward to collect them in the
 %training dataset and build the ASTs before and after the fix.
-However, to train CTL, as shown in Figure~\ref{overview-training}, we
+However, to train CTL, as shown in Fig.~\ref{overview-training}, we
 need to identify the respective fixed subtree for the subtree $T_s$ of
 a buggy statement. To do so, we use the tree differencing tool,
 CPatMiner~\cite{nguyen2019graph}, to derive the fixing changes. If a
@@ -36,11 +45,11 @@ subtree corresponds to a statement, let us call it {\em
 {\em pair a buggy subtree with the corresponding fixed subtree}:
 
 1. A buggy subtree ($S$-subtree) is a subtree with
-\code{update} or \code{delete}.
+\code{updated}, \code{deleted}, or \code{inserted}.
 
 2. If a $S$-subtree is \code{deleted}, we pair it with an empty tree.
 
-3. If a buggy $S$-subtree is marked as \code{update}, (i.e, it is
+3. If a buggy $S$-subtree is marked as \code{updated}, (i.e, it is
 {\em updated} or its children node(s) could be {\em inserted, deleted} or {\em
   updated}), we paired this buggy $S$-subtree with its corresponding
 fixed $S$-subtree.
@@ -70,13 +79,15 @@ depth-first-search traversal to obtain a sequence of tokens. For the
 case of an AST subtree, we consider the sequence of tokens of a
 $S$-subtree as a sentence. For the case of the AST of the method, we
 consider the sequence of tokens for the method as a sentence. We then
-use the word embedding technique GloVe~\cite{pennington2014glove}
+use a word embedding technique
+%GloVe~\cite{pennington2014glove}
 to run on those sentences to build a vector representation for each
 token, i.e., for each AST node in the method's AST or in the AST
-subtree. We used GloVe because it can capture well the co-occurrences
-among tokens~\cite{pennington2014glove}. After running GloVe, we
-replace each node in the (sub)tree with its GloVe vector
-representation (see Figures~\ref{overview-training}
+subtree. (Our implementation uses GloVe~\cite{pennington2014glove}).
+%We used GloVe because it can capture well the co-occurrences
+%among tokens~\cite{pennington2014glove}. After running GloVe,
+We then replace each node in the (sub)tree with its vector
+representation (Figures~\ref{overview-training}
 and~\ref{overview-fixing}). Similarly, we replace each node with its
 vector in the AST of the fixed method and in the AST subtree of the
 fixed~statement.

@@ -3,7 +3,7 @@
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=2.8in]{graphs/dual-learning-repair-2.png}
+	\includegraphics[width=2.8in]{graphs/dual-learning-repair-3.png}
         \vspace{-3pt}
 	\caption{Dual-Task Learning between CCL and CTL}
 	\label{fig:dual-learning}
@@ -23,26 +23,25 @@ input and output layers of CTL (Fig.~\ref{fig:dual-learning}).
 
 \subsection{Cross-Stitch Unit}
 
-We perform a joint training between CCL and CTL via a cross-stitch
-unit~\cite{misra2016cross}. Let us first explain the cross-stitch unit
-and then how we leverage it for APR.
-
-
-
-In Figure~\ref{fig:cross-stitch}, for dual-task learning, we use the
-cross-stitch unit to connect CCL and CTL. The sharing of
-representations between CCL and CTL is modeled by learning a
-linear combination of the input features from the vectorized AST
+%We perform a joint training between CCL and CTL via a cross-stitch
+%unit~\cite{misra2016cross}.
+Let us first explain the cross-stitch unit and then how we leverage it
+for APR. In Fig.~\ref{fig:cross-stitch},
+%for dual-task learning,
+we use the cross-stitch unit to connect CCL and CTL. The sharing of
+representations between CCL and CTL is modeled by learning a linear
+combination of the input features from the vectorized AST
 (sub)trees. The top output of the cross-stitch unit, which becomes
 CCL*, gets direct supervision from CCL and indirect supervision from
-CTL. Cross-stitch units help regularize both CCL and CTL by learning
-and enforcing shared representations by combining feature
-maps~\cite{misra2016cross}.
-
-The goal of a cross-stitch unit is to learn a linear combination of
-both inputs from CCL and CTL, which are parameterized
-using the weights $\alpha$. The output of the cross-stitch unit is
-computed as:
+CTL.
+%Tien
+%Cross-stitch units help regularize both CCL and CTL by learning and
+%enforcing shared representations by combining feature
+%maps~\cite{misra2016cross}.
+%The goal of
+A cross-stitch unit learns a linear combination of both inputs from
+CCL and CTL, which are parameterized using the weights $\alpha$. The
+output of the cross-stitch unit is computed as:
 \begin{equation}\label{eq:cross-stitch}
 	\begin{bmatrix}
 		O_C\\
@@ -60,31 +59,32 @@ computed as:
 \end{equation}
 $I_C$ and $I_T$ are the inputs for the cross-stitch unit, which are
 the outputs from a layer of CCL and CTL. $O_C$ and $O_T$ are the
-outputs from the cross-stitch unit, which can be used as the inputs
-for the next layer of the two models. In this case, the next layers
-(noted as CCL* and CTL*) are the ones with the shared representations
-and having the joint training. More details on cross-stitch are
-in~\cite{misra2016cross}.
+outputs from the cross-stitch unit, which are used as the inputs
+for the next layer of the two models.
+%In this case,
+The next layers (noted as CCL* and CTL*) are the ones with the shared
+representations and having the joint training. Details on
+cross-stitch are in~\cite{misra2016cross}.
 
 \subsection{Tree-based, Dual-Task Learning}
 
 
 
-We have modified cross-stitch unit to work with AST representations as
-follows (Figure~\ref{fig:dual-learning}). We use two separate
-attention-based \code{seq2seq} models for CCL and CTL.
-%The dual-task training is shown in Figure~\ref{fig:dual-learning}.
-We use TreeCaps~\cite{bui2021treecaps} with an attention layer
-in-between of an encoder and a decoder. In a regular attention-based
-\code{seq2seq} model, the hidden state output from the encoder is
-directly connected to the attention layer. In {\tool}, we use a
-cross-stitch unit to accept as the input the hidden states from the
-outputs of the encoders of CCL and CTL. The outputs of the
-cross-stitch units are connected to the attention layers of both the
-models. This joint training enables propagating the mutual impact of
-context learning and transformation learning in both directions.
+We have modified cross-stitch unit to work with AST as follows
+(Fig.~\ref{fig:dual-learning}). We use two separate attention-based
+\code{seq2seq} models for CCL and CTL. We use
+TreeCaps~\cite{bui2021treecaps} with an attention layer in-between of
+an encoder and a decoder. In a regular attention-based \code{seq2seq}
+model, the hidden state output from the encoder is directly connected
+to the attention layer. In {\tool}, we use a cross-stitch unit to
+accept as the input the hidden states from the outputs of the encoders
+of CCL and CTL. The outputs of the cross-stitch units are connected to
+the attention layers of both the models.
+%Tien
+%This joint training enables propagating the mutual impact of context
+%learning and transformation learning in both directions.
 
-\subsubsection*{\bf Formulation.}
+\subsubsection*{\bf Formulation}
 As we use TreeCaps~\cite{bui2021treecaps}, which is built on top of
 $k$ TBCNN layers~\cite{mou2014tbcnn}, at the $k^{th}$ layer, the
 output of the convolution window is calculated as:
@@ -131,7 +131,7 @@ outputs of the cross-stitch unit, which are in turn fed into the
 attention layers of both models. $X_C$ and $X_T$ contain the
 information learned from both context learning and transformation
 learning models, which helps achieve the main goal of dual-task learning
-to enhance the APR performance. From Formula (\ref{eq:3}), we have
+to enhance APR. From Formula (\ref{eq:3}), we have
 \begin{equation}\label{eq:4}
 	X_C = \alpha_{CC}U_C + \alpha_{CT}U_T
 \end{equation}

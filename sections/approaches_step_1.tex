@@ -21,13 +21,11 @@ build the vector representations (embeddings).
 
 \subsection{AST Building and Pairing of Subtrees}
 
-First, for a buggy method $M$, we
-%use Java JDT~\cite{JDT} to
-parse the code to produce the AST for $M$. We also identify the
-subtree $T_s$ corresponding to each buggy statement $s$. If there are
-multiple buggy statements in $M$, we generate multiple AST subtrees
-for them.  We use each buggy statement together with $M$
-as a training instance for CCL and CTL.
+For a buggy method $M$, we parse the code to produce~the AST for
+$M$. We identify the subtree $T_s$ corresponding to each buggy
+statement $s$. If there are multiple buggy statements~in $M$, we
+generate multiple AST subtrees, and use a buggy~statement
+together with $M$ as a training instance for CCL and CTL.
 %to train the context learning and code transformation models.
 
 Second, to train CCL, we take a buggy method $M$ and the corresponding

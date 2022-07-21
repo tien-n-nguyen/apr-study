@@ -2,15 +2,15 @@
 \label{eval-methodology:sec}
 
 \subsubsection{Datasets}
-We used three datasets that were used in the prior APR research:
+We used three datasets that were used in the prior APR works:
 Defects4J-v1.2~\cite{defects4j}, Bugs.jar~\cite{saha2018bugs}, and
 BigFix~\cite{yioopsla19}. Defects4J-v1.2 has 395 bugs from 6 Java
 projects. For each bug in a project, it has the faulty and fixed
 versions of the project with test cases. Bugs.jar has 1,158 bugs and
 patches from 8 large Java projects. BigFix contains +4.9 million Java
-methods, and among them, +1.8 million Java methods are buggy. Bugs.jar
-and BigFix contain bug fixes but no test case. We conducted all the
-experiments on a server with 16 core CPU and a single Nvidia A100 GPU.
+methods with +1.8 million buggy methods. Bugs.jar and BigFix have
+no test case. We conducted all the experiments on a
+server with 16 core CPU and a single Nvidia A100 GPU.
 
 %We perform our valuation on three datasets that have been used
 %in the prior research in APR~\cite{icse20}:
@@ -51,15 +51,13 @@ that exactly match with the actual fixes.
 %to be correct ones matching the ground truth by real developers.
 
 {\bf 3. Top-$K$:} is the percentage of the total bugs in which a correct
-patch for a bug is in the ranked list of top-$K$ candidate patches.
+patch is in the ranked list of top-$K$ candidate patches.
 
 \subsubsection{Evaluation Methodology.\\}
 %We use the following settings for different RQs:
 
-{\bf RQ1. Comparison with DL-based APR Approaches on Defects4J.}
-%\underline{Baselines.}
-We compare {\tool} with the following
-DL-based baselines:
+{\bf RQ1. Comparison with DL-based APR Models on~Defects4J.}  We used
+the following DL-based baselines:
 
 %{\it Hercules \cite{hercules-icse19}: } is a novel APR technique that generalizes single-hunk repair to encompass a specific but significant class of multi-hunk repair problems.
 
@@ -69,23 +67,22 @@ DL-based baselines:
 translation approach with sequence-to-sequence learning.
 
 {\bf CoCoNuT~\cite{lutellier2020coconut}:} uses a context-aware neural
-machine translation architecture to represent the buggy code
-and its context separately.
-%However, it does not have the dual learning for context learning and
-%code transformation learning as in {\tool}.
-It uses ensemble learning on the combination of convolutional neural
-networks and a context-aware machine translation.
+machine translation to represent the buggy code and its
+context separately.
+
+%It uses ensemble learning on the combination of convolutional neural
+%networks and a context-aware machine translation.
 
 {\bf DLFix~\cite{icse20}:} DLFix has key differences with {\tool}.
 First, CCL and CTL are different. DLFix uses code summarization to
-collapse the
-%buggy and fixed
-subtrees, and uses the new trees with summarized nodes to train
-CCL. Second, in DLFix, {\em CCL cascadingly connects to CTL} in which the
-vector for the summarized node is used as a {\em weight} representing the
-impact from CCL to CTL. The weight vector is used in a cross-product
-with all the vectors of the nodes in the subtrees to train CTL. In
-{\tool}, dual-task learning is used between CCL and CTL.
+collapse the subtrees, and uses the new trees with summarized nodes to
+train CCL. Second, in DLFix, {\em CCL cascadingly connects to CTL} in
+which the vector for the summarized node is used as a {\em weight}
+representing the impact from CCL to CTL. The weight vector is used in
+a cross-product with all the vectors of the nodes in the subtrees to
+train CTL.
+
+%In {\tool}, dual-task learning is used between CCL and CTL.
 
 %buggy and fixed subtrees to train the CTL model.
 
@@ -94,11 +91,12 @@ with all the vectors of the nodes in the subtrees to train CTL. In
 %contexts. It follows a cascading architecture between two models of
 %context learning and transformation learning.
 
-{\bf CURE~\cite{cure-icse21}: } is a machine-translation-based program
-repair technique using GPT~\cite{radford2018improving} that parses,
-models, and searches source code, as opposed to natural language text,
-to fix bugs automatically. It treats context separately from the buggy
-statements.
+{\bf CURE~\cite{cure-icse21}: } is a machine-translation-based APR
+using GPT~\cite{radford2018improving}.
+%that parses, models, and
+%searches source code, as opposed to natural language text, to fix bugs
+%automatically.
+It treats context separately from buggy statements.
 %as in CoCoNuT.
 
 %It does not have the dual learning for context learning and code
@@ -108,6 +106,12 @@ statements.
 %Tien
 %In this RQ, for %Hercules and
 %Tbar, we directly use the results reported in their original paper because they are pattern-based approaches.
+
+We did not compare with Recoder~\cite{recoder-fse21} because it
+generates only single-hunk patches. {\tool} works for multi-hunk ones.
+
+%it was trained on Defects4J after multiple-statement bugs were filtered.
+
 
 For all approaches under study in this RQ, we used {\em BigFix as the
 training dataset and evaluated on Defects4J dataset}. 
@@ -164,23 +168,20 @@ output (150, 200, 250, 300); (5) The maximum number $P$ of children
 nodes (4, 5, 6); (6) The maximum depth $Q$ of children nodes (3, 4,
 5).
 
-\vspace{2pt}
-{\bf RQ2. Comparison with DL-based APR Approaches on
-  Large Datasets.} We compare {\tool} with the following baselines:
-%\underline{Baselines.} We compare {\tool} with the following
-%state-of-the-art DL-based APR baseline models:
-{\bf Sequen\-ceR~\cite{chen2018sequencer},
+\vspace{2pt} {\bf RQ2. Comparison with DL-based APR Approaches on
+  Large Datasets.} We used the following baselines: {\bf
+  Sequen\-ceR~\cite{chen2018sequencer},
   CoCoNuT~\cite{lutellier2020coconut}, DLFix~\cite{icse20},
   CURE~\cite{cure-icse21}}, and
 
 {\bf CODIT~\cite{chakrabortycodit}:} is a DL-based APR approach
-using sequence-to-sequence machine translation model with the
-abstractions on tree structures to learn the code transformations for
-bug fixing.
+using sequence-to-sequence machine translation with the
+abstractions on trees.
+%to learn the code transformations for bug fixing.
 
-{\bf Tufano'19~\cite{tufano2019learning}:} is a DL-based approach
-aiming to learn code changes by adopting neural machine translation
-with code abstractions and filtering via program analysis.
+{\bf Tufano'19~\cite{tufano2019learning}:} learns code changes by
+machine translation with code abstractions and
+filtering via program analysis.
 
 We did not compare with CODIT~\cite{chakrabortycodit} and
 Tufano'19~\cite{tufano2019learning} in RQ1, because they do not have
@@ -212,13 +213,10 @@ test cases for patch validation.
 
 In RQ2, we did not use fault localization either because Bugs.jar and
 BigFix do not have test cases. We used correct fixing locations.
-
 In RQ2, as running each model, we randomly splitted a dataset
 into 80\%/10\%/10\% for training, tuning (validation), and testing.
 
 %We used the same splitting scheme for all models.
-
-
 
 {\em Parameter tuning:} the same as in RQ1.
 
@@ -227,12 +225,11 @@ into 80\%/10\%/10\% for training, tuning (validation), and testing.
 
 %in the same manner as in RQ1 with autoML \cite{NNI}.
 
-\vspace{2pt}
-{\bf RQ3. Overlapping Analysis.} For a baseline model $M$ and {\tool},
-we analyzed the number of bugs that were fixed by {\tool}
-and missed by $M$, the number of bugs that were fixed by $M$ and
-missed by {\tool}, and the number of bugs that were fixed by
-both.
+\vspace{2pt} {\bf RQ3. Overlapping Analysis.} We analyze the bugs
+fixed by one model and missed by another and vice versa.
+
+%For a baseline model $M$ and {\tool}, we analyzed the number of bugs
+%that were fixed by {\tool} and missed by $M$, the number of bugs that were fixed by $M$ and missed by {\tool}, and the number of bugs that were fixed by both.
 
 \vspace{2pt}
 {\bf RQ4. Impact Analysis of Dual-Task Learning on Performance.}
@@ -241,9 +238,9 @@ both.
 %{\tool},
 We compare {\tool} with two of its variants:
 
-(1) \textbf{Transformation-only model:} In this variant, CCL (context)
-was removed from {\tool} and only CTL (transformation) was kept. The
-result helps evaluate the contribution of context learning.
+(1) \textbf{Transformation-only model:} To evaluate the contribution of context learning, CCL (context)
+was removed from {\tool} and only CTL (transformation) was kept.
+%The result helps evaluate the contribution of context learning.
 %the context learning model is removed from {\tool} and only the
 %bug-fixing code transformation learning model is kept. The result
 %allows us to understand the contributions of the context learning
@@ -278,13 +275,13 @@ connected to CTL in a cascading manner.
 %repair is dependent on the output of the method-level program repair.
 
 In this RQ, we used the same process and parameter tuning as in the
-experiments for the other RQs. We ran all models on BigFix.
+other RQs. We ran all models on BigFix.
 
 %the baselines and \tool in this RQ. Therefore, the parameters that
 %eed to be tuned in both baselines are the same as the ones of \tool.
 
 
-{\bf RQ5. Evaluation on C/C++ Projects.}  To evaluate {\tool} on C/C++
-code, we ran it on the C/C++ benchmark
-Codeflaws~\cite{tan2017codeflaws} with 3,902 bugs. 
-We used the same process and setting as in RQ2.
+{\bf RQ5. Evaluation on C/C++ Projects.}  To evaluate {\tool} on
+C/C++, we ran it on the C/C++ benchmark
+Codeflaws~\cite{tan2017codeflaws} with 3,902 bugs.  We used the same
+process and setting.

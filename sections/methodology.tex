@@ -91,7 +91,7 @@ train CTL.
 %contexts. It follows a cascading architecture between two models of
 %context learning and transformation learning.
 
-{\bf CURE~\cite{cure-icse21}: } is a machine-translation-based APR
+{\bf CURE~\cite{cure-icse21}:} is a machine-translation-based APR
 using GPT~\cite{radford2018improving}.
 %that parses, models, and
 %searches source code, as opposed to natural language text, to fix bugs
@@ -107,9 +107,12 @@ It treats context separately from buggy statements.
 %In this RQ, for %Hercules and
 %Tbar, we directly use the results reported in their original paper because they are pattern-based approaches.
 
-We did not compare with Recoder~\cite{recoder-fse21} because it
-generates only single-hunk patches. {\tool} works for multi-hunk ones.
+%Tien removed this
+%We did not compare with Recoder~\cite{recoder-fse21} because it
+%generates only single-hunk patches. {\tool} works for multi-hunk ones.
 
+{\bf Recoder~\cite{recoder-fse21}}: uses a syntax-guided edit decoder
+to generate edits rather than modified code.
 %it was trained on Defects4J after multiple-statement bugs were filtered.
 
 
@@ -169,10 +172,10 @@ nodes (4, 5, 6); (6) The maximum depth $Q$ of children nodes (3, 4,
 5).
 
 \vspace{2pt} {\bf RQ2. Comparison with DL-based APR Approaches on
-  Large Datasets.} We used the following baselines: {\bf
+  Large Datasets.} The baselines include {\bf
   Sequen\-ceR~\cite{chen2018sequencer},
   CoCoNuT~\cite{lutellier2020coconut}, DLFix~\cite{icse20},
-  CURE~\cite{cure-icse21}}, and
+  CURE~\cite{cure-icse21}}, {\bf Recoder~\cite{recoder-fse21}}, and
 
 {\bf CODIT~\cite{chakrabortycodit}:} is a DL-based APR approach
 using sequence-to-sequence machine translation with the
@@ -184,13 +187,15 @@ machine translation with code abstractions and
 filtering via program analysis.
 
 We did not compare with CODIT~\cite{chakrabortycodit} and
-Tufano'19~\cite{tufano2019learning} in RQ1, because they do not have
-the validation step in their approaches to run on Defects4J. It is
-unfair if we compare them with the other approaches having the
-validation step. However, we compared {\tool} with them in RQ2 since
-we ran the fixing step of all models without patch validation on
-Bugs.jar and BigFix. The reason is that the two datasets do not have
-test cases for patch validation.
+Tufano'19~\cite{tufano2019learning} in RQ1, since they do not have
+the validation step in their~approaches to run on Defects4J.
+%
+%It is unfair if we compare them with the other approaches having the
+%validation step.
+However, we compared {\tool} with them in RQ2 since we ran the fixing
+step of all models without patch validation on Bugs.jar and
+BigFix. The reason is that the two datasets do not have test cases for
+patch validation.
 %Tien
 %However, we compared {\tool} with them in RQ2 since the two datasets
 %Bugs.jar and BigFix do not have the test cases for validation. Thus,
@@ -211,10 +216,11 @@ test cases for patch validation.
 
 %We ran the baselines and \tool on two big datasets in this RQ, including Bugs.jar and BigFix.
 
-In RQ2, we did not use fault localization either because Bugs.jar and
-BigFix do not have test cases. We used correct fixing locations.
-In RQ2, as running each model, we randomly splitted a dataset
-into 80\%/10\%/10\% for training, tuning (validation), and testing.
+In RQ2, we did not use fault localization since Bugs.jar and
+BigFix do not have test cases. We used correct fixing locations.  In
+RQ2, we randomly splitted a dataset into
+80\%/10\%/10\% for training, tuning (validation), and testing,
+respectively.
 
 %We used the same splitting scheme for all models.
 

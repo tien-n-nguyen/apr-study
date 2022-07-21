@@ -97,9 +97,9 @@ TreeCaps to learn the importance of the position of a node in a
 tree. $W$ is the trainable matrix; $b$ is the bias factor; $N$ is the
 total number of nodes in the convolution window. TreeCaps merges the
 output from all TBCNN layers by using a non-linear squash
-function~\cite{sabour2017dynamic}. For an AST node $j$, TreeCaps
-calculates the capsule $u_j$ as follows (Details of the computation of
-$Y$ and $u_j$ can be found in~\cite{bui2021treecaps}):
+function~\cite{sabour2017dynamic}. For an AST node $j$,
+TreeCaps~\cite{bui2021treecaps} calculates the capsule $u_j$ as
+follows
 \begin{equation}\label{eq:2}
 	u_j = \frac{||c_j||^2}{||c_j||^2+1}\frac{c_j}{||c_j||}
 \end{equation}
@@ -108,6 +108,9 @@ capsules of all the nodes in that order. We consider the list of
 capsules as the output $U$ of the TreeCaps model. With both
 CCL and CTL, we have the outputs $U_C$ for the context
 learning part and $U_T$ for the transformation learning part.
+
+
+%(Details of the computation of $Y$ and $u_j$ can be found in~\cite{bui2021treecaps}):
 
 With both $U_C$ and $U_T$ as the inputs of the cross-stitch unit, the
 outputs of the cross-stitch unit are computed as:
@@ -138,16 +141,15 @@ to enhance APR. From Formula (\ref{eq:3}), we have
 \begin{equation}\label{eq:5}
 	X_T = \alpha_{TC}U_C + \alpha_{TT}U_T
 \end{equation}
-If the $X_C$ and $X_T$ have different sizes, we need to resize them
+If $X_C$ and $X_T$ have different sizes, we need to resize them
 for consistence. If the size needs to be increased, we use bilinear
-interpolation~\cite{bilinear-interpolation} for resizing. If the size
-needs to be reduced, we do the center crop on the matrix to match the
-required size. Moreover, for efficiency, we also have a size limit for
-the fixed tree in which each buggy tree has at most $P+P^2+...+P^Q$
-nodes.  $P$ is the max number of children nodes of a node and $Q$ is
-the max child node depth. When predicting, if one vector is close
-to zero, we consider it as empty, and all of its children nodes are
-considered as empty.
+interpolation~\cite{bilinear-interpolation}. If reduction is needed,
+we do the center crop on the matrix to match the required size. For
+efficiency, we have a size limit for the fixed tree in which a
+buggy tree has at most $P+P^2+...+P^Q$ nodes.  $P$ is the max number
+of children nodes of a node. $Q$ is the max child node depth. When
+predicting, if a vector is close to zero, we consider it as empty, and
+its children nodes are considered as empty.
 
 %After solving this, here is one last problem the dual learning may
 %face. When making the prediction, because we don't know how the tree

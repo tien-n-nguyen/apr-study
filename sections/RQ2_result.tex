@@ -17,7 +17,7 @@
 			\textbf{DLFix}        & 10.7\% & 12.1\% & 14.6\% & 11.3\% & 11.8\% & 12.7\%\\
 			\textbf{CoCoNuT}      & 12.1\% & 14.2\% & 16.5\% & 12.4\% & 13.5\% & 14.1\%\\
 			\textbf{CURE}         & 13.2\% & 14.9\% & 17.4\% & 13.0\% & 13.8\% & 14.5\%\\
-                        \textbf{Recoder}         & 14.1\% & 16.1\% & 17.6\% & 13.0\% & 13.8\% & 14.5\%\\
+                        \textbf{Recoder}         & 14.1\% & 16.1\% & 17.6\% & 14.0\% & 15.2\% & 15.9\%\\
 			\hline
 			\textbf{\tool}        & \textbf{14.8\%} & \textbf{17.1\%} & \textbf{18.5\%} & \textbf{14.9\%} & \textbf{16.1\%} & \textbf{16.8\%}\\
 			\hline
@@ -31,10 +31,20 @@
 As seen in Table~\ref{RQ2_results}, {\tool} can auto-fix more bugs
 than any baseline in any metric on both large datasets.  Particularly,
 {\tool} can fix 14.8\% of 1,158 bugs in Bugs.jar and 14.9\% of 2,176
-bugs in BigFix using only top-1 candidates. Compared with the
-best baseline CURE, {\tool} fixed relatively 12.1\%
-and 14.6\% more bugs using only top-1 candidates, 14.8\%
-and 16.7\% more bugs using the top-5 candidates, and 6.3\% and
-15.9\% more bugs using the top-10 candidates, on Bugs.jar and BigFix,
-respectively. Note: these two datasets have no test
-cases, thus, there is no 5-hour limit  validation and no CURE*.
+bugs in BigFix using only top-1 candidates.
+
+Compared with CURE, {\tool} fixed relatively 12.1\% and 14.6\% more
+bugs using only top-1 candidates, and 14.8\% and 16.7\% more bugs using
+the top-5 candidates,
+%, and 6.3\% and 15.9\% more bugs using the top-10 candidates,
+on Bugs.jar and BigFix, respectively. Note: these two datasets have no
+test cases, thus, there is no 5-hour limit validation and no CURE*.
+
+Compared with Recoder, {\tool} relatively improves 5\% in Top-1
+accuracy in Bugs.jar. With top-1 candidates, it fixed 90 more bugs
+(multi-hunk/multi-statement bugs) that Recoder missed, and it missed
+82 single-hunk bugs that Recoder fixed. The reason on why {\tool}
+performed better than Recoder in Bugs.jar than in Defects4J is that
+Recoder does not fix multi-hunk bugs and there is a higher percentage
+of multi-hunk/multi-statement bugs in Bugs.jar than Defects4J. The
+relative improvements in BigFix are similar to those in Bugs.jar.

@@ -43,11 +43,15 @@ Recoder. {\tool} auto-fixes 56 bugs, i.e., 194.7\% (37 bugs), 40\%
 Sequen\-ceR, DLFix, CoCoNuT, CURE, and CURE*, respectively
 (Table~\ref{RQ1_defect4j}).
 
-Compared to Recoder, {\tool} actually complements to Recoder.  Because
+Compared to Recoder, {\tool} complements to Recoder. Since
 generating only {\em single-hunk} patches, Recoder did not fix 13
-multi-hunk/multi-statement bugs that {\tool} fixed. Recoder fixed 28
-single-hunk bugs that {\tool} missed. Recoder did not report the
-number of plausible patches.
+multi-hunk/multi-statement bugs that {\tool} fixed.
+%
+{\tool} can handle the multi-hunk/multi-statement bugs thanks to its
+ability to learn the transformations to multiple buggy AST subtrees.
+%
+Recoder fixed 28 single-hunk bugs that {\tool} missed. Recoder did not
+report the number of plausible patches.
 
 %With the 5-hour limit, {\tool} generates {\em the most correct (56)
 %  and the most plausible patches (96)} than other baselines.  {\tool}

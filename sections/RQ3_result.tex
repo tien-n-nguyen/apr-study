@@ -4,42 +4,47 @@
 {\footnotesize{
 \definecolor{mygray}{gray}{.9}
 \begin{table}[t]
-  \caption{RQ3. Overlapping Analysis. The number in the gray boxes: the unique bugs that the current approach can fix. P: \% of the bugs fixed by a tool and missed by the other.}
+  \caption{RQ3. Overlapping Analysis. The number in the gray boxes: the unique bugs that the current approach can fix. \%: \% of the bugs fixed by a tool and missed by the other.}
   \vspace{-9pt}
 	\begin{center}
 		\renewcommand{\arraystretch}{1}
-		\begin{tabular}{p{1cm}<{\centering}|p{1.1cm}<{\centering}|p{0.8cm}<{\centering}|p{0.7cm}<{\centering}|p{1.1cm}<{\centering}|p{0.8cm}<{\centering}|p{0.7cm}<{\centering}}\hline
+		\begin{tabular}{p{1cm}<{\centering}|p{0.9cm}<{\centering}|p{0.8cm}<{\centering}|p{0.7cm}<{\centering}|p{0.9cm}<{\centering}|p{0.8cm}<{\centering}|p{0.7cm}<{\centering}}\hline
 			Tool &\multicolumn{3}{c|}{Bugs.jar (1,158 Bugs)}&\multicolumn{3}{c}{BigFix (2,176 Bugs)}\\
 			\hline
 			{\bf CODIT}             & CODIT   & Overlap   & \tool  & CODIT   & Overlap   & {\tool} \\
 			\hline
 			Fixed \#     & \cellcolor{mygray} 6  & 80   & \cellcolor{mygray} 91  & \cellcolor{mygray} 13 &  157  & \cellcolor{mygray} 165 \\
-			P (\%)            & 6.8\%   &    & 53.4\%  & 7.7\%   &    & 51.4\% \\
+			(\%)            & 6.8\%   &    & 53.4\%  & 7.7\%   &    & 51.4\% \\
 			\hline
 			{\bf Tufano'19}             & Tufano 19'   & Overlap   & \tool  & Tufano 19'   & Overlap   & \tool \\
 			\hline
 			Fixed \#     & \cellcolor{mygray} 5  &  71  & \cellcolor{mygray} 101 & \cellcolor{mygray}4 & 85   & \cellcolor{mygray}237 \\
-			P (\%)            &  6.2\%  &    &  58.8\% &  4.9\%  &    & 73.6\% \\
+			(\%)            &  6.2\%  &    &  58.8\% &  4.9\%  &    & 73.6\% \\
 			\hline
-			{\bf SequenceR}             & SequenceR   & Overlap   & \tool  & SequenceR   & Overlap   & \tool \\
+			{\bf Seq.R}             & Seq.R   & Overlap   & \tool  & Seq.R   & Overlap   & \tool \\
 			\hline
 			Fixed \#     & \cellcolor{mygray} 7  &   95 & \cellcolor{mygray} 76 & \cellcolor{mygray} 23 &  158  & \cellcolor{mygray} 164 \\
-			P (\%)            &   6.8\% &    & 44.6\%  &   11.2\% &    & 50.9\% \\
+			(\%)            &   6.8\% &    & 44.6\%  &   11.2\% &    & 50.9\% \\
 			\hline
 			{\bf DLFix} & DLFix   & Overlap   & \tool  & DLFix   & Overlap   & \tool \\
 			\hline
 			Fixed \#     & \cellcolor{mygray}  19 &  105  & \cellcolor{mygray} 66 & \cellcolor{mygray}35 &  211  & \cellcolor{mygray}111 \\
-			P (\%)            &  15.0\%  &    & 38.5\%  &  14.2\%  &    &  34.5\%\\
+			(\%)            &  15.0\%  &    & 38.5\%  &  14.2\%  &    &  34.5\%\\
 			\hline
 			{\bf CoCoNuT}             & CoCoNuT   & Overlap   & \tool  & CoCoNuT   & Overlap   & \tool \\
 			\hline
 			Fixed \#     & \cellcolor{mygray} 20  & 120   & \cellcolor{mygray} 51 & \cellcolor{mygray}44 &  226  & \cellcolor{mygray} 96\\
-			P (\%)            &  14.0\%  &    &  29.7\% &  16.1\%  &    & 29.7\% \\
+			(\%)            &  14.0\%  &    &  29.7\% &  16.1\%  &    & 29.7\% \\
 			\hline
 			{\bf CURE}             & CURE   & Overlap   & \tool  & CURE   & Overlap   & \tool \\
 			\hline
 			Fixed \#     & \cellcolor{mygray} 27  &  126  & \cellcolor{mygray} 45 & \cellcolor{mygray} 50&  233  & \cellcolor{mygray} 89\\
-			P (\%)            &  17.4\%  &    & 26.4\%  & 17.7\%   &    &  27.7\%\\
+			(\%)            &  17.4\%  &    & 26.4\%  & 17.7\%   &    &  27.7\%\\
+                      	\hline
+			{\bf Recoder}             & Recoder   & Overlap   & \tool  & Recoder   & Overlap   & \tool \\
+			\hline
+			Fixed \#     & \cellcolor{mygray} 82  &  81  & \cellcolor{mygray} 90 & \cellcolor{mygray} 50&  233  & \cellcolor{mygray} 89\\
+			(\%)            &  17.4\%  &    & 26.4\%  & 17.7\%   &    &  27.7\%\\
 			\hline
 		\end{tabular}
 		\label{RQ3_results}

@@ -1,5 +1,7 @@
 \section{Related Work}
-We summarize the related studies on automated program repair.
+\label{related:sec}
+
+%We summarize the related studies on automated program repair.
 
 {\bf Fixing-pattern-based APRs.} 
 %In the earlier stage, the automated program repair (APR) approaches aimed to automatically derive
@@ -7,14 +9,12 @@ We summarize the related studies on automated program repair.
 %another~\cite{icse10}, or similar code due to porting or
 %branching~\cite{ray-fse12}. 
 %
-Toward addressing the more general
-defects, several researchers have explored the {\em search-based
-	approaches}~\cite{le2011genprog,qi2014strength,LeGoues-icse12,martinez2016astor}
+Toward addressing the more general defects, several researchers have
+explored the {\em search-based
+  approaches}~\cite{le2011genprog,qi2014strength,LeGoues-icse12,martinez2016astor}
 in which a search strategy is performed in the space of potential
-solutions produced by several operators mutating the buggy
-code. %Then, test cases and/or program verification are applied to select the better candidate fixes~\cite{smith2015cure}. 
-%
-In contrast to the search-based approaches, the automatic or
+solutions produced by several operators mutating the buggy code. In
+contrast to the search-based approaches, the automatic or
 semi-automatic approaches of {\em mining and learning fixing patterns}
 from prior bug fixes~\cite{le2016history,
   kim2013automatic,nguyen2013semfix,liu2019avatar,tbar-issta19} have
@@ -25,19 +25,19 @@ patches~\cite{long2016automatic,long2017automatic,le2016history},
 synthesizing patches using method call related
 patterns--ELIXIR~\cite{saha2017elixir}, mining code change operations
 (e.g., Insert If- Statement) from the patches in code change
-histories--CapGen~\cite{wen2018context},
-SimFix~\cite{Simfix} and
+histories--CapGen~\cite{wen2018context}, SimFix~\cite{Simfix} and
 FixMiner~\cite{koyuncu2018fixminer}, exploring fix patterns of static
 analysis
 violations--Avatar~\cite{liu2019avatar}. Tbar~\cite{tbar-issta19} is a
 template-based APR tool with the collected fix patterns.
-Hercules~\cite{10.1109/ICSE.2019.00020} targets at the multi-hunk bugs that
-may require applying a substantially similar patch to different
-locations.  Getafix~\cite{bader2019getafix} learns fix patterns from
+Hercules~\cite{10.1109/ICSE.2019.00020} targets at the multi-hunk bugs
+that may require applying a substantially similar patch to different
+locations. Getafix~\cite{bader2019getafix} learns fix patterns from
 past fixes and auto-fixes the warnings from static analyzers. {\tool},
-is a data-driven and DL-based approach and different from
-those pattern-based tools. Thus, we compare {\tool} with DL-based
-APR models. We will compare with other types of models in future.
+is a data-driven and DL-based approach. Thus, we compared {\tool} with
+DL-based APR models.
+
+%We will compare with other types of models in future.
 
 
 
@@ -81,10 +81,11 @@ APR models. We will compare with other types of models in future.
 %generation So far however, pattern-based APR approaches focus on
 %leveraging patches that developer applied to semantic bugs.
 
-{\bf Deep Learning-based APR approaches}. Recently, deep learning (DL)
-has been applied to APR for directly generating patches. 
- The first group of DL-based APR approaches leverage the capability of DL models
-in {\em learning similar source code for similar fixes}, such as DeepRepair~\cite{white2016deep} and DeepFix~\cite{gupta2017deepfix}. 
+{\bf Deep Learning (DL)-based APR approaches}. Recently, DL has been
+applied to APR for directly generating patches.  The first group of
+DL-based APR approaches leverage the capability of DL models in {\em
+  learning similar source code for similar fixes}, such as
+DeepRepair~\cite{white2016deep} and DeepFix~\cite{gupta2017deepfix}.
 %DeepRepair leverages learned code similarities, captured with recursive
 %auto-encoders~\cite{white2016deep}, to select the repair ingredients
 %from code fragments that are similar to the buggy code.
@@ -93,23 +94,34 @@ in {\em learning similar source code for similar fixes}, such as DeepRepair~\cit
 %uses deep learning to directly generate patches. The precision of this approach depends on the neutral network learned from the training
 %set. However, so far this approach is only evaluated
 %on syntactic errors.
-Some other approaches apply neural machine translation (NMT) onto APR: translating the buggy code to its fixed version, such as Ratchet~\cite{hata2018learning} and Tufano {\em et al.}~\cite{tufano2018empirical}, SequenceR~\cite{chen2018sequencer}, Tufano {\em et al.}~\cite{tufano2019learning}. However, the above early work using NMT for APR did not perform well on the benchmark dataset Defects4J compared with the well-known pattern-based tools. 
+Some other approaches apply neural machine translation (NMT) onto APR:
+translating the buggy code to its fixed version, such as
+Ratchet~\cite{hata2018learning} and Tufano {\em et
+  al.}~\cite{tufano2018empirical}, SequenceR~\cite{chen2018sequencer},
+Tufano {\em et al.}~\cite{tufano2019learning}. However, the above
+early work using NMT for APR did not perform well on the benchmark
+Defects4J in comparison with the well-known, pattern-based tools.
 
-The recent DL-base models have generate comparable and even better
+The recent DL-based models have generated comparable and even better
 results than the best performing pattern-based
-APRs. DLFix~\cite{icse20} uses a two-tier tree-based translation model
-for learning code contexts and transformation to autofix bugs, which
-was the first DL model that generates comparable results compared with
-pattern-based tools. Later, CoCoNuT~\cite{lutellier2020coconut}
-proposes a new context-aware neural machine translation architecture
-to learn buggy code and its surrounding
+APRs. DLFix~\cite{icse20} uses a cascading architecture
+between CCL and CTL.
+%a two-tier tree-based translation model for learning code contexts and transformation to autofix bugs, which was the first DL model that generates comparable results compared with pattern-based tools.
+CoCoNuT~\cite{lutellier2020coconut} proposes a new context-aware NMT
+architecture to learn buggy code and its
 contexts. CURE~\cite{cure-icse21} develops a code-aware neural machine
 translation for APR utilizing a large language model
 GPT~\cite{radford2018improving}. Our empirical results show that
 {\tool} can auto-fix more bugs than SequenceR, DLFix, CoCoNuT, and
 CURE. DLFix~\cite{icse20} has been shown to outperform several
-pattern-based approaches.
+pattern-based approaches. TFix~\cite{tfix-21} uses a text-to-text
+transformer for APR. \cite{recoder-fse21} uses a syntax-guided edit
+decoder to generate bug-fixing edits rather than modified code.  The
+general-purpose syntactic neural
+model~\cite{yin-neubig-2017-syntactic} could be applied to APR to
+capture the target syntax.
 
+  
 %on three datasets: Defects4J, Bugs.jar, and BigFix.
 
 %CODIT~\cite{chakrabortycodit} learns code edits with encoding code structures in

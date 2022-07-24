@@ -119,12 +119,12 @@ contributed to fixing more bugs correctly.
 %       the correct context learning (thanks to {\tool}'s dual-task
 %       learning) leads to more correct bug fixing}}.
 
-{\em D.2.2. Can the better bug-fixing from {\tool}'s dual-task
+{\em D.2.2. Can better bug-fixing from {\tool}'s dual-task
   learning than the bug-fixing from the \code{Cascading} model be
-  partially attributed to beter context learning?}
+  partially attributed to better context learning? Can the worse bug-fixing in the \code{Cascading} model be partially due to its worse CCL?}
 
 
-To answer D.2.2., we further analyzed {\bf 54} bugs that were fixed by
+To answer D.2.2., we analyzed {\bf 54} bugs that were fixed by
 {\tool} and missed by the \code{Cascading} model. Among them, we found
 {\bf 46} bugs in which {\em the output contexts of CCL in {\tool},
   i.e., the fixed method ASTs, match with the fixed method ASTs
@@ -133,9 +133,9 @@ in which the output contexts of CCL in the \code{Cascading} model
 match with the fixed method ASTs.
 %
 This indicates that {\em 1) better APR is partially due to better
-  context learning CCL in dual-task learning} and {\em 2) one source
+  CCL in dual-task learning} and {\em 2) a source
   of the inaccuracy in the \code{Cascading} model is the inaccuracy of
-  CCL}.
+  CCL} (i.e., {\bf the confounding effect of the inaccuracy of CCL to those of CTL and APR}).
 
 From D.1 and D.2: {\bf {\em the better APR of {\tool}
     comes~from dual-task learning,

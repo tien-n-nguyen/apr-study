@@ -4,27 +4,27 @@
 %context.
 
 Despite their successes, the state-of-the-art DL-based APR approaches
-still have limitations in the integration of code contexts in learning
+have limitations in the integration of code contexts in learning
 context-dependent bug fixes. We introduce {\tool}, a context-aware
-dual learning APR model, which dedicates one model to learn the
-bug-fixing code transformations (CTL) and another one to learn the
-corresponding surrounding code contexts (CCL). In this work, our idea
-is that the mutual improvement between the correct learning of
-contexts and the learning of code transformations can benefit for each
-other, leading to better auto-fixing the context-dependent bugs.
+dual learning APR model, which dedicates a model to learn the
+bug-fixing code transformations (CTL) and another to learn code
+contexts (CCL). Our idea is that the mutual improvement between the
+correct learning of contexts and the learning of transformations can
+benefit for each other, leading to better fixing the context-dependent
+bugs.
 %
-Instead of cascading
-the two models, we train them simultaneously
+%Instead of cascading the two models,
+We train them simultaneously
 %with soft-sharing their parameters
-via a cross-stitch unit to exploit the duality between CCL and CTL.
+via a cross-stitch unit.
+%to exploit the duality between CCL and CTL.
 %We conducted several experiments to
 %evaluate {\tool} on three large datasets.
 Our empirical results show that {\tool} can auto-fix
 %16.7\%, 12.1\%, and 14.6\%
-more bugs than the best-performance DL-based baseline model with only
+more bugs than the DL-based baselines with only
 the top-1 patches in Bugs.jar and BigFix, respectively.
-It outperformed the state-of-the-art APR models (except Recoder)
-in Defects4J.
+It outperforms most of state-of-the-art APR models and complement with Recoder in Defects4J.
 %In Defects4J, it improves over the baseline models from
 %16.7\%--194.7\%. In Bugs.jar and BigFix, it fixes 26.4\% and 27.7\% of
 %the total fixed bugs that were missed by the best DL-based baseline.

@@ -11,7 +11,7 @@
 			\renewcommand{\arraystretch}{1}
 			\begin{tabular}{p{1cm}<{\centering}|p{3.2cm}<{\centering}|p{2cm}<{\centering}|p{1cm}<{\centering}}
 				\hline
-				Top-$K$ & \code{Transformation-only} Model & \code{Cascading Model} &  \tool \\			
+				Top-$K$ & \code{Transformation-only} & \code{Cascading} &  \tool \\			
 				\hline
 				Top-1   & 7.1\% & 11.7\% & 14.9\% \\ \hline
 				Top-5	& 8.9\% & 13.1\% & 16.1\% \\ \hline
@@ -84,12 +84,13 @@ only {\bf 17} bugs that {\tool} missed.
 %\code{Cascading} model missed than the unique bugs that were fixed by
 %the \code{Cascading} model but missed by {\tool}.
 
-{\em D.2.1. Do better context learning in a dual-task learning
-  architecture in {\tool} lead to better APR?}
+{\em D.2.1. Does the better context learning in a dual-task learning
+  architecture in {\tool} than the context learning in the
+  \code{Cascading} model lead to better bug-fixing?}
 
 Both the \code{Cascading} model and {\tool} have CCL and CTL. In the
 \code{Cascading} model, CCL and CTL are sequential, but cross-stitched
-in {\tool}. To answer D.2.1, we first compared the output contexts of
+in {\tool}. To answer D.2.1., we first compared the output contexts of
 CCL, i.e., the fixed method ASTs, from both the \code{Cascading} model
 and {\tool} against the ground truth method AST. If the number of
 common nodes between both is$>=$90\%, we consider the output to be
@@ -118,18 +119,29 @@ contributed to fixing more bugs correctly.
 %       the correct context learning (thanks to {\tool}'s dual-task
 %       learning) leads to more correct bug fixing}}.
 
-We further analyzed {\bf 54} bugs that {\tool} fixed and were missed
-by the \code{Cascading} model. Among them, we found {\bf 46} bugs in
-which {\em the outputs of context learning (CCL) in {\tool} match with
-  the fixed contexts in the oracle}. In contrast, we found {\bf 18}
-bugs in which {\em the outputs of context learning (CCL) in the
-  \code{Cascading} model match with the fixed contexts}. This
-indicates that {\em one source of the inaccuracy in the
-  \code{Cascading} model is the inaccuracy of context learning}. This
-means that {\bf {\em the better performance of {\tool} comes from
-    dual-task learning, which propagates positive impact of CCL and
-    CTL on each other, making both context learning and transformation
-    learning better and leading to more correct bug-fixing}}.
+{\em D.2.2. Can the better bug-fixing from {\tool}'s dual-task
+  learning than the bug-fixing from the \code{Cascading} model be
+  partially attributed to beter context learning?}
+
+
+To answer D.2.2., we further analyzed {\bf 54} bugs that were fixed by
+{\tool} and missed by the \code{Cascading} model. Among them, we found
+{\bf 46} bugs in which {\em the output contexts of CCL in {\tool},
+  i.e., the fixed method ASTs, match with the fixed method ASTs
+  (contexts) in the oracle}. In contrast, we found only {\bf 18} bugs
+in which the output contexts of CCL in the \code{Cascading} model
+match with the fixed method ASTs.
+%
+This indicates that {\em 1) better APR is partially due to better
+  context learning CCL in dual-task learning} and {\em 2) one source
+  of the inaccuracy in the \code{Cascading} model is the inaccuracy of
+  CCL}.
+
+From D.1 and D.2: {\bf {\em the better APR of {\tool}
+    comes~from dual-task learning,
+    %which propagates positive impact of CCL and CTL on each other,
+ making both context learning and transformation learning mutually
+ better, leading to better APR}}.
 
 %{\bf {\em the better performance of {\tool} over the \code{Cascading}
 %    model comes from dual-task learning, which makes the context
@@ -147,16 +159,16 @@ means that {\bf {\em the better performance of {\tool} comes from
 
 %\vspace{3pt} {\bf 3. The \code{Cascading} model and
 %  DLFix~\cite{icse20}:}
-\vspace{-2pt}
+%\vspace{-2pt}
 \subsubsection{{\bf The \code{Cascading} model and DLFix~\cite{icse20}}}
 
 The \code{Cascading} model differs from DLFix~\cite{icse20}. First,
-CCL (context) and CTL (transformation) are different from those in
+CCL and CTL are different from those in
 DLFix, which uses code summarization. Second, in the \code{Cascading}
 model, the output of CCL corresponding to a buggy subtree is directly
 used as the input of CTL. In DLFix~\cite{icse20}, the summarized
-vector is used as a weight in a cross-product to represent the impact
-from CCL to CTL.
+vector is used as a weight in a cross-product to represent 
+CCL $\rightarrow$ CTL.
 
 Although DLFix differs from the \code{Cascading} model in the CCL~and
 CTL components as well as in the ways that they connect, they~share

@@ -105,8 +105,10 @@ recent DL-based approaches have separate representations for
 contexts~\cite{chen2018sequencer,cure-icse21,lutellier2020coconut}.
 They extract contextual features to be fed into a single DL model to
 learn to fix. Determining the correct context is important to extract
-the right features to help a model learn the fixing change.
-
+the right features to help a model learn the fixing change. Those
+approaches do not help their models to correctly learn the contexts
+given that the code transformations for bug-fixing are known and could
+be used to train the models for context learning.
 
 
 %\underline{First}, the DL-based APR approaches that learn from {\em
@@ -228,9 +230,8 @@ succeeding fix is likely \code{if (n} \code{!=} \code{size)} or
   (n} \code{!=} \code{null)}. In contrast, if the fix is a change from
 \code{if (fd} \code{==} \code{null)} into \code{if (fd} \code{!=}
 \code{null)}, the key contextual features are more likely
-\code{fopen(...)} than \code{fread(...)}.
-
-In {\tool}, we dedidate two models: CCL for context learning and CTL
+\code{fopen(...)} than \code{fread(...)}.\\
+\indent In {\tool}, we dedidate two models: CCL for context learning and CTL
 for code-transformation learning. We use a model called~{\em
   cross-stitch unit}~\cite{misra2016cross} that connects CTL and
 CCL. The sharing of representations between CCL and CTL is modeled
@@ -322,7 +323,8 @@ BigFix, respectively. Moreover, {\tool} fixed 89 and 45 unique bugs
 that CURE missed, while {\tool} missed only 50 and 27 bugs that~were
 fixed by CURE in Bugs.jar and BigFix. In Defects4J, {\tool} fixes
 194.7\%, 40\%, 27.3\%, and 16.7\% more bugs than the baselines:
-SequenceR~\cite{chen2018sequencer}, DLFix~\cite{icse20},
+SequenceR~\cite{chen2018sequencer}, DEAR~\cite{icse22},
+%DLFix~\cite{icse20},
 CoCoNuT~\cite{lutellier2020coconut}, CURE~\cite{cure-icse21},
 respectively.  {\tool} fixed 8 more bugs than~the best DL model,
 CURE~\cite{cure-icse21}.  Even with the cut-off setting in CURE
@@ -345,9 +347,10 @@ The contributions of this paper include:
 %1) Leveraging dual-task learning to propagate the {\bf mutual impacts}
 %  in both directions of context and transformation learning.
 
-1) Leveraging dual-task learning i) to model mutual impacts of CCL and
-CTL in both directions, leading to better APR ii) avoid confounding
-inaccuracies in CCL $\rightarrow$ CTL.
+1) {\tool}: Leveraging dual-task learning to model mutual impacts of
+CCL and CTL in both directions, leading to better APR.
+
+%ii) avoid confounding inaccuracies in CCL $\rightarrow$ CTL.
 
 2) Adapting/Modifying the cross-stitch unit for dual-task
 learning to work with AST representations in source code.

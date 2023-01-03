@@ -38,7 +38,7 @@ public LegendItemCollection getLegendItems() {
   return result;
 }
 	\end{lstlisting}
-        \vspace{-9pt}
+        \vspace{-14pt}
         \caption{Mutual Impact betw. Context and Change Learning}
         \vspace{-8pt}
         \label{fig:motiv}
@@ -66,12 +66,14 @@ public LegendItemCollection getLegendItems() {
 %        }
 
 %Let us start with a real-world example to motivate our approach.
-Fig.~\ref{fig:motiv} shows a real bug from the project \code{Chart}
+Figure~\ref{fig:motiv} shows a real bug from the project \code{Chart}
 in the Defects4J dataset. The bug occurred at line 8 in which the
 condition for stopping the updating process on the \code{result}
 variable is incorrect (\code{if (dataset != null)}). The result is
 returned only when the dataset (line 7) is empty. Thus, it was fixed
 into \code{if (dataset == null)}.
+
+From the above example, we make the following observations:
 
 \noindent {\bf Observation 1 [Fixing Change Depends on Context]}.~As
 seen, the bug-fixing change from line 8 to line 9 (\code{if (dataset
@@ -102,45 +104,35 @@ statements, e.g., at lines 2--5.
 Despite successes, the state-of-the-art, DL-based models~are
 limited in integrating context learning and change learning.
 
-\underline{First}, for the DL-based approaches that learn the fixes
+First, for the DL-based approaches that learn the fixes
 from prior {\em similar bug fixes or
   patterns}~\cite{gupta2017deepfix,white2019sorting,white2016deep},
-there might not be any fix similar to Fig.~\ref{fig:motiv}. They focus
+there might not be any fix similar to Figure~\ref{fig:motiv}. They focus
 on similar fixes with little or no consideration on whether a fix
 appears in certain~context.
 
-\underline{Second}, some other DL-based APR approaches focus {\em only
+Second, some other DL-based APR approaches focus {\em only
   on learning the changes} to fix an AST subtree or a
 statement~\cite{chakrabortycodit,see2017get} without considering the
 context. For this example, without examining the context,
-%e.g., the preceding code \code{getDataset} or the succeeding code
-%\code{getRowCount} or \code{return result},
+e.g., the preceding code \code{getDataset} or the succeeding code
+\code{getRowCount} or \code{return result},
 such a model will make the same change regardless of contexts.
 
 %not likely learn to change line 8 into line 9.
 
 %hata2018learning,tufano2019learning,tufano2018empirical
 
-\underline{Third}, for the machine translation and transformer-based
-APR
+Third, for the machine translation and transformer-based APR
 models~\cite{hata2018learning,tufano2019learning,tufano2018empirical},
-the entire method in Fig.~\ref{fig:motiv} is used as the input. {\em
+the entire method in Figure~\ref{fig:motiv} is used as the input. {\em
   Without distinguishing the boundary of the context and the fixing
-  changes}, such a model faces the noise.
-%, i.e., the code irrelevant to the actual fix at lines 8--9.
-For example, the code at lines 2--5 on the legends is not crucial for
-the fix regarding the dataset at line 9. Thus, such a model could
-identify the incorrect location to fix.
+  changes}, such a model faces the noise, i.e., the code irrelevant to
+the actual fix at lines 8--9. For example, the code at lines 2--5 on
+the legends is not crucial for the fix regarding the dataset at line
+9. Thus, such a model could identify the incorrect location to fix.
 
-\underline{Fourth}, some other DL-based approaches have separate
-representations for
-contexts~\cite{chen2018sequencer,cure-icse21,lutellier2020coconut}.
-SequenceR~\cite{chen2018sequencer},
-CoCoNuT~\cite{lutellier2020coconut}, and CURE~\cite{cure-icse21}
-extract features in the surrounding context (the method)
-%(e.g., lines 2--7, lines 10--15)
-to be fed into a DL model.
-%to learn to fix.
+
 
 %These approaches utilize only one DL model for learning the fixes
 %using the features extracted from the contexts.
@@ -150,25 +142,40 @@ to be fed into a DL model.
 %help better fix a bug. They separately consider the surrounding code
 %as the context (e.g., lines 2--7, lines 10--15).
 
-\underline{Fifth}, a recent trend shows that dedicating a separate
-model for context learning can perform better than using a single
-model~\cite{icse20}. DLFix~\cite{icse20} has two models: one for
-context learning and another for transformation learning.
-%in which one tree-based LSTM model learns the context and another one
-%learns the code transformation (e.g., from line 8 to line 9).
-It cascades the first model to the second one in which the output
-of the model for contexts is used as a weight for the transformation
-learning one. Thus, DLFix~\cite{icse20} suffers two limitations: 1)
-it does not capture well both directions of the mutual impact between
-two types of learning to help each other,
-%(esp. from code-change learning to context learning),
-2) it creates confounding inaccuracies as explained.
+Fourth, some other DL-based approaches have separate representations
+for
+contexts~\cite{chen2018sequencer,cure-icse21,lutellier2020coconut}.
+SequenceR~\cite{chen2018sequencer},
+CoCoNuT~\cite{lutellier2020coconut}, DLFix~\cite{icse20},
+CURE~\cite{cure-icse21}, and DEAR~\cite{icse22} extract features in
+the surrounding context (the method) to be fed into a DL model to
+learn the fixing. With this strategy of one model, {\em those
+  approaches do not help their models correctly learn the contexts
+  given that the code transformations for bug-fixing are known during
+  training and could be used to train the models for context
+  learning}. For example, during training, the bug-fixing change from
+line 8 to line 9 is known. This knowledge could help a model learn
+that the key contextual features would lie at the code at lines 6--7
+with \code{getIndexOf} and \code{getDataset}.
+
+
+%\underline{Fifth}, a recent trend shows that dedicating a separate
+%model for context learning can perform better than using a single
+%model~\cite{icse20}. DLFix~\cite{icse20} has two models: one for
+%context learning and another for transformation learning. It cascades
+%the first model to the second one in which the output of the model for
+%contexts is used as a weight for the transformation learning
+%one. Thus, DLFix~\cite{icse20} suffers two limitations: 1) it does not
+%capture well both directions of the mutual impact between two types of
+%learning to help each other, 2) it creates confounding inaccuracies as
+%explained.
+
 %
 %This cascading architecture creates a confounding effect from the
 %inaccuracy of the learning of the context to the learning of the
 %transformations.
-In Section~\ref{sec:overlap}, we will present our study and examples
-to illustrate this.
+In Section~\ref{sec:overlap}, we will present our study 
+to illustrate those points.
 
 %those limitations of the existing DL-based APR approaches.
 
@@ -179,14 +186,17 @@ to illustrate this.
 
 From the observations, our idea is that to improve APR~in {\em
   context-dependent fixes}, we need not only {\em better
-  transformation learning} (learning correct code changes), but
-also {\em better context learning} (learning the correct contextual
-features for a bug fix).
-%and {\em better code-transformation learning} (learning correct code
-%changes).
-{\tool} treats this as a dual-task learning between CCL and
-CTL. The impact is from both directions (explicitly modeled in {\tool}):
-CCL helps CTL learn better, which leads to CCL learn better, and so on,
+  transformation learning} (learning correct code changes), but also
+{\em better context learning} (learning the correct contextual
+features for a bug fix). We dedicate a separate model for context
+learning and leverage the code transformations for bug-fixing, which
+are known at the training time in order to improve context learning,
+leading to improve code-transformation learning as well.
+%
+Therefore, {\tool} treats this as a dual-task learning between Code
+Context Learning (CCL) and Code Transformation Learning (CTL). The
+impact is from both directions (explicitly modeled in {\tool}): CCL
+helps CTL learn better, which leads to CCL learn better, and so on,
 %both models learning better in its own task,
 leading to better APR.
 
@@ -254,9 +264,10 @@ modeled by the learning a linear combination of the input features
 from two models. Cross-stitch unit helps regularize both CCL and CTL
 by learning and enforcing shared representations via combining feature
 maps.
-%This joint training {\em propagates the mutual impact} of
-%context learning and transformation learning.
-{\em The use of cross-stitch unit also helps avoid confounding
-  inaccuracies} in the cascading architecture.
+This joint training {\em propagates the mutual impact} of
+context learning and transformation learning.
+%Tien removed this
+%{\em The use of cross-stitch unit also helps avoid confounding
+%  inaccuracies} in the cascading architecture.
 
 %and vice versa, to improve APR performance.

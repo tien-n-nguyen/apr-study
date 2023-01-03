@@ -376,22 +376,31 @@
 %Recent advances in deep learning (DL) have helped improve the
 %performance of the DL-based Automated Program Repair (APR) approaches.
 The bug-fixing code changes in Automated Program Repair (APR) often
-depend on the code context. Despite successes, the
-state-of-the-art Deep Learning (DL)-based APR approaches are still
-limited in {\em integrating context learning and code-transformation
-  learning}, leading to their ineffectiveness in fixing {\em
-  context-dependent bugs}. Moreover, in those approaches, the
-cascading architecture from a code context-learning model (CCL) to a
-code-transformation learning model (CTL) possibly leads to confounding
-inaccuracies.
-%
-In this work, we introduce {\bf \tool}, a context-aware dual-task
-learning APR model, that explores the duality of those two dedicated
-models to explicitly propagate the mutual impacts of CCL and CTL onto
-one another. Instead of cascading CCL $\rightarrow$ CTL, we train them
-simultaneously with soft-sharing parameters via a cross-stitch unit
-for explicit propagation of impacts to improve both tasks, leading
-to better APR accuracy.
+depend on the code context. Despite successes, the state-of-the-art
+Deep Learning (DL)-based APR approaches are still limited in {\em
+  integrating context learning and code-transformation learning},
+leading to their ineffectiveness in fixing {\em context-dependent
+  bugs}. {\em Learning the correct context for a bug will help
+  learning the correct code transformation for the bug fix, and vice
+  versa}. In this work, we introduce {\bf \tool}, a context-aware
+dual-task learning APR model, that explores the duality of the two
+dedicated models to explicitly propagate the mutual impacts of {\em
+  context learning} and {\em code transformation learning} onto one
+another. We train two models simultaneously with soft-sharing
+parameters via a cross-stitch unit for explicit propagation of impacts
+to improve both tasks, leading to better APR accuracy.
+
+
+%Moreover, in those approaches, the cascading architecture from a code
+%context-learning model (CCL) to a code-transformation learning model
+%(CTL) possibly leads to confounding inaccuracies.
+%In this work, we introduce {\bf \tool}, a context-aware dual-task
+%learning APR model, that explores the duality of those two dedicated
+%models to explicitly propagate the mutual impacts of CCL and CTL onto
+%one another. Instead of cascading CCL $\rightarrow$ CTL, we train them
+%simultaneously with soft-sharing parameters via a cross-stitch unit
+%for explicit propagation of impacts to improve both tasks, leading
+%to better APR accuracy.
 
 We conducted several experiments to evaluate {\tool} on three
 different datasets: Defects4J~\cite{defects4j} (395 bugs),

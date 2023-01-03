@@ -75,49 +75,77 @@ performance~\cite{icse20,lutellier2020coconut,cure-icse21}.
 %tufano2019learning,chakrabortycodit}.
 
 Despite recognizing the importance of contexts in learning the fixes,
-the existing DL-based APR approaches still have limitations in {\em
-  integrating context learning into code-change learning} in the APR
-process. \underline{First}, the DL-based APR approaches that learn
-from {\em bug-fixing patterns}~\cite{white2016deep,gupta2017deepfix}
-have focused on similar code and/or code changes with {\em little or
-  no consideration} on whether those code or fixing patterns appear in
-certain surrounding contexts. \underline{Second}, some DL-based APR
-approaches aim to learn {\em only the code changes} for fixes, e.g.,
-from a buggy subtree in an Abstract Syntax Tree (AST)
-%or a buggy statement
-to the correct subtree
-%or correct statement
-\cite{chakrabortycodit,see2017get}. In this treatment, too
-little or no context might not help a model learn the fixes that
-depend on a larger surrounding code.
-
-\underline{Third}, other
+the existing DL-based APR approaches over the time still have
+limitations in {\em integrating context learning into code-change
+  learning} in the APR process, leading to their ineffectiveness in
+fixing context-dependent bugs. First, the earlier DL-based approaches
+that learn from {\em bug-fixing
+  patterns}~\cite{white2016deep,gupta2017deepfix} have focused on
+similar code and/or code changes with {\em little or no consideration}
+on whether those code or fixing patterns appear in certain surrounding
+contexts. Second, in the same vein of taking too little or no context,
+other DL-based APR approaches aim to learn {\em only the code changes}
+for fixes, e.g., from a buggy subtree in an Abstract Syntax Tree (AST)
+to the correct subtree \cite{chakrabortycodit,see2017get}. Despite
+learning code transformation for bug-fixing, taking too little or no
+context does not help a model learn the fixes that depend on a larger
+surrounding code. In the third type of direction, some
 approaches~\cite{hata2018learning,tufano2019learning,tufano2018empirical}
-leveraged machine translation to take the entire buggy
-method and translate it to the correct one, while the fix might be
-only a small editing change to a single statement. Those
-translation-based approaches do not distinguish clearly the
-  boundary of the fixing change (e.g., to a buggy statement) and the
-surrounding context.
-%(e.g., the preceding or succeeding code).
-Due to the mixture of fixing changes and context, those translation
-models or transformers could pick the incorrect locations for fixing,
-because they might not learn what fixing changes are appropriate in
-some specific contexts~\cite{icse20}. \underline{Fourth}, other
-DL-based approaches have separate representations for
+take too large context. They leveraged machine translation to take the
+entire buggy method and translate it to the correct one, while the fix
+might be only a small editing change to a single statement. Those
+translation-based approaches do not distinguish clearly the boundary
+of the fixing change (e.g., to a buggy statement) and the surrounding
+context. Due to the mixture of fixing changes and context, those
+translation models or transformers could pick the incorrect locations
+for fixing, because they might not learn what fixing changes are
+appropriate in some specific contexts~\cite{icse20}. Finally, the
+recent DL-based approaches have separate representations for
 contexts~\cite{chen2018sequencer,cure-icse21,lutellier2020coconut}.
-They extract contextual features to be fed into a single DL
-model to learn to fix.
+They extract contextual features to be fed into a single DL model to
+learn to fix.
 
-\underline{Fifth}, dedicating a separate model for context learning
-has recently been shown to improve over the DL-based approaches with a
-single DL model~\cite{icse20}. In DLFix~\cite{icse20}, the first layer
-is a tree-based RNN model that learns the contexts of bug fixes (CCL)
-and its result is used as an additional weighting input for the second
-layer designed to learn the bug-fixing code transformations
-(CTL). However, the cascading from CCL $\rightarrow$ CTL
-creates a {\em confounding effect} from the inaccuracy of the learning
-of the context to that of the fix transformations.
+%Tien
+Determine the right context ...
+
+Noise in the context ...
+
+%\underline{First}, the DL-based APR approaches that learn from {\em
+%  bug-fixing patterns}~\cite{white2016deep,gupta2017deepfix} have
+%focused on similar code and/or code changes with {\em little or no
+%  consideration} on whether those code or fixing patterns appear in
+%certain surrounding contexts. \underline{Second}, some DL-based APR
+%approaches aim to learn {\em only the code changes} for fixes, e.g.,
+%from a buggy subtree in an Abstract Syntax Tree (AST) to the correct
+%subtree \cite{chakrabortycodit,see2017get}. In this treatment, too
+%little or no context might not help a model learn the fixes that
+%depend on a larger surrounding code.
+
+%\underline{Third}, other
+%approaches~\cite{hata2018learning,tufano2019learning,tufano2018empirical}
+%leveraged machine translation to take the entire buggy method and
+%translate it to the correct one, while the fix might be only a small
+%editing change to a single statement. Those translation-based
+%approaches do not distinguish clearly the boundary of the fixing
+%change (e.g., to a buggy statement) and the surrounding context.  Due
+%to the mixture of fixing changes and context, those translation models
+%or transformers could pick the incorrect locations for fixing, because
+%they might not learn what fixing changes are appropriate in some
+%specific contexts~\cite{icse20}. \underline{Fourth}, other DL-based
+%approaches have separate representations for
+%contexts~\cite{chen2018sequencer,cure-icse21,lutellier2020coconut}.
+%They extract contextual features to be fed into a single DL model to
+%learn to fix.
+
+%\underline{Fifth}, dedicating a separate model for context learning
+%has recently been shown to improve over the DL-based approaches with a
+%single DL model~\cite{icse20}. In DLFix~\cite{icse20}, the first layer
+%is a tree-based RNN model that learns the contexts of bug fixes (CCL)
+%and its result is used as an additional weighting input for the second
+%layer designed to learn the bug-fixing code transformations
+%(CTL). However, the cascading from CCL $\rightarrow$ CTL
+%creates a {\em confounding effect} from the inaccuracy of the learning
+%of the context to that of the fix transformations.
 
 
 

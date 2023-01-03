@@ -5,12 +5,12 @@
 
 %Detecting and fixing software defects is one of the most crucial
 %activities in software development.
-Several researchers have developed the approaches to automate the
+Researchers have developed the approaches to automate the
 bug-fixing task. The approaches that help
-developers automatically fix a software defect in a program is
+developers automatically fix a software defect is
 referred to as {\em automated program repair} (APR). The APR
 approaches can be broadly classified in the following categories
-according to their techniques:
+based on their techniques:
 %Researchers have proposed several approaches to help developers in
 %automatically identifying and fixing the defects in programs. Such
 %approaches are referred to as {\em automated program~repair}
@@ -57,7 +57,7 @@ In addition, other DL-based approaches implicitly learn the {\em
 to the surrounding {\em context} of the
 transformations~\cite{chen2018sequencer,icse20,cure-icse21,lutellier2020coconut}.
 Those approaches show that {\em learning bug-fixing changes might be
-  dependent on {\em code context}}.
+  dependent on {\em code context}}, and they 
 %For example, in C~code, if the preceding context contains \code{fopen}
 %as in \code{FILE *fd = fopen (fname, ``rb'');}, the succeeding
 %bug-fixing code is more likely to be \code{if (fd != null)} or
@@ -66,7 +66,8 @@ Those approaches show that {\em learning bug-fixing changes might be
 %the succeeding bug-fix is more likely to be \code{if (n} \code{!=}
 %\code{size)} or \code{if (n} \code{==} \code{size)}, rather than a
 %null check \code{if (n} \code{!=} \code{null)}.
-Those context-aware models have achieved better APR
+%Those context-aware models
+have achieved better APR
 performance~\cite{icse20,lutellier2020coconut,cure-icse21}.
 
 %For example, a {\em null check} is needed after a call to read data
@@ -87,8 +88,8 @@ contexts. Second, in the same vein of taking too little or no context,
 other DL-based APR approaches aim to learn {\em only the code changes}
 for fixes, e.g., from a buggy subtree in an Abstract Syntax Tree (AST)
 to the correct subtree \cite{chakrabortycodit,see2017get}. Despite
-learning code transformation for bug-fixing, taking too little or no
-context does not help a model learn the fixes that depend on a larger
+learning the code transformations for bug-fixing, taking no context
+does not help a model learn the fixes that depend on a larger
 surrounding code. In the third type of direction, some
 approaches~\cite{hata2018learning,tufano2019learning,tufano2018empirical}
 take too large context. They leveraged machine translation to take the
@@ -103,12 +104,10 @@ appropriate in some specific contexts~\cite{icse20}. Finally, the
 recent DL-based approaches have separate representations for
 contexts~\cite{chen2018sequencer,cure-icse21,lutellier2020coconut}.
 They extract contextual features to be fed into a single DL model to
-learn to fix.
+learn to fix. Determining the correct context is important to extract
+the right features to help a model learn the fixing change.
 
-%Tien
-Determine the right context ...
 
-Noise in the context ...
 
 %\underline{First}, the DL-based APR approaches that learn from {\em
 %  bug-fixing patterns}~\cite{white2016deep,gupta2017deepfix} have
@@ -211,42 +210,60 @@ Noise in the context ...
 %  null)} into \code{if (fd != null)}, the preceding context more
 %likely contains \code{fopen(...)} than \code{fread(...)}.}
 
-We introduce {\tool}, a context-aware, dual-task learning APR
-approach, that improves APR via the {\em simultaneous tasks of context
-  learning and code transformation learning}. Our idea is that to
-improve APR for context-dependent bugs, a model first needs to
-have better code-transformation learning for bug-fixing. It also
-needs better context learning, i.e., learning contextual features
-for a fix because incorrect context learning could make incorrect
-fixing for context-dependent bugs.
-%have {\em both better context learning} (learning the correct
-%contextual features for a bug fix) and {\em better code-transformation
-%  learning} (learning the correct modifications).
-For example, in C~code, if the preceding context contains \code{fopen}
-as in \code{FILE *fd = fopen (fname, ``rb'');}, the succeeding
-bug-fixing code is likely \code{if (fd} \code{!=} \code{null)} or
-\code{if (fd} \code{==} \code{null)}. However, if the preceding
-context contains \code{fread} as in \code{n} \code{=}
-\code{fread(buffer,1,size,fd);}, the succeeding fix is more likely
-\code{if (n} \code{!=} \code{size)} or \code{if (n} \code{==}
-\code{size)}, rather than a null check \code{if (n} \code{!=}
-\code{null)}. In contrast, if the fix is a change from \code{if (fd}
-\code{==} \code{null)} into \code{if (fd} \code{!=} \code{null)}, the
-key contextual features are more likely \code{fopen(...)} than
-\code{fread(...)}.
+%Tien
+In this work, we conjecture that to improve the learning of code
+transformation for bug-fixing, we dedicate a separate model for
+context learning. We introduce {\tool}, a context-aware, dual-task
+learning APR approach, that improves APR via the {\em simultaneous
+  tasks of context learning and code transformation learning}.
+Context learning and code-transformation learning are complementary to
+one another, leading to better APR. For example, if the
+preceding context contains \code{fopen} as in \code{FILE *fd = fopen
+  (fname, ``rb'');}, the succeeding bug-fixing code is likely \code{if
+  (fd} \code{!=} \code{null)} or \code{if (fd} \code{==}
+\code{null)}. However, if the preceding context contains \code{fread}
+as in \code{n} \code{=} \code{fread(buffer,1,size,fd);}, the
+succeeding fix is likely \code{if (n} \code{!=} \code{size)} or
+\code{if (n} \code{==} \code{size)}, rather than a null check \code{if
+  (n} \code{!=} \code{null)}. In contrast, if the fix is a change from
+\code{if (fd} \code{==} \code{null)} into \code{if (fd} \code{!=}
+\code{null)}, the key contextual features are more likely
+\code{fopen(...)} than \code{fread(...)}.
 
-We dedidate two models: CCL for context learning and CTL for
-code-transformation learning. We use a model called~{\em cross-stitch
-  unit}~\cite{misra2016cross} that connects CTL and CCL. The sharing
-of representations between CCL and CTL is modeled by~learning a linear
-combination of the input features from two models. Cross-stitch unit
-helps regularize CCL and CTL by learning and enforcing shared
-representations via combining feature maps. The rationale for
-dual-task learning is to propagate the impact of CCL and CTL and vice
-versa. {\em The impact from both directions helps both models learning
-  better in its own task (better CCL leads to better CTL, which leads
-  to better CCL, and so on), and finally leading to better generated
-  patches}, which are derived from the CTL's output.
+In {\tool}, we dedidate two models: CCL for context learning and CTL
+for code-transformation learning. We use a model called~{\em
+  cross-stitch unit}~\cite{misra2016cross} that connects CTL and
+CCL. The sharing of representations between CCL and CTL is modeled
+by~learning a linear combination of the input features from two
+models. Cross-stitch unit helps regularize CCL and CTL by learning and
+enforcing shared representations via combining feature maps. The
+rationale for dual-task learning is to propagate the impact of CCL and
+CTL and vice versa. {\em The impact from both directions helps both
+  models learning better in its own task (better CCL leads to better
+  CTL, which leads to better CCL, and so on), and finally leading to
+  better generated patches}, which are derived from the CTL's output.
+
+%Tien removed this
+%Our idea is that to improve APR for context-dependent bugs, a model
+%first needs to have better code-transformation learning for
+%bug-fixing. It also needs better context learning, i.e., learning
+%contextual features for a fix because incorrect context learning could
+%make incorrect fixing for context-dependent bugs.
+%%have {\em both better context learning} (learning the correct
+%%contextual features for a bug fix) and {\em better code-transformation
+%%  learning} (learning the correct modifications).
+%For example, in C~code, if the preceding context contains \code{fopen}
+%as in \code{FILE *fd = fopen (fname, ``rb'');}, the succeeding
+%bug-fixing code is likely \code{if (fd} \code{!=} \code{null)} or
+%\code{if (fd} \code{==} \code{null)}. However, if the preceding
+%context contains \code{fread} as in \code{n} \code{=}
+%\code{fread(buffer,1,size,fd);}, the succeeding fix is more likely
+%\code{if (n} \code{!=} \code{size)} or \code{if (n} \code{==}
+%\code{size)}, rather than a null check \code{if (n} \code{!=}
+%\code{null)}. In contrast, if the fix is a change from \code{if (fd}
+%\code{==} \code{null)} into \code{if (fd} \code{!=} \code{null)}, the
+%key contextual features are more likely \code{fopen(...)} than
+%\code{fread(...)}.
 
 %Tien
 %Talk about CTL is the main task
@@ -264,14 +281,16 @@ versa. {\em The impact from both directions helps both models learning
 %representations by combining feature maps.
 %This joint training enables the dual-task learning to propagate the
 %impact of CCL and CTL and vice~versa.
-With dual-task learning, {\tool} has two key departure points to
-address the limitations of the existing DL-based~APR approaches: {\em
-  1) Conceptually, it models both directions of the mutual impacts of
-  CCL and CTL, leading to improve APR; 2) Architecturally, it
-  overcomes the confounding effect in the existing cascading
-  architecture} (Section~\ref{ccl:sec}.2.1). The internal structure of CCL
-and CTL, and their connections in {\tool} are also more advanced than
-DLFix (Section~\ref{eval-methodology:sec}).
+
+%Tien removed this
+%With dual-task learning, {\tool} has two key departure points to
+%address the limitations of the existing DL-based~APR approaches: {\em
+%  1) Conceptually, it models both directions of the mutual impacts of
+%  CCL and CTL, leading to improve APR; 2) Architecturally, it
+%  overcomes the confounding effect in the existing cascading
+%  architecture} (Section~\ref{ccl:sec}.2.1). The internal structure of CCL
+%and CTL, and their connections in {\tool} are also more advanced than
+%DLFix (Section~\ref{eval-methodology:sec}).
 
 For training, the input of the CCL model is the Abstract Syntax Tree
 (AST) of a buggy method (as the context) and that of the fixed one.
@@ -298,21 +317,21 @@ models on Defects4J~\cite{defects4j} (395~bugs),
 Bugs.jar~\cite{saha2018bugs} (1,158 bugs), and
 BigFix~\cite{yioopsla19} (+4.9M methods and 1.8M buggy ones). Our
 results show that {\tool} fixes 12.1\% and 14.6\% more bugs than
-%the DL-based baseline,
 CURE~\cite{cure-icse21}, using only Top-1 patches, in Bugs.jar and
-BigFix, respectively.
-%Additionally,
-{\tool} fixed 89 and 45 unique bugs that CURE missed, while {\tool}
-missed only 50 and 27 bugs that~were fixed by CURE in Bugs.jar and
-BigFix. In Defects4J, {\tool} fixes 194.7\%, 40\%, 27.3\%, and 16.7\%
-more bugs than the baselines: SequenceR~\cite{chen2018sequencer},
-DLFix~\cite{icse20}, CoCoNuT~\cite{lutellier2020coconut},
-CURE~\cite{cure-icse21}, respectively.  
-%{\tool} fixed 8 more bugs than~the best DL model, CURE~\cite{cure-icse21}.
-Even with the cut-off setting in CURE (taking 10\% more time than
-{\tool}), CURE fixed 4 less bugs than {\tool}. {\tool} complements to
-the best baseline Recoder in Defects4J but improves over it in
-Bugs.jar and BigFix. The contributions of this paper include:
+BigFix, respectively. Moreover, {\tool} fixed 89 and 45 unique bugs
+that CURE missed, while {\tool} missed only 50 and 27 bugs that~were
+fixed by CURE in Bugs.jar and BigFix. In Defects4J, {\tool} fixes
+194.7\%, 40\%, 27.3\%, and 16.7\% more bugs than the baselines:
+SequenceR~\cite{chen2018sequencer}, DLFix~\cite{icse20},
+CoCoNuT~\cite{lutellier2020coconut}, CURE~\cite{cure-icse21},
+respectively.  {\tool} fixed 8 more bugs than~the best DL model,
+CURE~\cite{cure-icse21}.  Even with the cut-off setting in CURE
+(taking 10\% more time than {\tool}), CURE fixed 4 less bugs than
+{\tool}. {\tool} complements to the best baseline Recoder in Defects4J
+but improves over it in Bugs.jar and BigFix.
+
+The contributions of this paper include:
+
 %are listed as follows:
 
 %{\bf A. DL for APR:} {\tool} is the first DL APR that generates

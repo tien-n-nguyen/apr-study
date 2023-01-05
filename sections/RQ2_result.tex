@@ -18,8 +18,9 @@
 			\textbf{CoCoNuT}      & 12.1\% & 14.2\% & 16.5\% & 12.4\% & 13.5\% & 14.1\%\\
 			\textbf{CURE}         & 13.2\% & 14.9\% & 17.4\% & 13.0\% & 13.8\% & 14.5\%\\
                         \textbf{Recoder}         & 14.1\% & 16.1\% & 17.6\% & 14.0\% & 15.2\% & 15.9\%\\
+                        \textbf{DEAR}         & 15.1\% & 16.8\% & 18.5\% & 14.1\% & 16.3\% & 17.0\%\\
 			\hline
-			\textbf{\tool}        & \textbf{14.8\%} & \textbf{17.1\%} & \textbf{18.5\%} & \textbf{14.9\%} & \textbf{16.1\%} & \textbf{16.8\%}\\
+			\textbf{\tool}        & \textbf{15.8\%} & \textbf{18.1\%} & \textbf{19.5\%} & \textbf{14.9\%} & \textbf{17.1\%} & \textbf{18.8\%}\\
 			\hline
 		\end{tabular}
 		\label{RQ2_results}
@@ -30,7 +31,7 @@
 
 As seen in Table~\ref{RQ2_results}, {\tool} can auto-fix more bugs
 than any baseline in any metric on both large datasets.  Particularly,
-{\tool} can fix 14.8\% of 1,158 bugs in Bugs.jar and 14.9\% of 2,176
+{\tool} can fix 15.8\% of 1,158 bugs in Bugs.jar and 14.9\% of 2,176
 bugs in BigFix using only top-1 candidates.
 
 Compared with CURE, {\tool} fixed relatively 12.1\% and 14.6\% more
@@ -47,4 +48,5 @@ accuracy in Bugs.jar. With top-1 candidates, it fixed 48 more bugs
 performed better than Recoder in Bugs.jar than in Defects4J is that
 Recoder does not fix multi-hunk bugs and there is a higher percentage
 of multi-hunk/multi-statement bugs in Bugs.jar than Defects4J. The
-relative improvements in BigFix are similar to those in Bugs.jar.
+relative improvements for {\tool} over the baselines in BigFix are
+similar to those in Bugs.jar.

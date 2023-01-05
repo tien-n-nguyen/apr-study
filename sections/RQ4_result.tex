@@ -1,7 +1,8 @@
-\subsection{\bf RQ3. Impact of Dual-Task Learning on Performance}
+%\subsection{\bf RQ3. Impact of Dual-Task Learning on Performance}
+\subsection{\bf RQ3. Impact of Context Learning and Dual-Task Learning}
 \label{rq4:sec}
 
-
+\definecolor{mygray}{gray}{.9}
 \begin{table}[t]
   \caption{RQ3.Impact Analysis Results of Dual-Task Learning on Performance (running on BigFix Dataset).}
   \vspace{-6pt}
@@ -9,14 +10,18 @@
 	  \begin{center}
             \tabcolsep 3pt
 			\renewcommand{\arraystretch}{1}
-			\begin{tabular}{p{1cm}<{\centering}|p{3.2cm}<{\centering}|p{2cm}<{\centering}|p{1cm}<{\centering}}
+			\begin{tabular}{p{1.9cm}<{\centering}|p{1.9cm}<{\centering}|p{1.9cm}<{\centering}|p{1.9cm}<{\centering}}
 				\hline
-				Top-$K$ & \code{Transformation-only} & \code{Cascading} &  \tool \\			
+				Accuracy & Top-1 & Top-5 &  Top-10 \\			
 				\hline
-				Top-1   & 7.1\% & 11.7\% & 14.9\% \\ \hline
-				Top-5	& 8.9\% & 13.1\% & 16.1\% \\ \hline
-				Top-10	& 9.7\% & 14.3\% & 16.8\%\\ \hline
-			
+				DLFix   & 11.3\% & 11.8\% & 12.7\% \\ \hline
+				CoCoNuT	& 12.4\% & 13.5\% & 14.1\% \\ \hline
+				CURE	& 13.0\% & 13.8\% & 14.5\%\\ \hline
+                                Recoder & 14.0\% & 15.2\% & 15.9\%\\ \hline
+                                DEAR    & 14.1\% & 16.3\% & 17.0\%\\ \hline
+			        \cellcolor{mygray} Trans-only & \cellcolor{mygray} 7.1\% & \cellcolor{mygray} 8.9\% & \cellcolor{mygray} 9.7\% \\ \hline
+                                \cellcolor{mygray} Cascading & \cellcolor{mygray} 11.7\% & \cellcolor{mygray} 13.1\% & \cellcolor{mygray} 14.3\% \\ \hline
+                                \cellcolor{mygray} {\tool} & \cellcolor{mygray} 14.9\% & \cellcolor{mygray} 17.1\% & \cellcolor{mygray} 18.8\% \\ \hline
 				\hline
 			\end{tabular}
 			\label{fig:rq4_results}
@@ -24,21 +29,52 @@
 	}
 \end{table}
 
+%\begin{table}[t]
+%  \caption{RQ3.Impact Analysis Results of Dual-Task Learning on Performance (running on BigFix Dataset).}
+%  \vspace{-6pt}
+%	{\small
+%	  \begin{center}
+%            \tabcolsep 3pt
+%			\renewcommand{\arraystretch}{1}
+%			\begin{tabular}{p{1cm}<{\centering}|p{3.2cm}<{\centering}|p{2cm}<{\centering}|p{1cm}<{\centering}}
+%				\hline
+%				Top-$K$ & \code{Transformation-only} & \code{Cascading} &  \tool \\			
+%				\hline
+%				Top-1   & 7.1\% & 11.7\% & 14.9\% \\ \hline
+%				Top-5	& 8.9\% & 13.1\% & 16.1\% \\ \hline
+%				Top-10	& 9.7\% & 14.3\% & 16.8\%\\ \hline
+%			
+%				\hline
+%			\end{tabular}
+%			\label{fig:rq4_results}
+%		\end{center}
+%	}
+%\end{table}
+
 
 %Table~\ref{fig:rq4_results} shows the comparison among {\tool} and its variants.
 
 %{\bf 1. {\tool} and \code{Transformation-only}
 %  model}.
 
-\subsubsection{{\bf {\tool} and \code{Transformation-only}
-  model}}
+%\subsubsection{{\bf {\tool} and \code{Transformation-only} model}}
 
-In Table~\ref{fig:rq4_results}, the top-$K$ values of the
-\code{Transformation-only} model are 52.3\%, 44.7\% and 42.3\% lower
-than those of {\tool} in Top-1, Top-5, and Top-10 values,
-respectively. This result shows that {\em context learning from CCL}
-in a dual-task learning architecture contributes positively in
-{\tool}'s accuracy.
+\subsubsection{\bf Impact of Context Learning}
+
+As seen in Table~\ref{fig:rq4_results}, \code{Trans-only} model
+without context learning performs signficantly worse than all other
+models that integrate context learning. Comparing with {\tool}, the
+accuracy reduces: Top-$k$ values of \code{Trans-only} model are
+52.3\%, 44.7\% and 42.3\% lower than those of {\tool}. This result
+shows that {\em context learning from CCL} contributes positively in
+{\tool}.
+
+%In Table~\ref{fig:rq4_results}, the top-$K$ values of the
+%\code{Transformation-only} model are 52.3\%, 44.7\% and 42.3\% lower
+%than those of {\tool} in Top-1, Top-5, and Top-10 values,
+%respectively. This result shows that {\em context learning from CCL}
+%in a dual-task learning architecture contributes positively in
+%{\tool}'s accuracy.
 
 %In Table~\ref{fig:rq4_results}, the top-$K$ values of the
 %\code{Transformation-only} model are 52.3\%, 44.7\% and 42.3\% lower

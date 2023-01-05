@@ -2,7 +2,7 @@
 \label{eval-methodology:sec}
 
 \subsubsection{Datasets}
-We used three datasets that were used in the prior APR works:
+We used three datasets used in the prior works:
 Defects4J-v1.2~\cite{defects4j}, Bugs.jar~\cite{saha2018bugs}, and
 BigFix~\cite{yioopsla19}. Defects4J-v1.2 has 395 bugs from 6 Java
 projects. For each bug in a project, it has the faulty and fixed
@@ -73,14 +73,25 @@ context separately.
 %It uses ensemble learning on the combination of convolutional neural
 %networks and a context-aware machine translation.
 
-{\bf DLFix~\cite{icse20}:} DLFix has key differences with {\tool}.
-First, CCL and CTL are different. DLFix uses code summarization to
-collapse the subtrees, and uses the new trees with summarized nodes to
-train CCL. Second, in DLFix, {\em CCL cascadingly connects to CTL} in
-which the vector for the summarized node is used as a {\em weight}
-representing the impact from CCL to CTL. The weight vector is used in
-a cross-product with all the vectors of the nodes in the subtrees to
-train CTL.
+{\bf DLFix~\cite{icse20}:}
+%DLFix has key differences with {\tool}.  First, CCL and CTL are
+%different.
+DLFix uses code summarization to collapse the buggy subtrees, and uses the
+new trees with summarized nodes for code-transformation learning.
+%Second, in DLFix, {\em
+%  CCL cascadingly connects to CTL} in which
+The vector for the summarized node is used as a {\em weight}
+%representing the impact from CCL to CTL. The weight vector is used i
+n a cross-product with all the vectors of the nodes in the subtrees to
+train code-transformation model.
+
+{\bf DEAR~\cite{icse22}:} DEAR uses a two-tier, tree-based LSTM model
+that incorporates cycle training and uses a divide-and-conquer
+strategy to learn proper code transformations for fixing multiple
+statements in the suitable fixing context.
+%leverages DLFix to support multi-statement/ multiple-hunk bugs. For
+%comparison with the baselines supporting only single-statement bugs,
+%we downgrade DEAR by removing the hunk detection component.
 
 %In {\tool}, dual-task learning is used between CCL and CTL.
 
@@ -175,7 +186,8 @@ nodes (4, 5, 6); (6) The maximum depth $Q$ of children nodes (3, 4,
   Large Datasets.} The baselines include {\bf
   Sequen\-ceR~\cite{chen2018sequencer},
   CoCoNuT~\cite{lutellier2020coconut}, DLFix~\cite{icse20},
-  CURE~\cite{cure-icse21}}, {\bf Recoder~\cite{recoder-fse21}}, and
+  CURE~\cite{cure-icse21}}, {\bf Recoder~\cite{recoder-fse21},
+  DEAR~\cite{icse22}}, and
 
 {\bf CODIT~\cite{chakrabortycodit}:} is a DL-based APR approach
 using sequence-to-sequence machine translation with the
@@ -288,7 +300,6 @@ We used BigFix and the same process and setting in this~RQ.
 %eed to be tuned in both baselines are the same as the ones of \tool.
 
 
-{\bf RQ5. Evaluation on C/C++ Projects.}  To evaluate {\tool} on
-C/C++, we ran it on the C/C++ benchmark
-Codeflaws~\cite{tan2017codeflaws} with 3,902 bugs.  We used the same
-process and setting.
+{\bf RQ5. Evaluation on C/C++ code.} We ran {\tool} on the C/C++ benchmark
+Codeflaws~\cite{tan2017codeflaws} (3,902 bugs) with the same
+setting.

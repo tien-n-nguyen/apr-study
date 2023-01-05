@@ -69,6 +69,10 @@ accuracy reduces: Top-$k$ values of \code{Trans-only} model are
 shows that {\em context learning from CCL} contributes positively in
 {\tool}.
 
+Comparing the result from {\tool} with the other context-aware
+baseline models, we can see that {\em dedicating a separate model for
+context learning in {\tool} improves APR performance}.
+
 %In Table~\ref{fig:rq4_results}, the top-$K$ values of the
 %\code{Transformation-only} model are 52.3\%, 44.7\% and 42.3\% lower
 %than those of {\tool} in Top-1, Top-5, and Top-10 values,
@@ -98,13 +102,14 @@ shows that {\em context learning from CCL} contributes positively in
 %\vspace{3pt}
 %{\bf 2. {\tool} and the \code{Cascading} model}.
 
-\subsubsection{{\bf {\tool} and the \code{Cascading} model}}
+%\subsubsection{{\bf {\tool} and the \code{Cascading} model}}
+\subsubsection{\bf Impact of Dual-Task Learning}
 \label{ccl:sec}
 
 As seen in Table~\ref{fig:rq4_results}, the top-$K$ values of the
 \code{Cascading} model are 21.5\%, 18.6\%, and 14.9\% lower than those
 of {\tool} in Top-1, Top-5, and Top-10, respectively. This result
-shows that CCL $\rightarrow$ CTL is not as effective as dual-task
+shows that cascading CCL $\rightarrow$ CTL is not as effective as dual-task
 learning in {\tool}.
 %
 %the {\em cascading architecture between context learning (CCL) and
@@ -120,6 +125,27 @@ only {\bf 17} bugs that {\tool} missed.
 %That is, {\tool} fixed more than 3 times unique bugs that the
 %\code{Cascading} model missed than the unique bugs that were fixed by
 %the \code{Cascading} model but missed by {\tool}.
+
+To further evaluate the proposed context learning via dual-task
+mechanism, we  seek the answers for the following questions.
+
+{\em D.2.2. Can better bug-fixing from {\tool}'s dual-task
+  learning than the bug-fixing from the \code{Cascading} model be
+  partially attributed to better context learning? Can the worse bug-fixing in the \code{Cascading} model be partially due to its worse CCL?}
+
+
+To answer D.2.2., we analyzed {\bf 54} bugs that were fixed by
+{\tool} and missed by the \code{Cascading} model. Among them, we found
+{\bf 46} bugs in which {\em the output contexts of CCL in {\tool},
+  i.e., the fixed method ASTs, match with the fixed method ASTs
+  (contexts) in the oracle}. In contrast, we found only {\bf 18} bugs
+in which the output contexts of CCL in the \code{Cascading} model
+match with the fixed method ASTs.
+%
+This indicates that {\em 1) better APR is partially due to better
+  CCL in dual-task learning} and {\em 2) a source
+  of the inaccuracy in the \code{Cascading} model is the inaccuracy of
+  CCL} (i.e., {\bf the confounding effect of the inaccuracy of CCL to those of CTL and APR}).
 
 {\em D.2.1. Does the better context learning in a dual-task learning
   architecture in {\tool} than the context learning in the
@@ -156,23 +182,7 @@ contributed to fixing more bugs correctly.
 %       the correct context learning (thanks to {\tool}'s dual-task
 %       learning) leads to more correct bug fixing}}.
 
-{\em D.2.2. Can better bug-fixing from {\tool}'s dual-task
-  learning than the bug-fixing from the \code{Cascading} model be
-  partially attributed to better context learning? Can the worse bug-fixing in the \code{Cascading} model be partially due to its worse CCL?}
 
-
-To answer D.2.2., we analyzed {\bf 54} bugs that were fixed by
-{\tool} and missed by the \code{Cascading} model. Among them, we found
-{\bf 46} bugs in which {\em the output contexts of CCL in {\tool},
-  i.e., the fixed method ASTs, match with the fixed method ASTs
-  (contexts) in the oracle}. In contrast, we found only {\bf 18} bugs
-in which the output contexts of CCL in the \code{Cascading} model
-match with the fixed method ASTs.
-%
-This indicates that {\em 1) better APR is partially due to better
-  CCL in dual-task learning} and {\em 2) a source
-  of the inaccuracy in the \code{Cascading} model is the inaccuracy of
-  CCL} (i.e., {\bf the confounding effect of the inaccuracy of CCL to those of CTL and APR}).
 
 From D.1 and D.2: {\bf {\em the better APR of {\tool}
     comes~from dual-task learning,

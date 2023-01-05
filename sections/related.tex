@@ -119,8 +119,10 @@ transformer for APR. \cite{recoder-fse21} uses a syntax-guided edit
 decoder to generate bug-fixing edits rather than modified code.  The
 general-purpose syntactic neural
 model~\cite{yin-neubig-2017-syntactic} could be applied to APR to
-capture the target syntax.
-
+capture the target syntax. RewardRepair~\cite{monperrus-icse22} uses
+neural machine translation with a loss function based on program
+compilation and test execution information, rewarding the network to
+produce patches that compile.
   
 %on three datasets: Defects4J, Bugs.jar, and BigFix.
 

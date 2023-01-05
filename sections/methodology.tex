@@ -86,12 +86,16 @@ n a cross-product with all the vectors of the nodes in the subtrees to
 train code-transformation model.
 
 {\bf DEAR~\cite{icse22}:} DEAR uses a two-tier, tree-based LSTM model
-that incorporates cycle training and uses a divide-and-conquer
-strategy to learn proper code transformations for fixing multiple
-statements in the suitable fixing context.
+%that incorporates cycle training and uses a divide-and-conquer
+%strategy to learn proper code transformations
+for fixing multiple statements in the suitable fixing context.
 %leverages DLFix to support multi-statement/ multiple-hunk bugs. For
 %comparison with the baselines supporting only single-statement bugs,
 %we downgrade DEAR by removing the hunk detection component.
+
+{\bf RewardRepair~\cite{monperrus-icse22}}: uses machine translation
+with a loss function based on program compilation and test execution
+information.
 
 %In {\tool}, dual-task learning is used between CCL and CTL.
 

@@ -72,7 +72,7 @@ that CODIT missed and CODIT fixed 6 bugs that {\tool} missed. Both fixed the sam
 %it missed only 13 bugs that CODIT fixed.
 
 
-Fig.~\ref{example_codit} shows an example that was correctly fixed
+Figure~\ref{example_codit} shows an example that was correctly fixed
 by {\tool}, but missed by CODIT. CODIT fixed it into \code{else}
 \code{if(} \code{op)}. CODIT fixed via translation of the buggy AST
 sub-tree covering all the edited nodes, without considering the
@@ -145,7 +145,7 @@ that {\tool} missed.
 %missed, it missed only 4 bugs that Tufano'19 can fix. Both {\tool} and
 %Tufano'19 can fix the same 85 bugs in BigFix.
 
-Fig.~\ref{example_tufano19} shows an example that was fixed by
+Figure~\ref{example_tufano19} shows an example that was fixed by
 {\tool}, but missed by Tufano'19. Tufano'19 uses a {\em
   machine translation approach on the entire buggy method}
 \code{readFromMemory}.  Because {\em in training, the model did not
@@ -217,7 +217,7 @@ that SequenceR missed and SequenceR fixed only 7 bugs that
 %tools, while {\tool} fixed 50.9\% (164 bugs) that SequenceR missed,
 %it missed only 11.2\% (23 bugs) that SequenceR fixed.
 
-Fig.~\ref{example_3} shows an example that SequenceR missed, but was
+Figure~\ref{example_3} shows an example that SequenceR missed, but was
 fixed correctly by {\tool}. Despite considering the context, {\em
   SequenceR treats source code as a sequence of code tokens}, not
 well-suited for structural changes. The fix from line 6 into line 7
@@ -226,7 +226,7 @@ because the order of two operations \code{abs} and \code{\%} is
 reversed. In the buggy code, \code{abs} is executed first and then
 \code{\%} is next. In the correct code, \code{\%} is executed before
 \code{abs}.
-%As shown in Fig.~\ref{tree-change}, the structure of the
+%As shown in Figure~\ref{tree-change}, the structure of the
 %AST for the statement is changed to reflect the change in that
 %order.
 However, SequenceR considers the statement as the sequence of tokens,
@@ -287,7 +287,7 @@ public int getPartition(...) {
 %	\centering
 %	\includegraphics[width=3.1in]{graphs/example_3_v2.png}
 %        \vspace{-9pt}
-%	\caption{AST Structural Changes for the Fix in Fig.~\ref{example_3}}
+%	\caption{AST Structural Changes for the Fix in Figure~\ref{example_3}}
 %	\label{tree-change}
 %\end{figure}
 
@@ -301,7 +301,7 @@ missed.
 %number of bugs fixed by either tools in BigFix, 29.7\% of them (96)
 %were fixed by {\tool} and missed by CoCoNuT, while only 16.1\% of them (44) were fixed by CoCoNuT and missed by {\tool}.
 
-CoCoNuT did not fix correctly the code in Fig.~\ref{example_3}.~It
+CoCoNuT did not fix correctly the code in Figure~\ref{example_3}.~It
 fixed~line 6 into \code{return (} \code{Math.abs(} \code{keyTuple.}
 \code{hashCode} \code{());}. First, CoCoNuT represents source code by
 a sequence of tokens, which is {\em not well-suited for this
@@ -324,7 +324,7 @@ bugs that CURE missed and CURE fixed 27 bugs that {\tool} missed.
 %more than the ones that were fixed by CURE but missed by {\tool} (89
 %versus 50).
 
-CURE did not fix correctly the example in Fig.~\ref{example_3}. It
+CURE did not fix correctly the example in Figure~\ref{example_3}. It
 fixed~line 6 into \code{return (}\code{Math.abs(}
 \code{keyTuple.} \code{hashCode())} \code{/} \code{totalReducers);}.
 That is, it just replaced the operator \code{\%} with \code{/}.
@@ -350,7 +350,7 @@ missed.
 %were fixed by DLFix and missed by {\tool}.
 
 DLFix did not fix correctly the buggy code in
-Fig.~\ref{example_3}. It fixed~the line 6 into \code{return
+Figure~\ref{example_3}. It fixed~the line 6 into \code{return
   (}\code{Math.abs(} \code{keyTuple.} \code{hashCode())} \code{\%}
 \code{curIndex);}. Despite that DLFix has separate tree-based models
 (handling structural changes) for CCL and CTL,

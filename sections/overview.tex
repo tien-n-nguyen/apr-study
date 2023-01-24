@@ -7,12 +7,13 @@
 \subsection{Training Process}
 
 Figure~\ref{overview-training} shows the overview of our training
-process. If a method has multiple buggy statements, we treat one buggy
+process. We use a divide-and-conquer strategy for each buggy method:
+if a method has multiple buggy statements, we process one buggy
 statement at a time and its enclosing method, together with its
-respective fixed code as an input training instance.
+respective fixed code as a training instance.
 %The input of~this process is the source code of a buggy method and one
 %of its buggy statements, and the respective fixed source code.
-The output includes the trained CCL model and the trained CTL model.
+The output includes the trained CCL and trained CTL models.
 The training process has two main steps:
 
 \begin{figure}[t]
@@ -87,28 +88,30 @@ both models.
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=3.3in]{graphs/overview-predict-4.png}
+	\includegraphics[width=3.3in]{graphs/overview-predict-5.png}
 	\caption{{\tool}: Fixing Process}
         \vspace{-3pt}
 	\label{overview-fixing}
 \end{figure}
 
-Figure~\ref{overview-fixing} illustrates the prediction process, i.e.,
-the automated fixing process. A fault localization (FL) tool could be
-used to locate the buggy statements. We also use the hunk detection
-and expansion in DEAR~\cite{icse22} to locate a bug with
-multi-hunks/multi-statements. They will be the input for {\tool}.
+Figure~\ref{overview-fixing} illustrates the fixing process
+(prediction). A fault localization (FL) tool could be used to locate
+the buggy statements. We additionally use the hunk detection/expansion
+module in DEAR~\cite{icse22} to locate multi-hunks/multi-statements
+for a bug. Each method to be fixed will be the input and fed to Tree
+Representation Learning.
 %A common usage of our tool is that a developer could first use a fault
 %localization tool (FL) to detect the buggy statements that need to be
 %fixed. Then, the input for {\tool} is a buggy statement in the
 %enclosing method.
 %
-The fixing process shares the Tree-based Representation
-Learning step with the training.
+%The fixing process shares the Tree-based Representation
+%Learning step with the training.
 
 After that step, the vectorized buggy AST subtree (a node is replaced
-by a vector), is used as the input of the trained CTL model. The
-output of the trained CTL model is the fixed AST subtree, which is
+by a vector), is used as the input of the trained CTL model. That buggy
+AST subtree might have smaller buggy subtrees for buggy statements.
+The output of the trained CTL model is the fixed AST subtree, which is
 converted back into source code to form a candidate patch. We use a
 patch generation that uses beam search over the AST structure and
 works in accordance with the decoder as part of CTL to improve

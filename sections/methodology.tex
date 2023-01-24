@@ -85,11 +85,12 @@ The vector for the summarized node is used as a {\em weight}
 n a cross-product with all the vectors of the nodes in the subtrees to
 train code-transformation model.
 
-{\bf DEAR~\cite{icse22}:} DEAR uses a two-tier, tree-based LSTM model
+{\bf DEAR~\cite{icse22}:} uses a tree LSTM model
 %that incorporates cycle training and uses a divide-and-conquer
 %strategy to learn proper code transformations
-and extracts code features from contexts to fix multiple-statement and
-multiple-hunk bugs.
+and extracts code context features to fix multi-statement/multi-hunk
+bugs. We did not compare with Hercules~\cite{10.1109/ICSE.2019.00020} since
+DEAR was shown to outperform~it.
 
 %for fixing multiple statements in the suitable fixing context.
 %leverages DLFix to support multi-statement/ multiple-hunk bugs. For
@@ -132,6 +133,7 @@ It extracts code features from contexts to fix buggy statements.
 {\bf Recoder~\cite{recoder-fse21}}: uses a syntax-guided edit decoder
 to generate edits rather than modified code.
 %it was trained on Defects4J after multiple-statement bugs were filtered.
+
 
 
 For all approaches under study in this RQ, we used {\em BigFix as the

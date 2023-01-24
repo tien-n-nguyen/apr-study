@@ -34,12 +34,7 @@ than any baseline in any metric on both large datasets.  Particularly,
 {\tool} can fix 15.8\% of 1,158 bugs in Bugs.jar and 14.9\% of 2,176
 bugs in BigFix using only top-1 candidates.
 
-Compared with CURE, {\tool} fixed relatively 12.1\% and 14.6\% more
-bugs using only top-1 candidates, and 14.8\% and 16.7\% more bugs using
-the top-5 candidates,
-%, and 6.3\% and 15.9\% more bugs using the top-10 candidates,
-on Bugs.jar and BigFix, respectively. Note: these two datasets have no
-test cases, thus, there is no 5-hour limit validation and no CURE*.
+
 
 Compared with Recoder, {\tool} relatively improves 5\% in Top-1
 accuracy in Bugs.jar. With top-1 candidates, it fixed 48 more bugs
@@ -50,3 +45,17 @@ Recoder does not fix multi-hunk bugs and there is a higher percentage
 of multi-hunk/multi-statement bugs in Bugs.jar than Defects4J. The
 relative improvements for {\tool} over the baselines in BigFix are
 similar to those in Bugs.jar.
+
+Compared with DEAR, {\tool} relatively improves 4.7\% and
+5.7\% in Bugs.jar and BigFix. This could be attributed to context
+learning in {\tool}, rather than context feature extraction
+in DEAR.
+
+Compared with CURE, {\tool} fixed relatively 12.1\% and 14.6\% more
+bugs using only top-1 candidates, and 14.8\% and 16.7\% more bugs using
+the top-5 candidates,
+%, and 6.3\% and 15.9\% more bugs using the top-10 candidates,
+on Bugs.jar and BigFix, respectively. Note: these two datasets have no
+test cases, thus, there is no 5-hour limit validation and no CURE*.
+
+

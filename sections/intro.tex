@@ -79,8 +79,9 @@ Despite recognizing the importance of contexts in learning the fixes,
 the existing DL-based APR approaches over the time still have
 limitations in {\em integrating context learning into code-change
   learning} in the APR process, leading to their ineffectiveness in
-fixing context-dependent bugs. First, the earlier DL-based approaches
-that learn from {\em bug-fixing
+fixing context-dependent bugs.
+
+First, the earlier DL-based approaches that learn from {\em bug-fixing
   patterns}~\cite{white2016deep,gupta2017deepfix} have focused on
 similar code and/or code changes with {\em little or no consideration}
 on whether those code or fixing patterns appear in certain surrounding
@@ -101,11 +102,14 @@ context. Due to the mixture of fixing changes and context, those
 translation models or transformers could pick the incorrect locations
 for fixing, because they might not learn what fixing changes are
 appropriate in some specific contexts~\cite{icse20}. Finally, the
-recent DL-based approaches have separate representations for
-contexts~\cite{chen2018sequencer,cure-icse21,lutellier2020coconut}.
-They extract contextual features to be fed into a single DL model to
-learn to fix. Determining the correct context is important to extract
-the right features to help a model learn the fixing change. Those
+recent DL-based approaches
+%have separate representations for
+%contexts
+\cite{chen2018sequencer,cure-icse21,lutellier2020coconut} extract
+contextual features to be fed into a single DL model to learn to
+fix. However, they do not focus on context learning, despite that {\em
+  determining the correct context} is crucial to extract the right
+features to help a model learn fix context-dependent bugs. Those
 approaches do not help their models to correctly learn the contexts
 given that the code transformations for bug-fixing are known and could
 be used to train the models for context learning.
@@ -230,7 +234,8 @@ succeeding fix is likely \code{if (n} \code{!=} \code{size)} or
   (n} \code{!=} \code{null)}. In contrast, if the fix is a change from
 \code{if (fd} \code{==} \code{null)} into \code{if (fd} \code{!=}
 \code{null)}, the key contextual features are more likely
-\code{fopen(...)} than \code{fread(...)}.\\
+\code{fopen(...)} than \code{fread(...)}.
+
 \indent In {\tool}, we dedidate two models: CCL for context learning and CTL
 for code-transformation learning. We use a model called~{\em
   cross-stitch unit}~\cite{misra2016cross} that connects CTL and

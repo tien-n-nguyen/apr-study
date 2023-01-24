@@ -326,23 +326,33 @@ models on Defects4J~\cite{defects4j} (395~bugs),
 Bugs.jar~\cite{saha2018bugs} (1,158 bugs), and
 BigFix~\cite{yioopsla19} (+4.9M methods and 1.8M buggy ones).
 %
-In Defects4J, {\tool} fixes 194.7\%, 40\%, 27.3\%, 16.7\%, and 3.7\%
-more bugs than the baselines: SequenceR~\cite{chen2018sequencer},
-DLFix~\cite{icse20}, CoCoNuT~\cite{lutellier2020coconut},
-CURE~\cite{cure-icse21}, and DEAR~\cite{icse22}, respectively.
+Our results show that CDFix can fix 4.7\%–-143\% and 5.7\%–-263\% more
+bugs than the baseline models with only top-1 patches in Bugs.jar and
+BigFix, respectively. It fixes 26.4\% and 27.7\% of the total bugs
+that were missed by the best baseline. {\tool} auto-fixes 56 bugs,
+i.e., 194.7\% (37 bugs), 40\% (16), 27.3\% (12), 16.7\% (8), 3.7\%
+(2), 24.4\% (11), and 5.6\% (3) more bugs than
+SequenceR~\cite{chen2018sequencer}, DLFix~\cite{icse20},
+CoCoNuT~\cite{lutellier2020coconut}, CURE~\cite{cure-icse21},
+CURE*~\cite{cure-icse21}, RewardRepair~\cite{monperrus-icse22}, and
+DEAR~\cite{icse22} respectively.
+%In Defects4J, {\tool} fixes 194.7\%, 40\%, 27.3\%, 16.7\%, and 3.7\%
+%more bugs than the baselines: SequenceR~\cite{chen2018sequencer},
+%DLFix~\cite{icse20}, CoCoNuT~\cite{lutellier2020coconut},
+%CURE~\cite{cure-icse21}, and DEAR~\cite{icse22}, respectively.
 {\tool} complements to the best baseline Recoder in Defects4J but
-improves over it in Bugs.jar and BigFix.
-%
-{\tool} fixed 8 more bugs than the next-best DL model, CURE~\cite{cure-icse21}.
-%
-Even with the cut-off setting in CURE (taking 10\% more time than
-{\tool}), CURE fixed 4 less bugs than {\tool}.
-%
-In Bugs.jar and BigFix, {\tool} fixes 12.1\% and 14.6\% more bugs than
-CURE~\cite{cure-icse21}, using only Top-1 patches,
-respectively. Moreover, {\tool} fixed 89 and 45 unique bugs that CURE
-missed, while {\tool} missed only 50 and 27 bugs that~were fixed by
-CURE in Bugs.jar and BigFix.
+improves over it in Bugs.jar and BigFix. In Defects4J, since
+generating only single-hunk patches, Recoder did not fix 16
+multi-hunk/multi-statement bugs that {\tool} fixed.
+% {\tool} fixed 8 more bugs than the next-best DL model,
+%CURE~\cite{cure-icse21}.  Even with the cut-off setting in CURE
+%(taking 10\% more time than {\tool}), CURE fixed 4 less bugs than
+%{\tool}.  In Bugs.jar and BigFix, {\tool} fixes 12.1\% and 14.6\%
+%more bugs than CURE~\cite{cure-icse21}, using only Top-1 patches,
+%respectively. Moreover, {\tool} fixed 89 and 45 unique bugs that CURE
+%missed, while {\tool} missed only 50 and 27 bugs that~were fixed by
+%CURE in Bugs.jar and BigFix.
+
 
 The contributions of this paper include:
 

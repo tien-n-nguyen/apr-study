@@ -140,11 +140,11 @@ CURE*, RewardRepair, and DEAR, respectively.
 Compared to Recoder, {\tool} complements to Recoder.  Because
 generating only {\em single-hunk} patches, Recoder did not fix 9
 multi-hunk/multi-statement bugs that {\tool} fixed
-(Table~\ref{multi-tab-with-FL}). Recoder fixed 14 single-hunk bugs that {\tool} missed.
+(Table~\ref{multi-tab-with-FL}). Recoder fixed 15 single-hunk bugs that {\tool} missed.
 
 %With 5-hour limit, {\tool} fixed the most correct (44) and the most
 %plausible (77) patches. Moreover,
-Compared to CURE, with 5-hour limit, {\tool} fixed 9 bugs that CURE
+Compared to CURE, with 5-hour limit, {\tool} fixed 12 bugs that CURE
 missed; CURE fixed 3 bugs that {\tool} missed. {\tool} fixed
 2 bugs that all the baselines missed. For CURE* with the
 cut-off setting, {\tool} takes 10\% less time (0.5 hours less on
@@ -222,9 +222,9 @@ average), but fixed 10 more bugs than CURE*.
 			\hline
 			Bug Types & DLFix& CoCoNuT & CURE & Recoder & DEAR & {\tool}\\\hline
 			
-			One-Hunk One-Stmt  & 30 & 33 & 36 & 44 & 29 & 32\\
+			One-Hunk One-Stmt  & 30 & 33 & 36 & 47 & 29 & 32\\
 			One-Hunk Multi-Stmts  & 0 &0 & 0 & 6 & 4 & 4\\ 
-			Multi-Hunks One-Stmt  & 0 &0 & 0 & 3 & 11 &  11\\
+			Multi-Hunks One-Stmt  & 0 &0 & 0 & 0 & 11 &  11\\
 			Multi-Hunks Multi-Stmts  & 0 &0 & 0 & 0 & 1 & 1\\
 			Multi-Hunks Mix-Stmts  & 0 & 0 & 0 & 0 & 2 & 2\\\hline
 			Total & 30 & 33 & 36 & 53 & 47 & {\bf 50}\\

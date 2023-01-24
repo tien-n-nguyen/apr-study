@@ -39,17 +39,18 @@
 
 {\em {\tool} fixes more bugs than DL-based baselines} except
 Recoder. {\tool} auto-fixes 56 bugs, i.e., 194.7\% (37 bugs), 40\%
-(16), 27.3\% (12), 16.7\% (8), 3.7\% (2), 3.7\% (2) more bugs than
-SequenceR, DLFix, CoCoNuT, CURE, CURE*, and DEAR respectively
+(16), 27.3\% (12), 16.7\% (8), 3.7\% (2), 24.4\% (11), and 5.6\% (3) more bugs than
+SequenceR, DLFix, CoCoNuT, CURE, CURE*, RewardRepair, and DEAR respectively
 (Table~\ref{RQ1_defect4j}).
 
 Compared to Recoder, {\tool} complements to Recoder. Since generating
 only {\em single-hunk} patches, Recoder did not fix 13
-multi-hunk/multi-statement bugs that {\tool} fixed.  {\tool} can
-handle the multi-hunk/multi-statement bugs because we reuse the hunk
-detection and statement expansion in DEAR.
-%thanks to its ability to learn the transformations to multiple buggy
-%AST subtrees.
+multi-hunk/multi-statement bugs that {\tool} fixed (Table~\ref{multi:tab}).
+{\tool} can handle the multi-hunk/multi-statement bugs
+%because the hunk
+%detection and statement expansion were used as in DEAR.
+thanks to its ability to learn the transformations to multiple buggy
+AST subtrees in the same context.
 %
 Recoder fixed 28 single-hunk bugs that {\tool} missed. Recoder did not
 report the number of plausible patches.
@@ -114,7 +115,7 @@ validating those 5,000 candidates), CURE* fixed 2 bugs less than
 		%		Type 4: A bug with the fix involving multiple hunks and each hunk having multiple statements.
 		%		Type 5: A bug with the fix involving multiple hunks and some hunks having one statement and some others having multiple ones.
 		%		$GenFix_{T}$: Regarding each hunk has one buggy statement and the use test case to verify. If no solution found, we do the expansion and fix again.
-		\label{RQ1_1_1}
+		\label{multi:tab}
 	\end{center}
 	\vspace{-4pt} %-3pt
 \end{table}
@@ -133,9 +134,9 @@ i.e., 193.3\% (29 bugs), 46.7\% (14), 33.3\% (11), 22.2\% (8), and
 and CURE*, respectively.
 
 Compared to Recoder, {\tool} complements to Recoder.  Because
-generating only {\em single-hunk} patches, Recoder did not fix 11
-multi-hunk/multi-statement bugs that {\tool} fixed. Recoder fixed 14
-single-hunk bugs that {\tool} missed.
+generating only {\em single-hunk} patches, Recoder did not fix 9
+multi-hunk/multi-statement bugs that {\tool} fixed
+(Table~\ref{multi-tab-with-FL}). Recoder fixed 14 single-hunk bugs that {\tool} missed.
 
 %With 5-hour limit, {\tool} fixed the most correct (44) and the most
 %plausible (77) patches. Moreover,
@@ -225,7 +226,7 @@ average), but fixed 10 more bugs than CURE*.
 			Total & 30 & 33 & 36 & 53 & 47 & {\bf 50}\\
 			\hline
 		\end{tabular}
-		\label{RQ1_1}
+		\label{multi-tab-with-FL}
 	\end{center}
 \vspace{-3pt}
 \end{table}

@@ -17,7 +17,7 @@ shows that step.
 
 %As explained earlier in Figure~\ref{fig:dual-learning},
 The output of the cross-stitch unit connects to the attention layer,
-which in turn connects to the decoder. The decoder has four 
+which in turn connects to the decoder. The decoder has four main
 components (Figure~\ref{fig:patch-gen}): 1) the embedding component to
 encode the input at a time step into the subtree whose nodes are
 vectors; 2) the TreeCaps~\cite{bui2021treecaps} component to summarize
@@ -27,7 +27,7 @@ and produces a candidate patch (at the current time step $i$) in terms
 of the output AST subtree $T_i$ with the concrete source code for the
 AST nodes. While the embedding component, TreeCaps, and the output
 layer are straightforward, let us explain the adaptation in the beam
-search.
+search component.
 
 Beam search is an optimization strategy to keep only the top-$K$ best
 solution for the output subtree $T_i$ at a time step $i$ to help

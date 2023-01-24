@@ -94,14 +94,17 @@ both models.
 \end{figure}
 
 Figure~\ref{overview-fixing} illustrates the prediction process, i.e.,
-the automated fixing process. A common usage of our tool is that
-a developer could first use a fault localization tool
-(FL) to detect the buggy statements that need to be fixed. Then, the
-input for {\tool} is a buggy statement in the enclosing method.
-%Another usage is that a developer can pinpoint the buggy statement and
-%invoke {\tool} for an auto-fixing suggestion.
-The fixing process shares the first step of Tree-based Representation
-Learning with the training process.
+the automated fixing process. A fault localization (FL) tool could be
+used to locate the buggy statements. We also use the hunk detection
+and expansion in DEAR~\cite{icse22} to locate a bug with
+multi-hunks/multi-statements. They will be the input for {\tool}.
+%A common usage of our tool is that a developer could first use a fault
+%localization tool (FL) to detect the buggy statements that need to be
+%fixed. Then, the input for {\tool} is a buggy statement in the
+%enclosing method.
+%
+The fixing process shares the Tree-based Representation
+Learning step with the training.
 
 After that step, the vectorized buggy AST subtree (a node is replaced
 by a vector), is used as the input of the trained CTL model. The

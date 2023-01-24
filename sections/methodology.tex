@@ -88,7 +88,10 @@ train code-transformation model.
 {\bf DEAR~\cite{icse22}:} DEAR uses a two-tier, tree-based LSTM model
 %that incorporates cycle training and uses a divide-and-conquer
 %strategy to learn proper code transformations
-for fixing multiple statements in the suitable fixing context.
+and extracts code features from contexts to fix multiple-statement and
+multiple-hunk bugs.
+
+%for fixing multiple statements in the suitable fixing context.
 %leverages DLFix to support multi-statement/ multiple-hunk bugs. For
 %comparison with the baselines supporting only single-statement bugs,
 %we downgrade DEAR by removing the hunk detection component.
@@ -111,7 +114,7 @@ using GPT~\cite{radford2018improving}.
 %that parses, models, and
 %searches source code, as opposed to natural language text, to fix bugs
 %automatically.
-It treats context separately from buggy statements.
+It extracts code features from contexts to fix buggy statements.
 %as in CoCoNuT.
 
 %It does not have the dual learning for context learning and code
@@ -159,7 +162,7 @@ previous work~\cite{icse20,tbar-issta19}.
 %Tien
 For CURE~\cite{cure-icse21}, we also ran patch validation in its
 original setting (i.e., cut-off at top patches with no time
-limit). Using beam search (beam size of 1,000), CURE generates 1,000
+limit). Using beam search (beam size of 1,000), CURE generates 10,000
 candidates and the top 5,000 of them are validated.
 
 %I add the CURE* which is the same setting as their original paper. The
@@ -211,7 +214,9 @@ the validation step in their~approaches to run on Defects4J.
 However, we compared {\tool} with them in RQ2 since we ran the fixing
 step of all models without patch validation on Bugs.jar and
 BigFix. The reason is that the two datasets do not have test cases for
-patch validation.
+patch validation. This is also the reason we did not compare with
+RewardRepair~\cite{monperrus-icse22}, which requires test execution.
+
 %Tien
 %However, we compared {\tool} with them in RQ2 since the two datasets
 %Bugs.jar and BigFix do not have the test cases for validation. Thus,
@@ -235,11 +240,8 @@ patch validation.
 In RQ2, we did not use fault localization since Bugs.jar and
 BigFix do not have test cases. We used correct fixing locations.  In
 RQ2, we randomly splitted a dataset into
-80\%/10\%/10\% for training, tuning (validation), and testing,
+80\%/10\%/10\% for training, tuning, and testing,
 respectively.
-
-%We used the same splitting scheme for all models.
-
 {\em Parameter tuning:} the same as in RQ1.
 
 %We tuned the baselines with the
@@ -259,8 +261,10 @@ respectively.
 %{\tool},
 We compare {\tool} with two of its variants:
 
-(1) \textbf{Transformation-only model:} To evaluate the contribution of context learning, CCL (context)
-was removed from {\tool} and only CTL (transformation) was kept.
+(1) \textbf{Transformation-only model:}
+%To evaluate the contribution of context learning,
+CCL (context) was removed from {\tool} and only CTL (transformation)
+was kept.
 %The result helps evaluate the contribution of context learning.
 %the context learning model is removed from {\tool} and only the
 %bug-fixing code transformation learning model is kept. The result
@@ -272,6 +276,10 @@ was removed from {\tool} and only CTL (transformation) was kept.
 (2) \textbf{Cascading model:} We also built another variant model in
 which we removed the cross-stitch unit for dual-task learning. CCL is
 connected to CTL in a cascading manner.
+
+We also performed experiments to evaluate the impact of context
+learning. We used BigFix and the same process and setting.
+
 %in which the output of CCL corresponding to a buggy subtree is
 %directly used as the input of CTL.
 %Tien
@@ -297,7 +305,7 @@ connected to CTL in a cascading manner.
 
 %In this RQ, we used the same process and parameter tuning as in the
 %other RQs. We ran all models on BigFix.
-We used BigFix and the same process and setting in this~RQ.
+
 
 %the baselines and \tool in this RQ. Therefore, the parameters that
 %eed to be tuned in both baselines are the same as the ones of \tool.

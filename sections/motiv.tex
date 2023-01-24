@@ -73,17 +73,18 @@ variable is incorrect (\code{if (dataset != null)}). The result is
 returned only when the dataset (line 7) is empty. Thus, it was fixed
 into \code{if (dataset == null)}.
 
-From the above example, we make the following observations:
+%From the above example, we make the following observations:
 
 \noindent {\bf Observation 1 [Fixing Change Depends on Context]}.~As
 seen, the bug-fixing change from line 8 to line 9 (\code{if (dataset
   != null)} $\rightarrow$ \code{if (dataset == null)}) depends on the
-code context of the method \code{getLegendItems}. On line 7, the
-dataset is retrieved via \code{getDataset}. According to the logic of
-the program, \code{result} is returned when \code{dataset} is
-\code{null}.  Thus, the incorrect checking was fixed into line 9. That
-is, that fix \code{if (dataset == null)} (rather than \code{if
-  (dataset == 0)}) makes sense in the context of this method.
+code context.
+%of the method \code{getLegendItems}.
+On line 7, the dataset is retrieved via \code{getDataset}. According
+to the logic of the program, \code{result} is returned when
+\code{dataset} is \code{null}.  Thus, the incorrect checking was fixed
+into line 9. That is, that fix \code{if (dataset == null)} (rather
+than \code{if (dataset == 0)}) makes sense in the context.
 
 %consisting of the preceding code (\code{getDataset},
 %\code{getIndexOf}, \code{LegendItemCollection}, etc.), and the
@@ -143,7 +144,7 @@ the legends is not crucial for the fix regarding the dataset at line
 %help better fix a bug. They separately consider the surrounding code
 %as the context (e.g., lines 2--7, lines 10--15).
 
-Fourth, some other DL-based approaches perform feature engineering for
+Fourth, some other DL-based approaches extract features for
 contexts~\cite{chen2018sequencer,cure-icse21,lutellier2020coconut,icse20,icse22}.
 SequenceR~\cite{chen2018sequencer},
 CoCoNuT~\cite{lutellier2020coconut}, DLFix~\cite{icse20},

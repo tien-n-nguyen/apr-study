@@ -217,8 +217,8 @@ be used to train the models for context learning.
 %Tien
 In this work, we conjecture that to improve the learning of code
 transformation for bug-fixing, we {\em dedicate a separate model for
-implicit context learning}, rather than explicit feature engineering
-for contexts as in the above approaches.
+  context learning}, rather than extract contextual features as in the
+above approaches.
 %
 We introduce {\tool}, a context-aware, dual-task learning APR
 approach, that improves APR via the {\em simultaneous tasks of context
@@ -232,7 +232,9 @@ preceding context contains \code{fread} as in \code{n} \code{=}
 \code{fread(buffer,1,size,fd);}, the succeeding fix is likely \code{if
   (n} \code{!=} \code{size)} or \code{if (n} \code{==} \code{size)},
 rather than a null check \code{if (n} \code{!=} \code{null)}. In
-contrast, if the fix is a change from \code{if (fd} \code{==}
+contrast, because the {\em fixing code transformations are always known at
+  training}, we leverage them for better context learning. For
+example, if the fix is a change from \code{if (fd} \code{==}
 \code{null)} into \code{if (fd} \code{!=} \code{null)}, the key
 contextual features are more likely \code{fopen(...)} than
 \code{fread(...)}.
@@ -300,7 +302,7 @@ CTL and vice versa. {\em The impact from both directions helps both
 %DLFix (Section~\ref{eval-methodology:sec}).
 
 For training, the input of the CCL model is the Abstract Syntax Tree
-(AST) of a buggy method (as the context) and that of the fixed one.
+(AST) of a buggy method and that of the fixed one.
 The input of the CTL model is the AST subtree of each of its buggy
 statements, and that of the fixed statement. For
 auto-fixing, a fault localization tool is used to identify the buggy

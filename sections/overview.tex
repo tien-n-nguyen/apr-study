@@ -38,11 +38,15 @@ AST for the method and the AST subtree for the buggy statement in
 which {\em each node is replaced by its embedding vector}.
 
 To build the context, we leverage the known buggy statement $s$ by
-collecting the AST nodes that have {\em data and control dependencies
-  with $s$}. We then take the subtree that covers all
-those nodes and use it as the context
-(Figure~\ref{overview-training}). This subtree $T_b^{M}$ is used as
-the input for the Code Context Learning model (CCL) in the later step.
+collecting the AST nodes having {\em data and control dependencies
+  with $s$}. Our rationale is that the nodes having such dependencies
+with $s$ provide the context for the bug fix.
+%
+We then take the subtree that covers all those nodes and use it as the
+context (Figure~\ref{overview-training}). This subtree $T_b^{M}$ is
+used as the input for CCL in the later step.
+%Code Context Learning model (CCL) in the
+%later step.
 
 For code-transformation learning, we use the AST subtree $T_b^{S}$ for
 the buggy statement with the embedding vectors as the input for the
@@ -76,13 +80,14 @@ train CCL and CTL simultaneously (Section~\ref{sec: dual-learning}).
 %with soft-sharing the parameters to exploit this duality.
 Joint training is aimed to learn the shared representations between
 CCL amd CTL in terms of a linear combination of the input features in
-both models.  The output includes the trained CCL and CTL models.
+both models.
+%The output includes the trained CCL and CTL models.
 
 \subsection{Prediction Process}
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=3.4in]{graphs/overview-predict-4.png}
+	\includegraphics[width=3.3in]{graphs/overview-predict-4.png}
 	\caption{{\tool}: Fixing Process}
         \vspace{-3pt}
 	\label{overview-fixing}

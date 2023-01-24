@@ -102,13 +102,11 @@ context. Due to the mixture of fixing changes and context, those
 translation models or transformers could pick the incorrect locations
 for fixing, because they might not learn what fixing changes are
 appropriate in some specific contexts~\cite{icse20}. Finally, the
-recent DL-based approaches
-%have separate representations for
-%contexts
-\cite{chen2018sequencer,cure-icse21,lutellier2020coconut} extract
-contextual features to be fed into a single DL model to learn to
-fix. However, they do not focus on context learning, despite that {\em
-  determining the correct context} is crucial to extract the right
+recent DL-based
+approaches~\cite{chen2018sequencer,cure-icse21,lutellier2020coconut,icse22}
+extract contextual features to be fed into a single DL model to learn
+to fix. However, they do not focus on context learning, despite that
+{\em determining the correct context} is crucial to extract the right
 features to help a model learn fix context-dependent bugs. Those
 approaches do not help their models to correctly learn the contexts
 given that the code transformations for bug-fixing are known and could
@@ -218,23 +216,26 @@ be used to train the models for context learning.
 
 %Tien
 In this work, we conjecture that to improve the learning of code
-transformation for bug-fixing, we dedicate a separate model for
-context learning. We introduce {\tool}, a context-aware, dual-task
-learning APR approach, that improves APR via the {\em simultaneous
-  tasks of context learning and code transformation learning}.
-Context learning and code-transformation learning are complementary to
-one another, leading to better APR. For example, if the
-preceding context contains \code{fopen} as in \code{FILE *fd = fopen
-  (fname, ``rb'');}, the succeeding bug-fixing code is likely \code{if
-  (fd} \code{!=} \code{null)} or \code{if (fd} \code{==}
-\code{null)}. However, if the preceding context contains \code{fread}
-as in \code{n} \code{=} \code{fread(buffer,1,size,fd);}, the
-succeeding fix is likely \code{if (n} \code{!=} \code{size)} or
-\code{if (n} \code{==} \code{size)}, rather than a null check \code{if
-  (n} \code{!=} \code{null)}. In contrast, if the fix is a change from
-\code{if (fd} \code{==} \code{null)} into \code{if (fd} \code{!=}
-\code{null)}, the key contextual features are more likely
-\code{fopen(...)} than \code{fread(...)}.
+transformation for bug-fixing, we {\em dedicate a separate model for
+implicit context learning}, rather than explicit feature engineering
+for contexts as in the above approaches.
+%
+We introduce {\tool}, a context-aware, dual-task learning APR
+approach, that improves APR via the {\em simultaneous tasks of context
+  learning and code transformation learning}.  Context learning and
+code-transformation learning are complementary to one another, leading
+to better APR. For example, if the preceding context contains
+\code{fopen} as in \code{FILE *fd = fopen (fname, ``rb'');}, the
+succeeding bug-fixing code is likely \code{if (fd} \code{!=}
+\code{null)} or \code{if (fd} \code{==} \code{null)}. However, if the
+preceding context contains \code{fread} as in \code{n} \code{=}
+\code{fread(buffer,1,size,fd);}, the succeeding fix is likely \code{if
+  (n} \code{!=} \code{size)} or \code{if (n} \code{==} \code{size)},
+rather than a null check \code{if (n} \code{!=} \code{null)}. In
+contrast, if the fix is a change from \code{if (fd} \code{==}
+\code{null)} into \code{if (fd} \code{!=} \code{null)}, the key
+contextual features are more likely \code{fopen(...)} than
+\code{fread(...)}.
 
 \indent In {\tool}, we dedidate two models: CCL for context learning and CTL
 for code-transformation learning. We use a model called~{\em
@@ -321,21 +322,25 @@ efficiency.
 We conducted experiments to compare {\tool} with the DL-based APR
 models on Defects4J~\cite{defects4j} (395~bugs),
 Bugs.jar~\cite{saha2018bugs} (1,158 bugs), and
-BigFix~\cite{yioopsla19} (+4.9M methods and 1.8M buggy ones). Our
-results show that {\tool} fixes 12.1\% and 14.6\% more bugs than
-CURE~\cite{cure-icse21}, using only Top-1 patches, in Bugs.jar and
-BigFix, respectively. Moreover, {\tool} fixed 89 and 45 unique bugs
-that CURE missed, while {\tool} missed only 50 and 27 bugs that~were
-fixed by CURE in Bugs.jar and BigFix. In Defects4J, {\tool} fixes
-194.7\%, 40\%, 27.3\%, and 16.7\% more bugs than the baselines:
-SequenceR~\cite{chen2018sequencer}, DEAR~\cite{icse22},
-%DLFix~\cite{icse20},
-CoCoNuT~\cite{lutellier2020coconut}, CURE~\cite{cure-icse21},
-respectively.  {\tool} fixed 8 more bugs than~the best DL model,
-CURE~\cite{cure-icse21}.  Even with the cut-off setting in CURE
-(taking 10\% more time than {\tool}), CURE fixed 4 less bugs than
-{\tool}. {\tool} complements to the best baseline Recoder in Defects4J
-but improves over it in Bugs.jar and BigFix.
+BigFix~\cite{yioopsla19} (+4.9M methods and 1.8M buggy ones).
+%
+In Defects4J, {\tool} fixes 194.7\%, 40\%, 27.3\%, 16.7\%, and 3.7\%
+more bugs than the baselines: SequenceR~\cite{chen2018sequencer},
+DLFix~\cite{icse20}, CoCoNuT~\cite{lutellier2020coconut},
+CURE~\cite{cure-icse21}, and DEAR~\cite{icse22}, respectively.
+{\tool} complements to the best baseline Recoder in Defects4J but
+improves over it in Bugs.jar and BigFix.
+%
+{\tool} fixed 8 more bugs than the next-best DL model, CURE~\cite{cure-icse21}.
+%
+Even with the cut-off setting in CURE (taking 10\% more time than
+{\tool}), CURE fixed 4 less bugs than {\tool}.
+%
+In Bugs.jar and BigFix, {\tool} fixes 12.1\% and 14.6\% more bugs than
+CURE~\cite{cure-icse21}, using only Top-1 patches,
+respectively. Moreover, {\tool} fixed 89 and 45 unique bugs that CURE
+missed, while {\tool} missed only 50 and 27 bugs that~were fixed by
+CURE in Bugs.jar and BigFix.
 
 The contributions of this paper include:
 
@@ -355,10 +360,11 @@ The contributions of this paper include:
 1) {\tool}: Leveraging dual-task learning to model mutual impacts of
 CCL and CTL in both directions, leading to better APR.
 
-%ii) avoid confounding inaccuracies in CCL $\rightarrow$ CTL.
+%2) Adapting/Modifying the cross-stitch unit for dual-task
+%learning to work with AST representations in source code.
 
-2) Adapting/Modifying the cross-stitch unit for dual-task
-learning to work with AST representations in source code.
+2) A demonstration that better context learning leads to better code
+transformation learning for bug fixes, and vice versa.
 
 %3) A novel {\bf tree-oriented beam search} for candidate generation.
 

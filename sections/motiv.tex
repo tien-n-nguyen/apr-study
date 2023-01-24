@@ -28,12 +28,12 @@ public LegendItemCollection getLegendItems() {
   if (this.plot == null) {
     return result;
   }
-  int index = this.plot.getIndexOf(this);
-  CategoryDataset dataset = this.plot.getDataset(index);
+  (*@{\fbox{int index = this.plot.getIndexOf(this);}@*)
+  (*@{\fbox{CategoryDataset dataset = this.plot.getDataset(index);}@*)
   (*@{\color{red}{- if (dataset != null) {}@*)
   (*@{\color{cyan}{+ if (dataset == null) {}@*)
       return result;
-  int seriesCount = dataset.getRowCount();
+  (*@{\fbox{int seriesCount = dataset.getRowCount();}@*)
   // update result ...
   return result;
 }
@@ -92,12 +92,13 @@ is, that fix \code{if (dataset == null)} (rather than \code{if
 
 \vspace{2pt}
 \noindent {\bf Observation 2 [Learning Key Contextual Features Depends
-    on Fixing Change]}. Let us consider the entire method as a
-context. Because the change is (\code{if (dataset} \code{!=}
-\code{null)} $\rightarrow$ \code{if (dataset} \code{==} \code{null)}),
-the key contextual features are likely the statements at lines 6--7
-with \code{getIndexOf} and \code{get\-Dataset}, rather than the other
-statements, e.g., at lines 2--5.
+    on Fixing Change]}.
+%Let us consider the entire method as a context.
+Because the change is (\code{if (dataset} \code{!=} \code{null)}
+$\rightarrow$ \code{if (dataset} \code{==} \code{null)}), the key
+contextual features in the surrounding code are likely the statements
+at lines 6--7, 11 with \code{getIndexOf} and \code{get\-Dataset}, rather
+than the other statements, e.g., at lines 2--5.
 
 %\code{this.plot == null} (line 3) or \code{return result;} (line 4).
 
@@ -142,21 +143,20 @@ the legends is not crucial for the fix regarding the dataset at line
 %help better fix a bug. They separately consider the surrounding code
 %as the context (e.g., lines 2--7, lines 10--15).
 
-Fourth, some other DL-based approaches have separate representations
-for
-contexts~\cite{chen2018sequencer,cure-icse21,lutellier2020coconut}.
+Fourth, some other DL-based approaches perform feature engineering for
+contexts~\cite{chen2018sequencer,cure-icse21,lutellier2020coconut,icse20,icse22}.
 SequenceR~\cite{chen2018sequencer},
 CoCoNuT~\cite{lutellier2020coconut}, DLFix~\cite{icse20},
 CURE~\cite{cure-icse21}, and DEAR~\cite{icse22} extract features in
-the surrounding context (the method) to be fed into a DL model to
-learn the fixing. With this strategy of one model, {\em those
-  approaches do not help their models correctly learn the contexts
-  given that the code transformations for bug-fixing are known during
-  training and could be used to train the models for context
-  learning}. For example, during training, the bug-fixing change from
-line 8 to line 9 is known. This knowledge could help a model learn
-that the key contextual features would lie at the code at lines 6--7
-with \code{getIndexOf} and \code{getDataset}.
+the code in the entire method to be fed into a DL model to
+learn the fixing. With this strategy, {\em those approaches do not
+  help their models correctly learn the contexts. Importantly, the code
+  transformations for bug-fixing are known during training and could
+  be used to train a model for context learning}. For example,
+during training, the bug-fixing change from line 8 to line 9 is
+known. This knowledge could help a model learn that the key contextual
+features would lie at the code at lines 6--7, 11 with \code{getIndexOf},
+\code{getDataset}, and/or \code{getRowCount}.
 
 
 %\underline{Fifth}, a recent trend shows that dedicating a separate
@@ -184,15 +184,20 @@ to illustrate those points.
 
 %To address the above issue with the cascading architecture,
 
-From the observations, our idea is that to improve APR~in {\em
+From the observations, our philosophy is that to improve APR~in {\em
   context-dependent fixes}, we need not only {\em better
   transformation learning} (learning correct code changes), but also
 {\em better context learning} (learning the correct contextual
-features for a bug fix). We dedicate a separate model for context
-learning and leverage the code transformations for bug-fixing, which
-are known at the training time in order to improve context learning,
+features for a bug fix).
+
+In {\tool}, we have two key ideas.
+
+{\bf (1)} We dedicate a separate model for context learning;
+
+{\bf (2)} We leverage the bug-fixing code transformations, which
+are known at the training time to improve context learning,
 leading to improve code-transformation learning as well.
-%
+
 Therefore, {\tool} treats this as a dual-task learning between Code
 Context Learning (CCL) and Code Transformation Learning (CTL). The
 impact is from both directions (explicitly modeled in {\tool}): CCL
@@ -230,7 +235,7 @@ leading to better APR.
 %other. The learning of the contexts can benefit the learning of
 %bug-fixing code transformations and vice versa.
 We refer to this relation as {\em duality}, which can provide useful
-constraints for {\tool} to learn to fix {\em context-dependent
+connections to learn to fix {\em context-dependent
   bugs}.
 %Tien
 %We conjecture that the join training of the two models can
@@ -247,9 +252,9 @@ constraints for {\tool} to learn to fix {\em context-dependent
 %becoming \code{(dataset == null)}, it is likely to have an assignment
 %\code{dataset = ...;} in the context preceding \code{(dataset !=
 %  null)}.
-The join-training in the dual-task learning makes both models learn
+The join-training in the dual-task learning makes CCL and CTL learn
 the impact/connections between the correct features in the context
-(e.g., the lines 6--7 with \code{getIndexOf} and \code{getDataset})
+(e.g., lines 6--7,11 with \code{getIndexOf} and \code{getDataset})
 and the correct code changes (line 8 to line 9). Thus, we
 joinly train CTL for context learning and CCL for transformation
 learning to help both models make those connections, leading to better
@@ -265,7 +270,7 @@ from two models. Cross-stitch unit helps regularize both CCL and CTL
 by learning and enforcing shared representations via combining feature
 maps.
 This joint training {\em propagates the mutual impact} of
-context learning and transformation learning.
+CCL's context learning and CTL's transformation learning.
 %Tien removed this
 %{\em The use of cross-stitch unit also helps avoid confounding
 %  inaccuracies} in the cascading architecture.

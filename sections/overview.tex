@@ -37,9 +37,10 @@ AST when we flatten the AST into a sequence. After this, we obtain the
 AST for the method and the AST subtree for the buggy statement in
 which {\em each node is replaced by its embedding vector}.
 
-To build the context, we first collect the AST nodes that have {\em
-  data and control dependencies with the buggy statement}. We then
-take the subtree that covers all those nodes and use it as the context
+To build the context, we leverage the known buggy statement $s$ by
+collecting the AST nodes that have {\em data and control dependencies
+  with $s$}. We then take the subtree that covers all
+those nodes and use it as the context
 (Figure~\ref{overview-training}). This subtree $T_b^{M}$ is used as
 the input for the Code Context Learning model (CCL) in the later step.
 

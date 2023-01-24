@@ -1,16 +1,16 @@
 \section{Patch Generation}
 \label{sec:patch-gen}
 
-Fig.~\ref{overview-fixing} outlines the fixing process. While the
+Figure~\ref{overview-fixing} outlines the fixing process. While the
 steps of parsing and tree-based representation learning are the same
 as in~train\-ing, the step of applying the trained CCL and CTL to
-produce the candidate patches is different. Fig.~\ref{fig:patch-gen}
+produce the candidate patches is different. Figure~\ref{fig:patch-gen}
 shows that step.
 
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=2.9in]{graphs/beam-search.png}
-        \vspace{-3pt}
+        \vspace{-10pt}
 	\caption{Patch Generation via Tree-Structured Beam Search}
 	\label{fig:patch-gen}
 \end{figure}
@@ -18,7 +18,7 @@ shows that step.
 %As explained earlier in Figure~\ref{fig:dual-learning},
 The output of the cross-stitch unit connects to the attention layer,
 which in turn connects to the decoder. The decoder has four main
-components (Fig.~\ref{fig:patch-gen}): 1) the embedding component to
+components (Figure~\ref{fig:patch-gen}): 1) the embedding component to
 encode the input at a time step into the subtree whose nodes are
 vectors; 2) the TreeCaps~\cite{bui2021treecaps} component to summarize
 the vectors in a subtree into a vector; 3) the output layer; and 4)
@@ -34,8 +34,8 @@ solution for the output subtree $T_i$ at a time step $i$ to help
 reduce the search space. We need to use a beam search
 strategy because at each node when we convert a vector back to a code
 token, we might have multiple candidate tokens for each node. For
-example, in Fig.~\ref{fig:patch-gen}, we might have multiple
-candidate code tokens for the nodes $N_1$, $N_2$, and $N_3$.
+example, in Figure~\ref{fig:patch-gen}, we might have multiple
+candidates for $N_1$, $N_2$, and $N_3$.
 %Thus, we might face the combinatorial explosion when considering a
 %potential large number of nodes in the output subtree $T_i$ at each
 %time step $i$.
@@ -43,7 +43,7 @@ candidate code tokens for the nodes $N_1$, $N_2$, and $N_3$.
 Because the beam search component aims to produce the subtree
 in which some of its nodes will be used in the tree-based convolutional
 window as the input of the decoder at the next time step $i+1$
-(Fig.~\ref{fig:patch-gen}), it must work in accordance with 
+(Figure~\ref{fig:patch-gen}), it must work in accordance with 
 TreeCaps. TreeCaps computes the vector from bottom up (i.e.,
 the vectors for children nodes are computed before the one for their
 parent node). Therefore, our beam search component considers the order

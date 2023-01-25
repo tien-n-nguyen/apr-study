@@ -3,21 +3,26 @@
 
 
 %{\tool} still has the following limitations.
-First, {\tool} does not determine the faulty statements to be fixed.
-%As with some existing work~\cite{cure-icse21,lutellier2020coconut},
-A common usage of {\tool} is that one uses a fault localization tool
-to detect the faulty statements or (s)he can pinpoint the faulty one
-and invoke {\tool} for auto-fixing. Second, it cannot produce a fix
-with an arbitrarily large size because its CTL model does not learn
-well large tree-structured changes. Third, it cannot fix a bug with
-only insertions of new statements, and it does not work well with a
-fix with only deletions.
+
+%First, {\tool} does not determine the faulty statements to be fixed.
+%A common usage of {\tool} is that one uses a fault localization tool
+%to detect the faulty statements or (s)he can pinpoint the faulty one
+%and invoke {\tool} for auto-fixing. Second,
+{\tool} cannot produce a fix with an arbitrarily large size because
+its CTL model does not learn well large tree-structured
+changes. Second, it cannot fix a bug with only insertions of new
+statements, and it does not work well with a fix with only deletions.
 %because it sets a limit with $P$ and $Q$ in the size of the fixed
 %subtree.
 %It cannot fix multi-statement bugs where the changes depend on one
 %another.
 %
-Finally, {\tool} learns only the tree-based code transformations for
+Third, {\tool} learns only the tree-based code transformations for
 APR. The changes in program semantics such as changes to PDGs, CFGs,
-etc. could help improve APR performance in our model.
+etc. could help improve APR performance in our model. Fourth, the
+produced fix could contain syntactically incorrect code. We could
+integrate the generation of template code as in Recoder and then
+select the variables in the valid scope in the program. Finally,
+{\tool} does not consider the test execution information as in
+RewardRepair. This could be a nice integration in future work.
 

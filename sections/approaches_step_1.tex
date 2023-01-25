@@ -7,56 +7,62 @@
 %	\label{tree-extraction}
 %\end{figure}
 
-The goal of this step is to take the source code under study and to
-build the vector representations (embeddings).
+%The goal of this step is to take the source code under study and to
+%build the vector representations (embeddings).
+
+This step aims to build the embeddings for the given source code.
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=3in]{graphs/cross-stitch}
-        \vspace{-3pt}
+	\includegraphics[width=2.8in]{graphs/cross-stitch}
+        \vspace{-6pt}
 	\caption{Cross-Stitch Unit for Joint Training~\cite{misra2016cross}}
 	\label{fig:cross-stitch}
 \end{figure}
 
 
-\subsection{AST Building and Pairing of Subtrees}
+%\subsection{AST Building and Pairing of Subtrees}
 
-For a buggy method $M$, we parse the code to produce~the AST for
-$M$. We identify the subtree $T_s$ corresponding to each buggy
+For a buggy method $M$, we parse the code to build the AST for
+$M$. We identify the subtree $T_s$ for each buggy
 statement $s$. If there are multiple buggy statements~in $M$, we
 generate multiple AST subtrees, and use a buggy~statement
 together with $M$ as a training instance for CCL and CTL.
 %to train the context learning and code transformation models.
+We use the tree differencing tool, CPatMiner~\cite{nguyen2019graph} to
+identify the respective fixed subtree for the subtree $T_s$ of $s$. We
+use them to train CTL. To train CCL, we build the context by
+collecting the AST nodes having data and control dependencies with
+$s$.
 
-Second, to train CCL, we take a buggy method $M$ and the corresponding
-fixed version of $M$, and parse them to build the two ASTs.
-%
-%we need the two ASTs for the buggy method $M$ and the corresponding
-%fixed version of $M$. It is straightforward to collect them in the
-%training dataset and build the ASTs before and after the fix.
-However, to train CTL, as shown in Figure~\ref{overview-training}, we
-need to identify the respective fixed subtree for the subtree $T_s$ of
-a buggy statement. To do so, we use the tree differencing tool,
-CPatMiner~\cite{nguyen2019graph}, to derive the fixing changes. If a
-subtree corresponds to a statement, let us call it {\em
-  S-subtree}. From CPatMiner's result, we use the following rules to
-{\em pair a buggy subtree with the corresponding fixed subtree}:
+%Second, to train CCL, we take a buggy method $M$ and the corresponding
+%fixed version of $M$, and parse them to build the two ASTs.
+%However, to train CTL, as shown in Figure~\ref{overview-training}, we
+%need to identify the respective fixed subtree for the subtree $T_s$ of
+%a buggy statement. To do so, we use the tree differencing tool,
+%CPatMiner~\cite{nguyen2019graph}, to derive the fixing changes.
 
-1. A buggy subtree ($S$-subtree) is a subtree with
-\code{updated}, \code{deleted}, or \code{inserted}.
+%If a subtree corresponds to a statement, let us call it {\em
+%  S-subtree}. From CPatMiner's result, we use the following rules to
+%{\em pair a buggy subtree with the corresponding fixed subtree}:
 
-2. If a $S$-subtree is \code{deleted}, we pair it with an empty tree.
+%1. A buggy subtree ($S$-subtree) is a subtree with
+%\code{updated}, \code{deleted}, or \code{inserted}.
 
-3. If a buggy $S$-subtree is marked as \code{updated}, (i.e, it is
-{\em updated} or its children node(s) could be {\em inserted, deleted} or {\em
-  updated}), we paired this buggy $S$-subtree with its corresponding
-fixed $S$-subtree.
-%produced by CPatMiner.
+%2. If a $S$-subtree is \code{deleted}, we pair it with an empty tree.
 
-4. If a $S$-subtree is \code{inserted} and its parent node is another
-$S$-subtree, we pair it with that parent $S$-subtree.  If the parent
-node is not an $S$-subtree, we pair an empty tree to the corresponding
-inserted $S$-subtree.
+%3. If a buggy $S$-subtree is marked as \code{updated}, (i.e, it is
+%{\em updated} or its children node(s) could be {\em inserted, deleted} or {\em
+%  updated}), we paired this buggy $S$-subtree with its corresponding
+%fixed $S$-subtree.
+
+%4. If a $S$-subtree is \code{inserted} and its parent node is another
+%$S$-subtree, we pair it with that parent $S$-subtree.  If the parent
+%node is not an $S$-subtree, we pair an empty tree to the corresponding
+%inserted $S$-subtree.
+%------------------------------------------------
+
+
 
 %The first step of the \tool is the tree extraction step designed to extract abstract syntax tree (AST) from the source code. It accepts the buggy method with the changed statements inside as input. The output of this step is the extracted AST for the whole buggy method and the extracted subtree of AST that represents the changed statements.
 
@@ -66,18 +72,17 @@ inserted $S$-subtree.
 
 %For the buggy method, $m$ and corresponding fixed method $m_f$, \tool can easily find them from the dataset based on the true labels. However, pairing the buggy statement $s$ with its corresponding fixed version $s_f$ is not easy as the methods. To solve this problem, we use an existing approach CPatMiner \cite{nguyen2019graph} to process the fixing changes. Based on the results from CPatMiner, we pair the buggy statement $s$ with the corresponding fixed statement $s_f$ within the three following conditions. 1) If the buggy statement $s$ needs to be deleted, we pair $s$ with an empty statement. 2) if the buggy statement $s$ needs to be updated, we pair $s$ with the updated statement. 3) If there needs to insert a new statement as the fixing, we check the AST for the method $m$ first. And we pair the parent node with the inserted statement $s_f$ if the parent node representing the other statement, or we pair an empty statement with the inserted statement $s_f$.
 
-\subsection{AST Node Representation Learning}
+%\subsection{AST Node Representation Learning}
 
 To provide the compatible inputs for CCL and CTL models, we need to
 perform an AST node representation learning process in which each node
-in the AST subtree or the AST of the method is replaced by the vector
-representation (embedding) of the node. To achieve that, we first
-flatten the abstract syntax (sub)tree under study by a
-depth-first-search traversal to obtain a sequence of tokens. For the
-case of an AST subtree, we consider the sequence of tokens of a
-$S$-subtree as a sentence. For the case of the AST of the method, we
-consider the sequence of tokens for the method as a sentence. We then
-use a word embedding technique
+in the AST subtree or the AST of the method is replaced by the
+embedding of the node. To achieve that, we first flatten the AST
+subtree under study by a depth-first-search traversal to obtain a
+sequence of tokens. For the case of an AST subtree, we consider the
+sequence of tokens of a $S$-subtree as a sentence. For the case of the
+AST of the method, we consider the sequence of tokens for the method
+as a sentence. We then use a word embedding technique
 %GloVe~\cite{pennington2014glove}
 to run on those sentences to build a vector representation for each
 token, i.e., for each AST node in the method's AST or in the AST

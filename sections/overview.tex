@@ -89,16 +89,49 @@ both models.
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=3.3in]{graphs/overview-predict-5.png}
+        \vspace{-6pt}
 	\caption{{\tool}: Fixing Process}
-        \vspace{-3pt}
 	\label{overview-fixing}
 \end{figure}
 
 Figure~\ref{overview-fixing} illustrates the fixing process
 (prediction). A fault localization (FL) tool could be used to locate
 the buggy statements. We additionally use the hunk detection/expansion
-module in DEAR~\cite{icse22} to locate multi-hunks/multi-statements
-for a bug. Each method to be fixed will be the input and fed to Tree
+module similar to DEAR~\cite{icse22} to locate
+multi-hunks/multi-statements for a bug.
+
+The hunk detection is as follows. We need to
+{\em detect buggy hunk(s) that are fixed together in the same
+  patch}. To do that, we fine-tune Google's pre-trained BERT
+model~\cite{devlin2018bert} to learn the {\em fixing-together
+  relationships among statements} using BERT's sentence-pair
+classification task.
+%Then, we use the fine-tuned BERT model in an algorithm to detect
+%fixing-together hunks.
+For training, let $H$ be a set of the hunks that are fixed together
+for a bug.
+%The input is all the sets $H$s for all the bugs in the
+%training set.
+For a pair of hunks $H_i$ and $H_j$ in $H$, we take every pair of
+statements $S_k$ and $S_l$, one from each hunk, and build the vectors
+for them. We consider ($S_k$, $S_l$) as ``fixed-together''. We repeat
+that previous step for all such the pairs ($S_k$, $S_l$)s in $H$ and
+for all $H$s, and use them to train/fine-tune the BERT model to learn
+fixing-together relationships among two statements in two hunks.
+
+The fine-tuned BERT model is used for hunk detection as follows.
+Ochiai~\cite{abreu2006evaluation} is run on a program $P$ to obtain
+the list of buggy statements. We group the consecutive statements
+within a method returned by Ochiai to form the hunks $H_1$, $H_2$,
+..., $H_m$. To decide if a pair of hunks ($H_i$,$H_j$) needs to be
+fixed together, for every pair of statements ($S_k$,$S_l$), one from
+each hunk ($H_i$,$H_j$), we use the fine-tuned BERT model to measure
+the fixing-together relationship score for ($S_k$,$S_l$). If the
+average score for all the statement pairs is higher than a threshold,
+we consider ($H_i$,$H_j$) as needed to be fixed together. From pairs
+of hunks, we build the groups of fixing-together hunks.
+
+Each detected hunk will be the input and fed to Tree
 Representation Learning.
 %A common usage of our tool is that a developer could first use a fault
 %localization tool (FL) to detect the buggy statements that need to be
@@ -107,11 +140,10 @@ Representation Learning.
 %
 %The fixing process shares the Tree-based Representation
 %Learning step with the training.
-
-After that step, the vectorized buggy AST subtree (a node is replaced
-by a vector), is used as the input of the trained CTL model. That buggy
-AST subtree might have smaller buggy subtrees for buggy statements.
-The output of the trained CTL model is the fixed AST subtree, which is
+After this, the vectorized buggy AST subtree (a node is replaced by a
+vector), is used as the input of the trained CTL model. That buggy
+subtree might have smaller buggy subtrees for buggy statements.  The
+output of the trained CTL model is the fixed AST subtree, which is
 converted back into source code to form a candidate patch. We use a
 patch generation that uses beam search over the AST structure and
 works in accordance with the decoder as part of CTL to improve

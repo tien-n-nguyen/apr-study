@@ -69,9 +69,10 @@ accuracy reduces: Top-$k$ values of \code{Trans-only} model are
 shows that {\em context learning from CCL} contributes positively in
 {\tool}.
 
-Comparing the result from {\tool} with the other context-aware
-baseline models, we can see that {\em dedicating a separate model for
-context learning in {\tool} improves APR performance}.
+%
+%Comparing the result from {\tool} with the other context-aware
+%baseline models, we can see that {\em dedicating a separate model for
+%context learning in {\tool} improves APR performance}.
 
 %In Table~\ref{fig:rq4_results}, the top-$K$ values of the
 %\code{Transformation-only} model are 52.3\%, 44.7\% and 42.3\% lower
@@ -107,19 +108,19 @@ context learning in {\tool} improves APR performance}.
 \label{ccl:sec}
 
 As seen in Table~\ref{fig:rq4_results}, the top-$K$ values of the
-\code{Cascading} model are 21.5\%, 18.6\%, and 14.9\% lower than those
-of {\tool} in Top-1, Top-5, and Top-10, respectively. This result
-shows that cascading CCL $\rightarrow$ CTL is not as effective as dual-task
-learning in {\tool}.
-%
-%the {\em cascading architecture between context learning (CCL) and
-%  transformation learning (CTL) is not as effective as dual-task
-%  learning in {\tool}}.
-%
-We also performed overlapping analysis between the results from
-{\tool} and the \code{Cascading} model. {\tool} fixes {\bf 54} bugs
-that the cascading model missed and the \code{Cascading} model fixed
-only {\bf 17} bugs that {\tool} missed.
+\code{Cascading} model (CCL $\rightarrow$ CTL) are 21.5\%, 18.6\%, and
+14.9\% lower than those of {\tool} in Top-1, Top-5, and Top-10,
+respectively. This result shows that cascading context learning CCL
+$\rightarrow$ code-transformation learning CTL is not as effective as
+dual-task learning in {\tool}. We also performed overlapping analysis
+between the results from {\tool} and the \code{Cascading}
+model. {\tool} fixes {\bf 54} bugs that the cascading model missed and
+the \code{Cascading} model fixed only {\bf 17} bugs that {\tool}
+missed. This shows that {\em dual-task learning enables mutual impacts
+  of both learning aspects, leading to better APR than having only the
+  impact from CCL onto CTL}.
+
+
 %Tien
 %while both models fix the same {\bf 119} bugs.
 %That is, {\tool} fixed more than 3 times unique bugs that the
@@ -131,24 +132,24 @@ mechanism, we  seek the answers for the following questions.
 
 
 
-{\em D.2.1. Does the more correct context learning in {\tool}'s
-  dual-task than the context learning in 
-  \code{Cascading} model lead to better bug-fixing?}
+{\em D.2.1. When more contexts are learned correctly by {\tool} than
+  by \code{Cascading} model, does that lead to better bug-fixing in
+  {\tool}?}
 
 Both the \code{Cascading} model and {\tool} have the same CCL and
 CTL. In the \code{Cascading} model, CCL and CTL are sequential, but
-cross-stitched in {\tool}. To answer D.2.1., we first compared the
-output contexts of CCL, i.e., the fixed method ASTs, from both the
-\code{Cascading} model and {\tool} against the method AST in the
+cross-stitched in {\tool}. To answer D.2.1., we compared the output
+contexts of CCL, i.e., the output AST subtrees for contexts, from both
+the \code{Cascading} model and {\tool} against those subtrees in the
 ground truth. If the number of common nodes between both is$>=$90\%,
 we consider the output to be `correct', and `incorrect'
 otherwise. Next, we considered {\em the bugs for which the output of
-  CCL in the \code{Cascading} model was incorrect, and the output of
-  CCL in {\tool} was correct}. Among these, the output of CTL, the
-actual predicted patch, leads to more correct bug fixes for {\tool}
-({\bf 134}) than for the \code{Cascading} model ({\bf 89}). This shows
-that the correct context learning in {\tool}'s dual-task learning
-mode has contributed to correctly fixing more bugs.
+  CCL in {\tool} was correct and the output of CCL in the
+  \code{Cascading} model was incorrect}. Among these, the output
+of CTL, the actual predicted patch, leads to more correct bug fixes
+by {\tool} ({\bf 134}) than by the \code{Cascading} model ({\bf
+  89}). This shows that the correct context learning in {\tool}'s
+dual-task learning has contributed to correctly fixing more bugs.
 
 %Tien: replaced this para with the previous one
 %In another study, we analyzed the set T1 of the {\bf 418} bugs in which
@@ -173,13 +174,13 @@ mode has contributed to correctly fixing more bugs.
   its worse context learning?}
 
 
-To answer D.2.2., we analyzed {\bf 54} bugs that were fixed by
-{\tool} and missed by the \code{Cascading} model. Among them, we found
-{\bf 46} bugs in which {\em the output contexts of CCL in {\tool},
-  i.e., the fixed method ASTs, match with the fixed method ASTs
-  (contexts) in the oracle}. In contrast, we found only {\bf 18} bugs
-in which the output contexts of CCL in the \code{Cascading} model
-match with the fixed method ASTs.
+To answer D.2.2., we analyzed {\bf 54} bugs that were fixed by {\tool}
+and missed by the \code{Cascading} model. Among them, we found {\bf
+  46} bugs in which {\em the output contexts of CCL in {\tool}, i.e.,
+  the fixed AST subtrees for contexts, match with the fixed subtrees
+  in the oracle}. In contrast, we found only {\bf 18} bugs in which
+the output contexts of CCL in the \code{Cascading} model match with
+the fixed AST subtrees.
 
 This result indicates that better APR performance is partially due to
 the better context learning in {\tool}'s dual-task mechanism than in
@@ -196,7 +197,8 @@ From D.2.1 and D.2.2: Despite that both {\tool} and the
     APR of {\tool} comes~from dual-task learning}},
     %which propagates positive impact of CCL and CTL on each other,
  making both context learning and transformation learning mutually
- better. Eventually, that leads to better APR performance in {\tool}.
+ better. Both learning aspects are better and leading
+ to better APR performance in {\tool}.
 
 %{\bf {\em the better performance of {\tool} over the \code{Cascading}
 %    model comes from dual-task learning, which makes the context

@@ -224,9 +224,9 @@ that SequenceR missed and SequenceR fixed only 7 bugs that
 
 Figure~\ref{example_3} shows an example that SequenceR missed, but was
 fixed correctly by {\tool}. Despite considering the context, {\em
-  SequenceR treats source code as a sequence of code tokens}, not
-well-suited for structural changes. The fix from line 6 into line 7
-involves structural changes to the AST of the statement at line 6
+  SequenceR treats source code as a sequence of code tokens}, which is
+not well-suited for structural changes. The fix from line 6 into line
+7 involves structural changes to the AST of the statement at line 6
 because the order of two operations \code{abs} and \code{\%} is
 reversed. In the buggy code, \code{abs} is executed first and then
 \code{\%} is next. In the correct code, \code{\%} is executed before
@@ -269,8 +269,8 @@ public int getPartition(...) {
   indexes = reducerMap.get(keyTuple);
   // if reducerMap does not contain the key, ...
   if (indexes == null) {
-(*@{\color{red}{-\quad return (Math.abs(keyTuple.hashCode()) \% tot..);	}}@*)
-(*@{\color{cyan}{+\quad return (Math.abs(keyTuple.hashCode() \% tot..));//{\tool}}}@*)
+(*@{\color{red}{-\quad return (Math.abs(keyTuple.hashCode()) \% totalReducers);	}}@*)
+(*@{\color{cyan}{+\quad return (Math.abs(keyTuple.hashCode() \% totalReducers));//{\tool}}}@*)
   }
   ...
 // SequenceR's incorrect fix at line 6:
@@ -305,7 +305,6 @@ missed.
 %, while both fix 120 bugs. Among the total
 %number of bugs fixed by either tools in BigFix, 29.7\% of them (96)
 %were fixed by {\tool} and missed by CoCoNuT, while only 16.1\% of them (44) were fixed by CoCoNuT and missed by {\tool}.
-
 CoCoNuT did not fix correctly the code in Figure~\ref{example_3}.~It
 fixed~line 6 into \code{return (} \code{Math.abs(} \code{keyTuple.}
 \code{hashCode} \code{());}. First, CoCoNuT represents source code by
@@ -314,8 +313,8 @@ a sequence of tokens, which is {\em not well-suited for this
 extracts from the surrounding code the features and feeds them in a
 single model for learning to fix.
 %
-It was shown that dedicating a model for context learning separately
-from the transformation learning model can improve APR~\cite{icse20}.
+Dedicating a model for context learning separately
+from the transformation learning model can improve APR.
 %{\tool} dedicates a model for context learning separately from the
 %model for code transformation learning.
 With CCL and CTL, {\tool} can learn the structural changes in the AST.
@@ -394,7 +393,15 @@ fix.
 
 As seen in Table~\ref{RQ3_results}, in Bugs.jar, {\tool} can fix 48
 bugs that Recoder missed and Recoder fixed 40 bugs that {\tool}
-missed. Recoder is designed for single-hunk bugs, thus missed
-those 40 multi-hunk/multi-statement bugs. {\tool} handles
-the transformation for each buggy AST subtree, thus, supporting
-those bugs.
+missed. Recoder is designed for single-hunk bugs, thus missed those 40
+multi-hunk/multi-statement bugs. {\tool} handles the transformation
+for each buggy AST subtree, thus, supporting those
+multi-hunk/multi-statement bugs.
+
+\subsubsection{\bf Comparison with DEAR}
+{\tool} fixed 38 bugs that DEAR missed. Both can fix
+multi-hunk/multi-statement bugs. However, the dual-task learning in
+{\tool} helps fix more bugs than DEAR because both CCL and CTL are
+better. DEAR extracts context features to improve bug fixing. Thus, it
+does not have the backward impact from CTL to CCL, which actually
+helps in {\tool} as shown.

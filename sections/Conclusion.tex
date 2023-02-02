@@ -3,15 +3,15 @@
 %The bug-fixing changes in APR often depend on the surrounding code
 %context.
 
-Despite their successes, the state-of-the-art DL-based APR approaches
-have limitations in the integration of code contexts in learning
-context-dependent bug fixes. We introduce {\tool}, a context-aware
-dual learning APR model, which dedicates a model to learn the
-bug-fixing code transformations (CTL) and another to learn code
-contexts (CCL). Our idea is that the mutual improvement between the
-correct learning of contexts and the learning of transformations can
-benefit for each other, leading to better fixing the context-dependent
-bugs.
+%Despite their successes, the state-of-the-art DL-based APR approaches
+%have limitations in the integration of code contexts in learning
+%context-dependent bug fixes.
+We introduce {\tool}, a context-aware APR model, which
+dedicates a model to learn the bug-fixing code transformations 
+and another to learn code contexts. Our idea is that the mutual
+improvement between the correct learning of contexts and the learning
+of transformations can benefit for each other, leading to better
+fixing the context-dependent bugs.
 %
 %Instead of cascading the two models,
 We train them simultaneously

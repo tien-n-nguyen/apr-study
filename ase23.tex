@@ -1,0 +1,261 @@
+\PassOptionsToPackage{table,xcdraw}{xcolor}
+\documentclass[10pt,conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+
+\usepackage{amsmath,amssymb,amsfonts}
+%\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+
+\usepackage{cite}
+\usepackage{booktabs}   %% For formal tables:
+                        %% http://ctan.org/pkg/booktabs
+\usepackage{subcaption} %% For complex figures with subfigures/subcaptions
+                        %% http://ctan.org/pkg/subcaption
+\usepackage{array}
+%\usepackage{amsmath,amsfonts}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+%\usepackage{algorithmic}
+%\usepackage{graphicx}
+%\usepackage{textcomp}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xspace}
+\usepackage{multirow}
+\usepackage{amsthm}
+\newtheorem{definition}{Definition}
+\usepackage{balance}
+
+\usepackage[skins]{tcolorbox}
+
+\usepackage{xcolor,pifont}
+\newcommand*\colourcheck[1]{%
+	\expandafter\newcommand\csname #1check\endcsname{\textcolor{#1}{\ding{52}}}%
+}
+\colourcheck{blue}
+\colourcheck{green}
+\colourcheck{red}
+
+\newtcolorbox{myframe}[2][]{%
+  enhanced,colback=white,colframe=black,coltitle=black,
+  sharp corners,
+  toprule=1.0pt,
+  rightrule=0.3pt,
+  leftrule=0pt,
+  bottomrule=0pt,
+  fonttitle=\itshape\scshape\large,
+  left=0pt,right=5pt,top=5pt,bottom=3pt,
+  attach boxed title to top right={yshift=-0.3\baselineskip-0.4pt,xshift=-5mm},
+  boxed title style={tile,size=minimal,left=0.2mm,right=0.5mm,
+    colback=white,before upper=\strut},
+  title=#2,#1
+}
+
+%\newcommand{\code}[1]{{\footnotesize\textsf{#1}}}
+
+\newcommand{\tool}{\textsc{CDFix}\xspace}
+
+\newtheorem{Definition}{Definition}
+\newtheorem{Claim}{Claim}
+\newtheorem{Lemma}{Lemma}
+\newtheorem{Theorem}{Theorem}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newtheorem{observation}{Observation}
+\newtheorem{property}{Property}
+\newcommand{\code}[1]{{\footnotesize\texttt{#1}}}
+\usepackage{amsthm}
+ \definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4
+}
+
+
+%\usepackage{tikz}
+%\usetikzlibrary{shapes.arrows}
+%\newcommand{\FancyUpArrow}{\begin{tikzpicture}[baseline=-0.3em]
+%		\node[single arrow,draw,rotate=90,single arrow head extend=0.1em,inner
+%		ysep=0.1em,transform shape,line width=0.03em,top color=green,bottom color=green!50!black] (X){};
+%\end{tikzpicture}}
+
+%\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+%    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+%\title{{\tool}: Hybrid Code Representation Learning for Machine Learning-based Bug Detection Models}
+
+\title{Dual-Task of Context Learning and Code-Transformation Learning to Improve Automated Program Repair}
+
+%Conference Paper Title*\\
+%{\footnotesize \textsuperscript{*}Note: Sub-titles are not captured in Xplore and
+%should not be used}
+%\thanks{Identify applicable funding agency here. If none, delete this.}
+%}
+
+%\author{\IEEEauthorblockN{1\textsuperscript{st} Given Name Surname}
+%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+%\textit{name of organization (of Aff.)}\\
+%City, Country \\
+%email address or ORCID}
+%\and
+%\IEEEauthorblockN{2\textsuperscript{nd} Given Name Surname}
+%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+%\textit{name of organization (of Aff.)}\\
+%City, Country \\
+%email address or ORCID}
+%\and
+%\IEEEauthorblockN{3\textsuperscript{rd} Given Name Surname}
+%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+%\textit{name of organization (of Aff.)}\\
+%City, Country \\
+%email address or ORCID}
+%\and
+%\IEEEauthorblockN{4\textsuperscript{th} Given Name Surname}
+%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+%\textit{name of organization (of Aff.)}\\
+%City, Country \\
+%email address or ORCID}
+%\and
+%\IEEEauthorblockN{5\textsuperscript{th} Given Name Surname}
+%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+%\textit{name of organization (of Aff.)}\\
+%City, Country \\
+%email address or ORCID}
+%\and
+%\IEEEauthorblockN{6\textsuperscript{th} Given Name Surname}
+%\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+%\textit{name of organization (of Aff.)}\\
+%City, Country \\
+%email address or ORCID}
+%}
+
+\maketitle
+
+\begin{abstract}
+%Recent advances in deep learning (DL) have helped improve the
+%performance of the DL-based Automated Program Repair (APR) approaches.
+The bug-fixing code changes in Automated Program Repair (APR) often
+depend on code context. Despite successes, the state-of-the-art
+Deep Learning (DL)-based APR approaches are limited in {\em
+  integrating context learning and code-transformation learning},
+leading to their ineffectiveness in fixing {\em context-dependent
+  bugs}. {\em Learning the correct context for a bug will help
+  learning the correct code transformation for the bug fix, and vice
+  versa}. In this work, we introduce {\bf \tool}, a context-aware
+dual-task learning APR model, that explores the duality of the two
+dedicated models to explicitly propagate the mutual impacts of {\em
+  context learning} and {\em code transformation learning} onto one
+another. We train two models simultaneously with soft-sharing
+parameters via a cross-stitch unit for explicit propagation of impacts
+to improve both tasks, leading to better APR accuracy.
+
+
+%Moreover, in those approaches, the cascading architecture from a code
+%context-learning model (CCL) to a code-transformation learning model
+%(CTL) possibly leads to confounding inaccuracies.
+%In this work, we introduce {\bf \tool}, a context-aware dual-task
+%learning APR model, that explores the duality of those two dedicated
+%models to explicitly propagate the mutual impacts of CCL and CTL onto
+%one another. Instead of cascading CCL $\rightarrow$ CTL, we train them
+%simultaneously with soft-sharing parameters via a cross-stitch unit
+%for explicit propagation of impacts to improve both tasks, leading
+%to better APR accuracy.
+
+We conducted several experiments to evaluate {\tool} on three
+different datasets: Defects4J~\cite{defects4j} (395 bugs),
+Bugs.jar~\cite{saha2018bugs} (1,158 bugs), and
+BigFix~\cite{yioopsla19} (+4.9M methods and 1.8M buggy ones).  We
+compared {\tool} against several state-of-the-art DL-based APR
+tools. Our results show that {\tool} can fix 4.7\%--143\% and
+5.7\%--263\% more bugs than the baseline models with only top-1
+patches in Bugs.jar and BigFix, respectively.
+%In Defects4J, it improves over the baselines from 16.7\%--194.7\%.
+In Bugs.jar and BigFix, it fixes 26.4\% and 27.7\% of the total bugs
+that were missed by the best DL-based baseline. In Defects4J, it is
+complementary with the best baseline Recoder, while improving
+2.7\%--200\% over other baselines.
+  
+
+
+
+\end{abstract}
+
+%In this work, we propose {\tool}, a Context-aware, Graph-based,
+%Commit-level Vulnerability Assessment Model that evaluates a
+%vulnerability-introducing code and provides the CVSS assessment grades
+%for the vulnerability. One of the key solutions is a novel
+%context-aware, graph-based, representation learning (RL) model to
+%learn the contextualized embeddings for the code changes that
+%integrate program dependencies and the surrounding contexts of code
+%changes. We utilize the contextualized embeddings to learn to provide
+%the CVSS assessment grades for the vulnerability. During the
+%assessment of one aspect, we also consider the impacts of the other
+%aspects by leveraging a multi-task learning model (each task learning
+%to assess one aspect) to propagate the learning from one task to
+%another.
+%Our empirical evaluation shows that
+%on a large dataset of vulnerabilities in C code, {\tool} achieves
+%F-score of 25.5\% and MCC of 26.9\% relatively higher than the
+%state-of-the-art model in vulnerability assessment. In the dataset of
+%vulnerabilities in Java, {\tool} achieves F-score of 14.3\% and
+%MCC of 8.0\% relatively higher than the state-of-the-art model in
+%vulnerability assessment.
+
+%\begin{IEEEkeywords}
+%component, formatting, style, styling, insert
+%\end{IEEEkeywords}
+
+
+\input{sections/intro}
+\input{sections/motiv}
+\input{sections/overview}
+\input{sections/approaches_step_1}
+\input{sections/approaches_step_2}
+\input{sections/approaches_step_3}
+\input{sections/experiment}
+\input{sections/results}
+\input{sections/Threats}
+\input{sections/limitations}
+\input{sections/related}
+\input{sections/Conclusion}
+
+%We show that a simple combination could help improve BD model. Our
+%result calls for actions in developing hybrid CRL models for source
+%code.
+
+\section{Data Availability}
+
+Code and data are available at~\cite{CDFix2022}.
+
+\newpage
+
+\balance
+
+%\bibliographystyle{plain}
+%\bibliographystyle{ACM-Reference-Format}
+\bibliographystyle{IEEEtran}
+
+\bibliography{References}
+
+\end{document}
+

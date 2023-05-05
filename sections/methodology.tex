@@ -134,7 +134,12 @@ It extracts code features from contexts to fix buggy statements.
 to generate edits rather than modified code.
 %it was trained on Defects4J after multiple-statement bugs were filtered.
 
+{\bf SelfAPR~\cite{ye2022selfapr}}: is a self-supervised training model with automatically generated training samples to capture the failing assertion of the program under repair with execution information.
 
+{\bf AlphaRepair~\cite{xia2022less}}: is a cloze-style APR technique that leverages large pre-trained code model directly for
+repair.
+
+{\bf TRANSFER~\cite{meng2022improving}}: leverages the deep semantic features and transferred knowledge from open-source data to improve fault localization and program repair.
 
 For all approaches under study in this RQ, we used {\em BigFix as the
 training dataset and evaluated on Defects4J dataset}. 

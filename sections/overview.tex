@@ -50,8 +50,8 @@ used as the input for CCL in the later step.
 %later step.
 
 For code-transformation learning, we use the AST subtree $T_b^{S}$ for
-the buggy statement with the embedding vectors as the input for the
-Code Transformation Learning model (CTL) in the next step.
+the buggy statement with the embedding vectors as the input for
+Code Transformation Learning model (CTL) next.
 
 %\vspace{2pt}
 %\noindent {\bf Context-aware, Dual-Task Learning Automated Program Repair.}
@@ -79,9 +79,9 @@ The CCL and CTL models are realized via attention-based \code{seq2seq}
 models. We use the {\em cross-stitch unit}~\cite{misra2016cross} to
 train CCL and CTL simultaneously (Section~\ref{sec: dual-learning}).
 %with soft-sharing the parameters to exploit this duality.
-Joint training is aimed to learn the shared representations between
-CCL amd CTL in terms of a linear combination of the input features in
-both models.
+Joint training learns the shared representations between
+CCL and CTL in terms of a linear combination of the input features in
+both~models.
 %The output includes the trained CCL and CTL models.
 
 \subsection{Prediction Process}
@@ -117,7 +117,7 @@ statements $S_k$ and $S_l$, one from each hunk, and build the vectors
 for them. We consider ($S_k$, $S_l$) as ``fixed-together''. We repeat
 that previous step for all such the pairs ($S_k$, $S_l$)s in $H$ and
 for all $H$s, and use them to train/fine-tune the BERT model to learn
-fixing-together relationships among two statements in two hunks.
+fixing-together relations among two statements in two hunks.
 
 The fine-tuned BERT model is used for hunk detection as follows.
 Ochiai~\cite{abreu2006evaluation} is run on a program $P$ to obtain
@@ -143,9 +143,9 @@ Representation Learning.
 After this, the vectorized buggy AST subtree (a node is replaced by a
 vector), is used as the input of the trained CTL model. That buggy
 subtree might have smaller buggy subtrees for buggy statements.  The
-output of the trained CTL model is the fixed AST subtree, which is
+output of the trained CTL model is the fixed subtree, which is
 converted back into source code to form a candidate patch. We use a
-patch generation that uses beam search over the AST structure and
+patch generation that uses beam search over AST structure and
 works in accordance with the decoder as part of CTL to improve
 efficiency (Section~\ref{sec:patch-gen}). Finally, we adopt the patch
 validation process via test cases as in test-based APR~\cite{icse20}.

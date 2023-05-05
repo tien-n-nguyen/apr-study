@@ -16,17 +16,17 @@ $T^{s}_b$ for the buggy statement $s$, as well as the AST for the
 respective fixed method
 %$T^{M}_f$
 and the one for the respective fixed statement $T^{s}_f$.
-
+%
 To build the context, we take the vectorized AST for the method and
 collect as the context only the AST nodes that have data and control
 dependencies with the buggy statement $s$. The subtree of the context
 is called $T^{M}_b$. The corresponding context subtree after the fix
 is called $T^{M}_f$.
-
+%
 $T^{M}_b$ and $T^{M}_f$ are used at the input and output layers of
 CCL; and $T^{s}_b$ and $T^{s}_f$ are used at the input and output
 layers of CTL (Figure~\ref{fig:dual-learning}).  Let us explain the
-dual-task learning framework for CCL and CTL.
+dual-task learning framework.
 
 %After having the $Tree_m$, $Tree_{mf}$ pair and $Tree_s$, $Tree_{sf}$ pair from the first step, \tool uses them as the input and the ground truth to train the dual learning program repair model in this step. \tool uses the generated after fixing AST $Tree'_m$ and after fixing subtree of AST $Tree'_s$ as output for this step when making the prediction. Specifically, there are two small steps, including the AST node representation learning and the dual learning framework.
 
@@ -74,7 +74,7 @@ for the next layer of the two models.
 %In this case,
 The next layers (noted as CCL* and CTL*) are the ones with the shared
 representations and having the joint training. Details on
-cross-stitch are in the paper~\cite{misra2016cross}.
+cross-stitch are in~\cite{misra2016cross}.
 
 \subsection{Tree-based, Dual-Task Learning}
 

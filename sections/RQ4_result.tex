@@ -1,5 +1,5 @@
 %\subsection{\bf RQ3. Impact of Dual-Task Learning on Performance}
-\subsection{\bf RQ3. Impact of Context Learning and Dual-Task Learning}
+\subsection{\bf RQ3. Impact of Context Learning \& Dual Learning}
 \label{rq4:sec}
 
 \definecolor{mygray}{gray}{.9}
@@ -107,14 +107,13 @@ shows that {\em context learning from CCL} contributes positively in
 \subsubsection{\bf Impact of Dual-Task Learning}
 \label{ccl:sec}
 
-As seen in Table~\ref{fig:rq4_results}, the top-$K$ values of the
+In Table~\ref{fig:rq4_results}, the top-$K$ values of the
 \code{Cascading} model (CCL $\rightarrow$ CTL) are 21.5\%, 18.6\%, and
 14.9\% lower than those of {\tool} in Top-1, Top-5, and Top-10,
 respectively. This result shows that cascading context learning CCL
 $\rightarrow$ code-transformation learning CTL is not as effective as
 dual-task learning in {\tool}. We also performed overlapping analysis
-between the results from {\tool} and the \code{Cascading}
-model. {\tool} fixes {\bf 54} bugs that the cascading model missed and
+between the results from {\tool} and \code{Cascading}. {\tool} fixes {\bf 54} bugs that the cascading model missed and
 the \code{Cascading} model fixed only {\bf 17} bugs that {\tool}
 missed. This shows that {\em dual-task learning enables mutual impacts
   of both learning aspects, leading to better APR than having only the
@@ -133,8 +132,7 @@ mechanism, we  seek the answers for the following questions.
 
 
 {\em D.2.1. When more contexts are learned correctly by {\tool} than
-  by \code{Cascading} model, does that lead to better bug-fixing in
-  {\tool}?}
+  by \code{Cascading} model, does that lead to better bug-fixing?}
 
 Both the \code{Cascading} model and {\tool} have the same CCL and
 CTL. In the \code{Cascading} model, CCL and CTL are sequential, but
@@ -198,7 +196,7 @@ From D.2.1 and D.2.2: Despite that both {\tool} and the
     %which propagates positive impact of CCL and CTL on each other,
  making both context learning and transformation learning mutually
  better. Both learning aspects are better and leading
- to better APR performance in {\tool}.
+ to better APR.
 
 %{\bf {\em the better performance of {\tool} over the \code{Cascading}
 %    model comes from dual-task learning, which makes the context

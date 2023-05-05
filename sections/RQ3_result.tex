@@ -67,26 +67,16 @@ overlapping result between {\tool} and one baseline.
 %on Bugs.jar and BigFix.
 
 \subsubsection{{\bf Comparison with CODIT}}
-
-As seen in Table~\ref{RQ3_results}, {\tool} fixed 91 bugs in Bugs.jar
-that CODIT missed and CODIT fixed 6 bugs that {\tool} missed. Both fixed the same 80 bugs.
-%Among the total number of bugs fixed by either tools in Bugs.jar
-%dataset, 53.4\% of them were fixed by {\tool} and missed by CODIT,
-%while only 6.8\% of them were fixed by CODIT and missed by {\tool}.
-%In BigFix dataset, while {\tool} fixed 165 bugs that CODIT missed,
-%it missed only 13 bugs that CODIT fixed.
-
+%In Table~\ref{RQ3_results}, {\tool} fixed 91 bugs in Bugs.jar that
+%CODIT missed and CODIT fixed 6 bugs that {\tool} missed. Both fixed
+%the same 80 bugs.
 
 Figure~\ref{example_codit} shows an example that was correctly fixed
 by {\tool}, but missed by CODIT. CODIT fixed it into \code{else}
 \code{if(} \code{op)}. CODIT fixed via translation of the buggy AST
 sub-tree covering all the edited nodes, without considering the
-context.
-%. It analyzes the buggy sub-tree that covers all the edited
-%nodes {\em without considering the surrounding context} in the method.
-%Thus, it did not fix this bug correctly.
-In this case, the correct fix is at line 4 by {\tool}: \code{else}
-\code{if} \code{(op} \code{instanceof}
+context. In this case, the correct fix is at line 4 by {\tool}:
+\code{else} \code{if} \code{(op} \code{instanceof}
 \code{ExpressionOperator)}. {\tool} could leverage the surrounding
 context at line 7 with `\code{currentOp} \code{instanceof}
 \code{ExpressionOperator}' to generate the correct patch at line 4.
@@ -133,15 +123,11 @@ public void visit(LOProject project) throws ... {
 \end{figure}
 
 \subsubsection{\bf Comparison with Tufano'19}
+%As seen in Table~\ref{RQ3_results}, in Bugs.jar, {\tool} can fix 101
+%bugs that Tufano'19 missed and Tufano'19 fixed only 5 bugs
+%that {\tool} missed.
 
 
-
-
-
-As seen in Table~\ref{RQ3_results}, in Bugs.jar, {\tool} can fix 101
-bugs that Tufano'19 missed and Tufano'19 fixed only 5 bugs
-that {\tool} missed.
-%, while both can fix the same 71 bugs.
 %Among the total number of bugs fixed by both tools in Bugs.jar
 %dataset, 53.4\% of them were fixed by {\tool} and missed by CODIT,
 %while only 6\% of them were fixed by CODIT and missed by {\tool}.
@@ -163,8 +149,7 @@ statement, and fixed it into \code{if(} \code{mMemoryPtr.size}
 \code{()} \code{==} \code{0)} \code{return} \code{null;}. The buggy
 line 4 was correctly fixed into line 5 by {\tool}. By distinguishing
 the context from the fixing changes, {\tool} could learn the type
-\code{List} of \code{mContents} from lines 2 and 3 (in which the
-method \code{size()} is called on \code{mContents}).
+\code{List} of \code{mContents} from lines 2 and 3 (in which \code{size()} is called on \code{mContents}).
 
 %{\color{blue}{1. Tufano 19' learns and makes prediction only on the method level. In this case, it may fix the wrong position.
 %2. Fixing results:
@@ -210,10 +195,10 @@ private Tuple readFromMemory() {
 %=============================================================
 
 \subsubsection{\bf Comparison with SequenceR}
+%As seen in Table~\ref{RQ3_results}, {\tool} fixed 76 bugs in Bugs.jar
+%that SequenceR missed and SequenceR fixed only 7 bugs that
+%{\tool} missed.
 
-As seen in Table~\ref{RQ3_results}, {\tool} fixed 76 bugs in Bugs.jar
-that SequenceR missed and SequenceR fixed only 7 bugs that
-{\tool} missed.
 %, while both can fix the same 95 bugs.
 %Among the total number of bugs fixed by both tools in Bugs.jar
 %dataset, 53.4\% of them were fixed by {\tool} and missed by CODIT,
@@ -234,9 +219,8 @@ reversed. In the buggy code, \code{abs} is executed first and then
 %As shown in Figure~\ref{tree-change}, the structure of the
 %AST for the statement is changed to reflect the change in that
 %order.
-However, SequenceR considers the statement as the sequence of tokens,
-and it fixed by replacing the token \code{hashCode} with the token
-\code{get}. That is, it incorrectly fixed the line 6 into
+However, SequenceR considers code as code sequences,
+and fixed by replacing \code{hashCode} with \code{get}. That is, it incorrectly fixed the line 6 into
 \code{return} \code{(Math.abs(} \code{keyTuple.} \code{get())}
 \code{\%} \code{totalReducers);}.
 %Thus, its sequence representation is not well-suited for structural
@@ -298,13 +282,13 @@ public int getPartition(...) {
 
 
 \subsubsection{\bf Comparison with CoCoNuT}
-
-As seen in Table~\ref{RQ3_results}, in Bugs\-.jar, {\tool} fixes 51
-bugs that CoCoNuT missed and CoCoNuT fixed only 20 bugs that {\tool}
-missed.
+%As seen in Table~\ref{RQ3_results}, in Bugs\-.jar, {\tool} fixes 51
+%bugs that CoCoNuT missed and CoCoNuT fixed only 20 bugs that {\tool}
+%missed.
 %, while both fix 120 bugs. Among the total
 %number of bugs fixed by either tools in BigFix, 29.7\% of them (96)
 %were fixed by {\tool} and missed by CoCoNuT, while only 16.1\% of them (44) were fixed by CoCoNuT and missed by {\tool}.
+
 CoCoNuT did not fix correctly the code in Figure~\ref{example_3}.~It
 fixed~line 6 into \code{return (} \code{Math.abs(} \code{keyTuple.}
 \code{hashCode} \code{());}. First, CoCoNuT represents source code by
@@ -321,20 +305,21 @@ With CCL and CTL, {\tool} can learn the structural changes in the AST.
 
 \subsubsection{\bf Comparison with CURE}
 
-As seen in Table~\ref{RQ3_results}, in Bugs.jar, {\tool} can fix 45
-bugs that CURE missed and CURE fixed 27 bugs that {\tool} missed.
+%As seen in Table~\ref{RQ3_results}, in Bugs.jar, {\tool} can fix 45
+%bugs that CURE missed and CURE fixed 27 bugs that {\tool} missed.
+
 %while both can fix the same 126 bugs. In BigFix dataset, the number of
 %unique bugs that were fixed by {\tool} but missed by CURE is 178\%
 %more than the ones that were fixed by CURE but missed by {\tool} (89
 %versus 50).
 
-CURE did not fix correctly the example in Figure~\ref{example_3}. It
+CURE did not fix correctly the example in Fig.~\ref{example_3}. It
 fixed~line 6 into \code{return (}\code{Math.abs(}
 \code{keyTuple.} \code{hashCode())} \code{/} \code{totalReducers);}.
 That is, it just replaced the operator \code{\%} with \code{/}.
 Compared to CoCoNuT, CURE also represents source code as a sequence of
 tokens, thus, is {\em not well-suited to learn the structural changes} for
-the fix in this example. CURE is code-aware,
+the fix. CURE is code-aware,
 %however, similar to CoCoNuT, it still encodes
 and extracts the code-aware features from the context and feeds them
 into a single model.
@@ -345,9 +330,10 @@ into a single model.
 
 \subsubsection{\bf Comparison with DLFix}
 
-As seen in Table~\ref{RQ3_results}, in Bugs.jar, {\tool} can fix 66
-bugs that DLFix missed and DLFix fixed 19 bugs that {\tool}
-missed.
+%As seen in Table~\ref{RQ3_results}, in Bugs.jar, {\tool} can fix 66
+%bugs that DLFix missed and DLFix fixed 19 bugs that {\tool}
+%missed.
+
 %, while both can fix the same 105 bugs. Among the total
 %number of bugs fixed by both tools in BigFix dataset, 34.5\% of them
 %were fixed by {\tool} and missed by DLFix, while only 14.2\% of them

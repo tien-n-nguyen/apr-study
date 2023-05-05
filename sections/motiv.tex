@@ -106,14 +106,14 @@ than the other statements, e.g., at lines 2--5.
 Despite successes, the state-of-the-art, DL-based models~are
 limited in integrating context learning and change learning.
 
-First, for the DL-based approaches that learn the fixes
+First, for the DL-based approaches learning the fixes
 from prior {\em similar bug fixes or
   patterns}~\cite{gupta2017deepfix,white2019sorting,white2016deep},
-there might not be any fix similar to Figure~\ref{fig:motiv}. They focus
+there might not be any fix similar to Fig.~\ref{fig:motiv}. They focus
 on similar fixes with little or no consideration on whether a fix
 appears in certain~context.
 
-Second, some other DL-based APR approaches focus {\em only
+Second, some other approaches focus {\em only
   on learning the changes} to fix an AST subtree or a
 statement~\cite{chakrabortycodit,see2017get} without considering the
 context. For this example, without examining the context,
@@ -150,13 +150,13 @@ SequenceR~\cite{chen2018sequencer},
 CoCoNuT~\cite{lutellier2020coconut}, DLFix~\cite{icse20},
 CURE~\cite{cure-icse21}, and DEAR~\cite{icse22} extract features in
 the code in the entire method to be fed into a DL model to
-learn the fixing. With this strategy, {\em those approaches do not
-  help their models correctly learn the contexts. Importantly, the code
-  transformations for bug-fixing are known during training and could
+learn the fixing. With this, {\em those approaches do not
+  help their models correctly learn the contexts. Importantly, the bug-fixing
+  transformations are known during training and could
   be used to train a model for context learning}. For example,
 during training, the bug-fixing change from line 8 to line 9 is
 known. This knowledge could help a model learn that the key contextual
-features would lie at the code at lines 6--7, 11 with \code{getIndexOf},
+features lie at the code at lines 6--7, 11 with \code{getIndexOf},
 \code{getDataset}, and/or \code{getRowCount}.
 
 
@@ -185,7 +185,7 @@ to illustrate those points.
 
 %To address the above issue with the cascading architecture,
 
-From the observations, our philosophy is that to improve APR~in {\em
+Our philosophy is that to improve APR~in {\em
   context-dependent fixes}, we need not only {\em better
   transformation learning} (learning correct code changes), but also
 {\em better context learning} (learning the correct contextual
@@ -199,7 +199,7 @@ In {\tool}, we have two key ideas.
 are known at the training time to improve context learning,
 leading to improve code-transformation learning as well.
 
-Therefore, {\tool} treats this as a dual-task learning between Code
+Thus, {\tool} treats this as a dual-task learning between Code
 Context Learning (CCL) and Code Transformation Learning (CTL). The
 impact is from both directions (explicitly modeled in {\tool}): CCL
 helps CTL learn better, which leads to CCL learn better, and so on,
@@ -268,10 +268,11 @@ APR for context-dependent~bugs.
 connect CTL and CCL. The sharing of representations between them is
 modeled by the learning a linear combination of the input features
 from two models. Cross-stitch unit helps regularize both CCL and CTL
-by learning and enforcing shared representations via combining feature
+by learning shared representations via combining feature
 maps.
 This joint training {\em propagates the mutual impact} of
 CCL's context learning and CTL's transformation learning.
+
 %Tien removed this
 %{\em The use of cross-stitch unit also helps avoid confounding
 %  inaccuracies} in the cascading architecture.

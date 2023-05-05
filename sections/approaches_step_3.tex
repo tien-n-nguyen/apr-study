@@ -1,11 +1,11 @@
 \section{Patch Generation}
 \label{sec:patch-gen}
 
-Figure~\ref{overview-fixing} outlines the fixing process. While the
+Fig.~\ref{overview-fixing} outlines the fixing process. While the
 steps of parsing and tree-based representation learning are the same
-as in~train\-ing, the step of applying the trained CCL and CTL to
-produce the candidate patches is different. Figure~\ref{fig:patch-gen}
-shows that step.
+as in training, the step of applying the trained CCL and CTL to
+produce the candidate patches is different. Fig.~\ref{fig:patch-gen}
+shows that.
 
 \begin{figure}[t]
 	\centering
@@ -24,7 +24,7 @@ vectors; 2) the TreeCaps~\cite{bui2021treecaps} component to summarize
 the vectors in a subtree into a vector; 3) the output layer; and 4)
 the beam search component, which takes the output at the output layer
 and produces a candidate patch (at the current time step $i$) in terms
-of the output AST subtree $T_i$ with the concrete source code for the
+of the output subtree $T_i$ with the concrete code for the
 AST nodes. While the embedding component, TreeCaps, and the output
 layer are straightforward, let us explain the adaptation in the beam
 search component.

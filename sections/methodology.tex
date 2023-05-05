@@ -54,97 +54,57 @@ that exactly match with the actual fixes.
 patch is in the ranked list of top-$K$ candidate patches.
 
 \subsubsection{Evaluation Methodology.\\}
-%We use the following settings for different RQs:
 
 {\bf RQ1. Comparison with DL-based APR Models on~Defects4J.}  We used
-the following DL-based baselines:
+the following DL-based baselines: {\bf
+  SequenceR~\cite{chen2018sequencer}}, {\bf
+  CoCoNuT~\cite{lutellier2020coconut}}, {\bf DLFix~\cite{icse20}},
+{\bf DEAR~\cite{icse22}}, {\bf RewardRepair~\cite{monperrus-icse22}},
+{\bf CURE~\cite{cure-icse21}}, {\bf Recoder~\cite{recoder-fse21}},
+{\bf SelfAPR~\cite{ye2022selfapr}}, {\bf AlphaRepair~\cite{xia2022less}}, 
+{\bf TRANSFER~\cite{meng2022improving}}.
 
-%{\it Hercules \cite{hercules-icse19}: } is a novel APR technique that generalizes single-hunk repair to encompass a specific but significant class of multi-hunk repair problems.
+%{\bf SequenceR~\cite{chen2018sequencer}: } uses the machine
+%translation approach with sequence-to-sequence learning.
 
-%{\it Tbar \cite{tbar-issta19}: } is a template-based APR to build comprehensive% knowledge about the effectiveness of fix patterns.
+%{\bf CoCoNuT~\cite{lutellier2020coconut}:} uses a context-aware neural
+%machine translation to represent the buggy code and its
+%context separately.
 
-{\bf SequenceR~\cite{chen2018sequencer}: } uses the machine
-translation approach with sequence-to-sequence learning.
+%{\bf DLFix~\cite{icse20}:} DLFix uses code summarization to collapse
+%the buggy subtrees, and uses the new trees with summarized nodes for
+%code-transformation learning.  The vector for the summarized node is
+%used as a {\em weight} in a cross-product with all the vectors of the
+%nodes in the subtrees to train code-transformation model.
 
-{\bf CoCoNuT~\cite{lutellier2020coconut}:} uses a context-aware neural
-machine translation to represent the buggy code and its
-context separately.
+%{\bf DEAR~\cite{icse22}:} uses a tree LSTM model
+%and extracts code context features to fix multi-statement/multi-hunk
+%bugs. We did not compare with Hercules~\cite{10.1109/ICSE.2019.00020} since
+%DEAR was shown to outperform~it.
 
-%It uses ensemble learning on the combination of convolutional neural
-%networks and a context-aware machine translation.
+%{\bf RewardRepair~\cite{monperrus-icse22}}: uses machine translation
+%with a loss function based on program compilation and test execution
+%information.
 
-{\bf DLFix~\cite{icse20}:}
-%DLFix has key differences with {\tool}.  First, CCL and CTL are
-%different.
-DLFix uses code summarization to collapse the buggy subtrees, and uses the
-new trees with summarized nodes for code-transformation learning.
-%Second, in DLFix, {\em
-%  CCL cascadingly connects to CTL} in which
-The vector for the summarized node is used as a {\em weight}
-%representing the impact from CCL to CTL. The weight vector is used i
-n a cross-product with all the vectors of the nodes in the subtrees to
-train code-transformation model.
+%{\bf CURE~\cite{cure-icse21}:} is a machine-translation-based APR
+%using GPT~\cite{radford2018improving}.
+%It extracts code features from contexts to fix buggy statements.
 
-{\bf DEAR~\cite{icse22}:} uses a tree LSTM model
-%that incorporates cycle training and uses a divide-and-conquer
-%strategy to learn proper code transformations
-and extracts code context features to fix multi-statement/multi-hunk
-bugs. We did not compare with Hercules~\cite{10.1109/ICSE.2019.00020} since
-DEAR was shown to outperform~it.
+%{\bf Recoder~\cite{recoder-fse21}}: uses a syntax-guided edit decoder
+%to generate edits rather than modified code.
 
-%for fixing multiple statements in the suitable fixing context.
-%leverages DLFix to support multi-statement/ multiple-hunk bugs. For
-%comparison with the baselines supporting only single-statement bugs,
-%we downgrade DEAR by removing the hunk detection component.
+%{\bf SelfAPR~\cite{ye2022selfapr}}: is a self-supervised training model with automatically generated training samples to capture the failing assertion of the program under repair with execution information.
 
-{\bf RewardRepair~\cite{monperrus-icse22}}: uses machine translation
-with a loss function based on program compilation and test execution
-information.
+%{\bf AlphaRepair~\cite{xia2022less}}: is a cloze-style APR technique
+%that leverages large pre-trained code model directly for repair.
 
-%In {\tool}, dual-task learning is used between CCL and CTL.
-
-%buggy and fixed subtrees to train the CTL model.
-
-%is a two-tier DL-based model that treats APR as code transformation
-%learning from the prior bug fixes and the surrounding code
-%contexts. It follows a cascading architecture between two models of
-%context learning and transformation learning.
-
-{\bf CURE~\cite{cure-icse21}:} is a machine-translation-based APR
-using GPT~\cite{radford2018improving}.
-%that parses, models, and
-%searches source code, as opposed to natural language text, to fix bugs
-%automatically.
-It extracts code features from contexts to fix buggy statements.
-%as in CoCoNuT.
-
-%It does not have the dual learning for context learning and code
-%transformation learning as in {\tool}.
-
-
-%Tien
-%In this RQ, for %Hercules and
-%Tbar, we directly use the results reported in their original paper because they are pattern-based approaches.
-
-%Tien removed this
-%We did not compare with Recoder~\cite{recoder-fse21} because it
-%generates only single-hunk patches. {\tool} works for multi-hunk ones.
-
-{\bf Recoder~\cite{recoder-fse21}}: uses a syntax-guided edit decoder
-to generate edits rather than modified code.
-%it was trained on Defects4J after multiple-statement bugs were filtered.
-
-{\bf SelfAPR~\cite{ye2022selfapr}}: is a self-supervised training model with automatically generated training samples to capture the failing assertion of the program under repair with execution information.
-
-{\bf AlphaRepair~\cite{xia2022less}}: is a cloze-style APR technique that leverages large pre-trained code model directly for
-repair.
-
-{\bf TRANSFER~\cite{meng2022improving}}: leverages the deep semantic features and transferred knowledge from open-source data to improve fault localization and program repair.
+%{\bf TRANSFER~\cite{meng2022improving}}: leverages the deep semantic
+%features and transferred knowledge from open-source data to improve
+%fault localization and program repair.
 
 For all approaches under study in this RQ, we used {\em BigFix as the
-training dataset and evaluated on Defects4J dataset}. 
-%For each bug in Defects4J, we used the remaining bugs in Defects4J as the developing dataset to fine-tune the model, and used the fine-tuned model to predict the fix for the bug. 
-We use two additional steps for all approaches in comparison:
+  training dataset and evaluated on Defects4J dataset}.  We use two
+additional steps for all approaches in comparison:
 
 (1) {\em Fault localization (FL)}: Conceptually, any FL
 tools can be used to produce an ordered list of suspicious
@@ -197,7 +157,7 @@ nodes (4, 5, 6); (6) The maximum depth $Q$ of children nodes (3, 4,
 5).
 
 \vspace{2pt} {\bf RQ2. Comparison with DL-based APR Approaches on
-  Large Datasets.} The baselines include {\bf
+  Large Datasets.} Baselines: {\bf
   Sequen\-ceR~\cite{chen2018sequencer},
   CoCoNuT~\cite{lutellier2020coconut}, DLFix~\cite{icse20},
   CURE~\cite{cure-icse21}}, {\bf Recoder~\cite{recoder-fse21},
@@ -285,7 +245,7 @@ which we removed the cross-stitch unit for dual-task learning. CCL is
 connected to CTL in a cascading manner.
 
 We also performed experiments to evaluate the impact of context
-learning. We used BigFix and the same process and setting.
+learning. We used BigFix and the same setting.
 
 %in which the output of CCL corresponding to a buggy subtree is
 %directly used as the input of CTL.
@@ -320,6 +280,5 @@ learning. We used BigFix and the same process and setting.
 \vspace{2pt} {\bf RQ4. Overlapping Analysis.} We analyze the bugs
 fixed by one model and missed by another and vice versa.
 
-{\bf RQ5. Evaluation on C/C++ code.} We ran {\tool} on the C/C++ benchmark
-Codeflaws~\cite{tan2017codeflaws} (3,902 bugs) with the same
-setting.
+{\bf RQ5. Evaluation on C/C++ code.} We ran {\tool} on benchmark
+Codeflaws~\cite{tan2017codeflaws} with 3,902 bugs (same~setting).

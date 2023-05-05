@@ -4,23 +4,48 @@
 %We summarize the related studies on automated program repair.
 
 {\bf Fixing-pattern-based APRs.} 
-%In the earlier stage, the automated program repair (APR) approaches aimed to automatically derive
-%{\em the fixes for similar code} cloned from one place to
-%another~\cite{icse10}, or similar code due to porting or
-%branching~\cite{ray-fse12}. 
-%
-Toward addressing the more general defects, several researchers have
+%Toward addressing the more general defects, several researchers have
+%explored the {\em search-based
+%  approaches}~\cite{le2011genprog,qi2014strength,LeGoues-icse12,martinez2016astor}
+%in which a search strategy is performed in the space of potential
+%solutions produced by several operators mutating the buggy code. In
+%contrast to the search-based approaches, the automatic or
+%semi-automatic approaches of {\em mining and learning fixing patterns}
+%from prior bug fixes~\cite{le2016history,
+%  kim2013automatic,nguyen2013semfix,liu2019avatar,tbar-issta19} have
+%been proposed, such as synthesizing a patch using symbolic execution
+%and constraint solving--SemFix~\cite{nguyen2013semfix}, learning
+%models from existing submitted
+%patches~\cite{long2016automatic,long2017automatic,le2016history},
+%synthesizing patches using method call related
+%patterns--ELIXIR~\cite{saha2017elixir}, mining code change operations
+%from the patches in code change
+%histories--CapGen~\cite{wen2018context}, SimFix~\cite{Simfix} and
+%FixMiner~\cite{koyuncu2018fixminer}, exploring fix patterns of static
+%analysis
+%violations--Avatar~\cite{liu2019avatar}. Tbar~\cite{tbar-issta19} is a
+%template-based APR tool with the collected fix patterns.
+%Hercules~\cite{10.1109/ICSE.2019.00020} targets at the multi-hunk bugs
+%that require a similar patch to different
+%locations. Getafix~\cite{bader2019getafix} learns fix patterns from
+%past fixes and auto-fixes the warnings from static analyzers. {\tool},
+%is a data-driven and DL-based approach. Thus, we compared {\tool} with
+%DL-based APR models.
+Toward addressing more general defects, researchers have
 explored the {\em search-based
-  approaches}~\cite{le2011genprog,qi2014strength,LeGoues-icse12,martinez2016astor}
-in which a search strategy is performed in the space of potential
-solutions produced by several operators mutating the buggy code. In
-contrast to the search-based approaches, the automatic or
-semi-automatic approaches of {\em mining and learning fixing patterns}
-from prior bug fixes~\cite{le2016history,
-  kim2013automatic,nguyen2013semfix,liu2019avatar,tbar-issta19} have
-been proposed, such as synthesizing a patch using symbolic execution
-and constraint solving--SemFix~\cite{nguyen2013semfix}, learning
-models from existing submitted
+  approaches}~\cite{le2011genprog,qi2014strength,LeGoues-icse12,martinez2016astor},
+%in which a search strategy is performed in the space of potential
+%solutions produced by several operators mutating the buggy code. In
+%contrast to the search-based approaches, the automatic or
+%semi-automatic approaches of
+{\em mining and learning fixing patterns} from prior bug
+fixes~\cite{le2016history,
+  kim2013automatic,nguyen2013semfix,liu2019avatar,tbar-issta19},
+%have
+%been proposed, such as synthesizing a patch using
+symbolic execution and constraint
+solving--SemFix~\cite{nguyen2013semfix}, learning models from existing
+submitted
 patches~\cite{long2016automatic,long2017automatic,le2016history},
 synthesizing patches using method call related
 patterns--ELIXIR~\cite{saha2017elixir}, mining code change operations
@@ -29,13 +54,13 @@ histories--CapGen~\cite{wen2018context}, SimFix~\cite{Simfix} and
 FixMiner~\cite{koyuncu2018fixminer}, exploring fix patterns of static
 analysis
 violations--Avatar~\cite{liu2019avatar}. Tbar~\cite{tbar-issta19} is a
-template-based APR tool with the collected fix patterns.
-Hercules~\cite{10.1109/ICSE.2019.00020} targets at the multi-hunk bugs
+template-based APR tool with collected fix patterns.
+Hercules~\cite{10.1109/ICSE.2019.00020} targets the multi-hunk bugs
 that require a similar patch to different
 locations. Getafix~\cite{bader2019getafix} learns fix patterns from
-past fixes and auto-fixes the warnings from static analyzers. {\tool},
-is a data-driven and DL-based approach. Thus, we compared {\tool} with
-DL-based APR models.
+past fixes and auto-fixes warnings from static analyzers.
+%{\tool}, is a data-driven and DL-based approach. Thus, we compared
+%{\tool} with DL-based APR models.
 
 %We will compare with other types of models in future.
 
@@ -94,33 +119,34 @@ DeepRepair~\cite{white2016deep} and DeepFix~\cite{gupta2017deepfix}.
 %uses deep learning to directly generate patches. The precision of this approach depends on the neutral network learned from the training
 %set. However, so far this approach is only evaluated
 %on syntactic errors.
-Some other approaches apply neural machine translation (NMT) onto APR:
-translating the buggy code to its fixed version, such as
+Some other approaches apply neural machine translation:
+translating the buggy code to its fixed version, e.g.,
 Ratchet~\cite{hata2018learning} and Tufano {\em et
   al.}~\cite{tufano2018empirical}, SequenceR~\cite{chen2018sequencer},
-Tufano {\em et al.}~\cite{tufano2019learning}. However, the above
-early work using NMT for APR did not perform well on the benchmark
-Defects4J in comparison with the well-known, pattern-based tools.
+Tufano {\em et al.}~\cite{tufano2019learning}.
+%However, the above early work using NMT for APR did not perform well
+%on the benchmark Defects4J in comparison with the well-known,
+%pattern-based tools.
 
-The recent DL-based models have generated comparable results than the best performing pattern-based
-APRs. DLFix~\cite{icse20} uses a cascading architecture
-between CCL and CTL.
+%DLFix~\cite{icse20} uses a cascading architecture
+%between CCL and CTL.
 %a two-tier tree-based translation model for learning code contexts and transformation to autofix bugs, which was the first DL model that generates comparable results compared with pattern-based tools.
-CoCoNuT~\cite{lutellier2020coconut} proposes a new context-aware NMT
-architecture to learn buggy code and its
-contexts. CURE~\cite{cure-icse21} develops a code-aware neural machine
-translation for APR utilizing a large language model
-GPT~\cite{radford2018improving}. Our empirical results show that
-{\tool} can auto-fix more bugs than existing models. DLFix~\cite{icse20} has been shown to outperform several
-pattern-based approaches. TFix~\cite{tfix-21} uses a text-to-text
-transformer for APR. Recoder \cite{recoder-fse21} uses a syntax-guided edit
-decoder to generate bug-fixing edits rather than modified code.  The
-general-purpose syntactic neural
-model~\cite{yin-neubig-2017-syntactic} is applied to APR to
-capture the target syntax. RewardRepair~\cite{monperrus-icse22} uses
-neural machine translation with a loss function based on program
-compilation and test execution information, rewarding the network to
-produce patches that compile.
+%CoCoNuT~\cite{lutellier2020coconut} proposes a new context-aware NMT
+%architecture to learn buggy code and its
+%contexts. CURE~\cite{cure-icse21} develops a code-aware neural machine
+%translation for APR utilizing a large language model
+%GPT~\cite{radford2018improving}.
+%Our empirical results show that {\tool} can auto-fix more bugs than
+%existing models. DLFix~\cite{icse20} has been shown to outperform
+%several pattern-based approaches.
+TFix~\cite{tfix-21} uses a text-to-text transformer for APR. Recoder
+\cite{recoder-fse21} uses a syntax-guided edit decoder to generate
+bug-fixing edits rather than modified code.  The general-purpose
+syntactic neural model~\cite{yin-neubig-2017-syntactic} is applied to
+APR to capture the target syntax. RewardRepair~\cite{monperrus-icse22}
+uses neural machine translation with a loss function via program
+compilation and test execution.
+%, rewarding the network to produce patches that compile.
   
 %on three datasets: Defects4J, Bugs.jar, and BigFix.
 

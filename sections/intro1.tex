@@ -306,8 +306,8 @@ statements, and that of the fixed statement. For
 auto-fixing, a fault localization tool is used to identify the buggy
 statement(s). The AST subtree of the buggy statement is fed into the
 trained~CTL model~to produce the ranked candidate patches, which are
-validated via test cases. We leverage a tree-oriented beam search for
-efficiency.
+validated via test cases.
+%We leverage a tree-oriented beam search for efficiency.
 
 %In {\tool}, for training, the input for the CCL model is the Abstract
 %Syntax Tree (AST) of a buggy method and that of the fixed method, and
@@ -324,8 +324,8 @@ models on Defects4J~\cite{defects4j} (395~bugs),
 Bugs.jar~\cite{saha2018bugs} (1,158 bugs), and
 BigFix~\cite{yioopsla19} (+4.9M methods and 1.8M buggy ones).
 %
-Our results show that CDFix can fix 4.7\%–-143\% and 5.7\%–-263\% more
-bugs than the baseline models with only top-1 patches in Bugs.jar and
+Our results show that CDFix can fix 4.7\%–143\% and 5.7\%–263\% more
+bugs than the baseline models with top-1 patches in Bugs.jar and
 BigFix, respectively. It fixes 26.4\% and 27.7\% of the total bugs
 that were missed by the best baseline. {\tool} auto-fixes 56 bugs,
 i.e., 194.7\% (37 bugs), 40\% (16), 27.3\% (12), 16.7\% (8), 3.7\%
@@ -338,9 +338,9 @@ DEAR~\cite{icse22} respectively.
 %more bugs than the baselines: SequenceR~\cite{chen2018sequencer},
 %DLFix~\cite{icse20}, CoCoNuT~\cite{lutellier2020coconut},
 %CURE~\cite{cure-icse21}, and DEAR~\cite{icse22}, respectively.
-It complements to the best baseline Recoder in Defects4J but
-improves over it in Bugs.jar and BigFix. In Defects4J, since
-generating only single-hunk patches, Recoder did not fix 16
+It complements to the best baselines Recoder and AlphaRepair in
+Defects4J but improves over it in Bugs.jar and BigFix. In Defects4J,
+since generating only single-hunk patches, Recoder did not fix 16
 multi-hunk/multi-statement bugs that {\tool} fixed.
 % {\tool} fixed 8 more bugs than the next-best DL model,
 %CURE~\cite{cure-icse21}.  Even with the cut-off setting in CURE
@@ -365,8 +365,8 @@ In brief, our contributions include
 %1) Leveraging dual-task learning to propagate the {\bf mutual impacts}
 %  in both directions of context and transformation learning.
 
-1) {\tool}: uses dual-task learning to model mutual impacts of~context
-learning and transformation learning, leading to better APR.
+1) {\tool}: dual-task learning to model mutual impacts of context
+and transformation learning, leading to better APR.
 
 %2) Adapting/Modifying the cross-stitch unit for dual-task
 %learning to work with AST representations in source code.
